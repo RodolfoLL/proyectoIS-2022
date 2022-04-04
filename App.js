@@ -10,7 +10,7 @@ export default function App() {
     const myDoc = doc(db,'MyCollectionName','MyDocument');
     const docdata = {
       'name':"lopez",
-      'edad': "12"
+      'edad': "15"
     }
     setDoc(myDoc,docdata)
       .then(()=> {
