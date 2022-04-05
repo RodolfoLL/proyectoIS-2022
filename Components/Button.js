@@ -1,42 +1,67 @@
-import React from 'react'
+import React, {useState} from 'react'
 import { View, Text,StyleSheet,TouchableOpacity} from 'react-native'
+import DateTimePicker from '@react-native-community/datetimepicker';
+import {db} from './database/firebase';
+import { doc, setDoc } from 'firebase/firestore';
 
-export const ButtonDate=()=>{
-  return (
-    <TouchableOpacity
-        onPress={()=>alert('23/34/2022')}
-    >
-        <View style={styles.buttonDate}>
-            <Text style={styles.texto}>Fecha</Text>
+export const ButtonDateTime=()=>{
+    const [date, setDate] = useState(new Date());
+    const [mode, setMode] = useState('date');
+    const [show, setShow] = useState(false);
+    const onChange = (event, selectedDate) => {
+        if(event ==="cancel"){
+            const currentDate = selectedDate;
+            setDate(currentDate);
+            setDate(currentDate);
+            setShow(false);
+            // let template = new Date(currentDate);
+            // let fdate = template.getDate() + '/' + (template.getMonth()+1) +'/'+template.getFullYear();
+            // let ftime = 'Hours: '+template.getHours() + '| Minutes: '+template.getMinutes();
+        }
+    };
+    const showMode=(currentMode)=>{
+        setShow(true);
+        setMode(currentMode);
+    }
+      return (
+        <View>
+            <TouchableOpacity
+                 onPress={()=>showMode('date')}
+            >
+                 <View style={styles.buttonDate}>
+                    <Text style={styles.texto}>Fecha</Text>
+                 </View>
+             </TouchableOpacity>
+             <TouchableOpacity
+                    onPress={()=>showMode('time')}
+             >
+                 <View style={styles.buttonTime}>
+                     <Text style={styles.texto}>Hora</Text>
+                 </View>
+             </TouchableOpacity>
+             {show && (
+                <DateTimePicker
+                testID="dateTimePicker"
+                value={date}
+                mode={mode}
+                is24Hour={true}
+                display='default'
+                onChange={onChange}
+                 />
+            )}
         </View>
-    </TouchableOpacity>
-  )
-}
-export const ButtonFecha=()=>{
-  return(
-    <TouchableOpacity
-        onPress={()=>alert('07:20')}
-    >
-        <View style={styles.buttonTime}>
-            <Text style={styles.texto}>Hora</Text>
-        </View>
-            
-    </TouchableOpacity>
-
-   )
+    )   
 }
 export const ButtonCont=()=>{
     return(
-      <TouchableOpacity
+    <TouchableOpacity
         onPress={()=>alert('desea continuar?')}
-      >
-          <View style={styles.buttonCont}>
-              <Text style={styles.texto}>Continuar</Text>
-          </View>
-              
-      </TouchableOpacity>
-  
-  )
+        >
+        <View style={styles.buttonCont}>
+            <Text style={styles.texto}>Continuar</Text>
+        </View>
+    </TouchableOpacity>
+    )
 }
 export const ButtonCancel=()=>{
     return(
@@ -78,7 +103,7 @@ const styles = StyleSheet.create({
     },
     texto:{
         color:'white',
-        fontFamily: "Roboto",
+        fontFamily:'sans-serif',
         fontSize:20,
         textAlign:'center'  
     },

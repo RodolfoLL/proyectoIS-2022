@@ -1,9 +1,10 @@
 import { StatusBar } from 'expo-status-bar';
 import { doc, setDoc } from 'firebase/firestore';
 import { StyleSheet, View} from 'react-native';
-import { ButtonCancel, ButtonCont, ButtonDate, ButtonFecha } from './Components/Button';
+import { ButtonCancel, ButtonCont, ButtonDateTime} from './Components/Button';
 import Icon from './Components/Icons';
-import {db} from './database/firebase'
+import {db} from './database/firebase';
+
 export default function App() {
   const Create = ()=>{
 
@@ -25,8 +26,7 @@ export default function App() {
   return (
     <View style={styles.container}>
       <Icon />
-      <ButtonDate />
-      <ButtonFecha />
+      <ButtonDateTime/>
       <ButtonCont/>
       <ButtonCancel/>
       <StatusBar style="auto"/>
