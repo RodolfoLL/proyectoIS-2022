@@ -1,5 +1,6 @@
 import React from 'react'
 import { View, Text, StyleSheet,TouchableOpacity } from 'react-native'
+import { DateTimePicker } from '@react-native-community/datetimepicker'
 const FechaFinal = (props) => {
     return(
         <View style={styles.container}>
@@ -8,22 +9,7 @@ const FechaFinal = (props) => {
             </View>
 
             <View style={[styles.box, styles.box2]}>
-                <TouchableOpacity style={styles.boton}
-                    onPress={() => {}}  >
-                    <Text style={styles.textBoton}>5 dias</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.boton}
-                    onPress={() => {}}  >
-                    <Text style={styles.textBoton}>10 dias</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.boton}
-                    onPress={() => {}}  >
-                    <Text style={styles.textBoton}>1 semana</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.boton}
-                    onPress={() => {}}  >
-                    <Text style={styles.textBoton}>30 dias</Text>
-                </TouchableOpacity>
+               
             </View>
 
             <View style={[styles.box, styles.box3]}>
