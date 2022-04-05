@@ -1,7 +1,7 @@
 import React from 'react'
-import { View, Text, StyleSheet, Button, TouchableOpacity} from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity} from 'react-native'
 
-const CrearRecordatorio1 = () => {
+const CrearRecordatorio1 = (props) => {
     return(
         <View style={styles.container}>
             <View style={[styles.box, styles.box1]}>
@@ -26,7 +26,7 @@ const CrearRecordatorio1 = () => {
                     <Text style={styles.textBoton}>30 dias</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.boton}
-                    onPress={() => {}}  >
+                    onPress={() => {props.navigation.navigate('FechaFinal')}}  >
                     <Text style={styles.textBoton}>Establecer la fecha final</Text>
                 </TouchableOpacity>
             </View>
