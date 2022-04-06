@@ -5,11 +5,18 @@ const FechaFinal = (props) => {
     const [date, setDate] = useState(new Date());
     const [mode, setMode] = useState('date');
     const [show, setShow] = useState(false);
+    const [textDate, setText] = useState(false);
 
     const onChange = (event, selectedDate) => {
-            const currentDate = selectedDate;
+            const currentDate = selectedDate || date;
             setShow(false);
             setDate(currentDate);
+
+            let temporalDate = new Date(currentDate)
+            let fecha = temporalDate.getDate() +'/'+ (temporalDate.getMonth()+1)+'/'+ temporalDate.getFullYear() 
+            setText(fecha)
+            
+            console.log(currentDate)
     };
 
     const showMode = (currentMode) => {
@@ -25,12 +32,12 @@ const FechaFinal = (props) => {
 
             <View style={[styles.box, styles.box2]}>
 
-                <Text style={styles.fecha}>selected: {date.toLocaleString()}</Text>
-
                 <TouchableOpacity style={styles.boton}
                     onPress={() => showMode('date') } >
                     <Text style={styles.textBoton}>Mostrar Calendario</Text>
                 </TouchableOpacity>
+
+                <Text style={styles.fecha}>Fecha Escogida: {textDate}</Text>
 
                 {show && (
                     <DateTimePicker
@@ -50,7 +57,7 @@ const FechaFinal = (props) => {
                     onPress={() => alert('Alert with one button')}  >
                     <Text style={styles.textBoton}>Guardar</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={[styles.boton, styles.botonCancelar]}
+                <TouchableOpacity style={styles.boton}
                     onPress={() => {props.navigation.navigate('DuracionTratamiento')}}  >
                     <Text style={styles.textBoton}>Cancelar</Text>
                 </TouchableOpacity>
@@ -66,40 +73,39 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         flexDirection: 'column'
-      },
-      box1: {
-          flex: 1,
-          paddingTop: 50,
-      },
-      box2: {
-          flex: 6,
+    },
+    box1: {
+        flex: 1,
+        paddingTop: 50
+    },
+    box2: {
+        flex: 2
   
-      },
-      box3: {
-          flex: 4,
-      },
-      title:{
-          fontSize: 23,
-          color: '#fff'
-      },
-      boton:{
-          backgroundColor: "#0093B7",
-          borderRadius: 2,
-          marginBottom: 20,
-          padding: 12,
-          alignItems: 'center'
-      },
-      textBoton:{
-          fontSize: 20,
-          color: "#fff"
-      },
-      botonCancelar:{
-          width: 225
-      },
-      fecha:{
-          color: "#fff",
-          marginBottom: 20
-      }
+    },
+    box3: {
+        flex: 1
+    },
+    title:{
+        fontSize: 23,
+        color: '#fff'
+    },
+    boton:{
+        backgroundColor: "#0093B7",
+        borderRadius: 2,
+        marginBottom: 20,
+        padding: 12,
+        alignItems: 'center',
+        width: 230
+    },
+    textBoton:{
+        fontSize: 20,
+        color: "#fff"
+    },
+
+    fecha:{
+        color: "#fff",
+        fontSize: 18
+    }
 
 });
 

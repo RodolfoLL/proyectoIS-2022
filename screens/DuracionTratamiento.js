@@ -116,7 +116,7 @@ const styles = StyleSheet.create({
         color: "#fff"
     },
     botonCancelar:{
-        width: 225
+        width: 235
     }
 
 });
