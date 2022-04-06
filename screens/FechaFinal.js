@@ -2,7 +2,7 @@ import React, {useState} from 'react'
 import { View, Text, StyleSheet,TouchableOpacity,Button } from 'react-native'
 import  DateTimePicker  from '@react-native-community/datetimepicker'
 const FechaFinal = (props) => {
-    const [date, setDate] = useState(new Date(1598051730000));
+    const [date, setDate] = useState(new Date());
     const [mode, setMode] = useState('date');
     const [show, setShow] = useState(false);
 
@@ -10,7 +10,6 @@ const FechaFinal = (props) => {
             const currentDate = selectedDate;
             setShow(false);
             setDate(currentDate);
-            event=null
     };
 
     const showMode = (currentMode) => {
@@ -52,7 +51,7 @@ const FechaFinal = (props) => {
                     <Text style={styles.textBoton}>Guardar</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={[styles.boton, styles.botonCancelar]}
-                    onPress={() => {props.navigation.navigate('CrearRecordatorio1')}}  >
+                    onPress={() => {props.navigation.navigate('DuracionTratamiento')}}  >
                     <Text style={styles.textBoton}>Cancelar</Text>
                 </TouchableOpacity>
             </View>

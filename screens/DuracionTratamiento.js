@@ -4,24 +4,20 @@ import { doc, setDoc } from 'firebase/firestore';
 import {db} from '../database/firebase'
 //import firebase from "../database/firebase";
 
-const CrearRecordatorio1 = (props) => {
+const DuracionTratamiento = (props) => {
     
-    /*const [state, setState] = useState({
-        duracion: ''
-    })
-
-    
-    /*const saveRecordatorio = async () => {
+    /*const guardarDuracion = async (duracion) => {
         
-        if (state.duracion === '') {
+        if (duracion === '') {
           alert("please provide a name");
         } else {
     
           try {
             await firebase.db.collection("recordatorio").add({
-                duracion: state.duracion
+                Duracion: duracion
             });
-    
+            
+            console.log("guardado")
             //props.navigation.navigate("UsersList");
           } catch (error) {
             console.log(error)
@@ -94,22 +90,15 @@ const styles = StyleSheet.create({
       justifyContent: 'center',
       flexDirection: 'column'
     },
-    //header
     box1: {
         flex: 1,
-        //backgroundColor: '#2196F3',
         paddingTop: 50,
     },
-    //content
     box2: {
-        flex: 6,
-        //backgroundColor: '#FA250B'
-
+        flex: 6
     },
-    //footer
     box3: {
         flex: 2,
-        //backgroundColor: '#e3aa1a'
     },
     title:{
         fontSize: 23,
@@ -132,4 +121,4 @@ const styles = StyleSheet.create({
 
 });
 
-export default CrearRecordatorio1
+export default DuracionTratamiento
