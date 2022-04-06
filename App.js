@@ -1,8 +1,15 @@
-import React from "react";
+import React ,{useState} from "react";
 import {Text,View,StyleSheet,Button,TextInput} from 'react-native';
 import { CheckBox } from 'react-native-elements';
 const App = () => {
   const[nombre,setNombre]=useState('');
+  const[checked,setcheckedOral]=useState(false);
+  const[checkedIntramuscular,setcheckedIntramuscular]=useState(false);
+  const[checkedInalatoria,setcheckedInalatoria]=useState(false);
+  const[checkedNasal,setcheckedNasal]=useState(false);
+  const[checkedTopica,setcheckedTopica]=useState(false);
+  const[checkedOftalmologica,setcheckedOftalmologica]=useState(false);
+  const[checkedParetal,setcheckedParetal]=useState(false);
   return (<View style={styles.container}>
   <Text style={styles.title}>Nombre del Medicamento</Text>
   <TextInput style={styles.inputS}
@@ -14,24 +21,100 @@ const App = () => {
   <View style={styles.opciones}>
    <CheckBox
   title='Via Oral'
+  checked={checked}
+  onPress={()=>{mostrar(1)
+  setcheckedOral(true)
+  setcheckedIntramuscular(false)
+  setcheckedInalatoria(false)
+  setcheckedNasal(false)
+  setcheckedTopica(false)
+  setcheckedOftalmologica(false)
+  setcheckedParetal(false)
+  }
+  }
 />
   <CheckBox
   title='Via Intramuscular'
+  checked={checkedIntramuscular}
+  onPress={()=>{mostrar(2)
+  setcheckedIntramuscular(true)
+  setcheckedOral(false)
+  setcheckedInalatoria(false)
+  setcheckedNasal(false)
+  setcheckedTopica(false)
+  }
+  }
 />
  <CheckBox
   title='Via Inalatoria'
+  checked={checkedInalatoria}
+  onPress={()=>{mostrar(3)
+  setcheckedIntramuscular(false)
+  setcheckedOral(false)
+  setcheckedInalatoria(true)
+  setcheckedNasal(false)
+  setcheckedTopica(false)
+  setcheckedOftalmologica(false)
+  setcheckedParetal(false)
+  }
+  }
 />
   <CheckBox
   title='Via Nasal'
+  checked={checkedNasal}
+  onPress={()=>{mostrar(4)
+  setcheckedIntramuscular(false)
+  setcheckedOral(false)
+  setcheckedInalatoria(false)
+  setcheckedNasal(true)
+  setcheckedTopica(false)
+  setcheckedOftalmologica(false)
+  setcheckedParetal(false)
+  }
+  }
+
 />
  <CheckBox
   title='Via Topica'
+   checked={checkedTopica}
+  onPress={()=>{mostrar(5)
+  setcheckedIntramuscular(false)
+  setcheckedOral(false)
+  setcheckedInalatoria(false)
+  setcheckedNasal(false)
+  setcheckedTopica(true)
+  setcheckedOftalmologica(false)
+  setcheckedParetal(false)
+  }
+  }
 />
   <CheckBox
   title='Via Oftalmologica'
+   checked={checkedOftalmologica}
+  onPress={()=>{mostrar(6)
+  setcheckedIntramuscular(false)
+  setcheckedOral(false)
+  setcheckedInalatoria(false)
+  setcheckedNasal(false)
+  setcheckedTopica(false)
+  setcheckedOftalmologica(true)
+  setcheckedParetal(false)
+  }
+  }
 />
  <CheckBox
-  title='Via parental'
+  title='Via Parental'
+   checked={checkedParetal}
+  onPress={()=>{mostrar(7)
+  setcheckedIntramuscular(false)
+  setcheckedOral(false)
+  setcheckedInalatoria(false)
+  setcheckedNasal(false)
+  setcheckedTopica(false)
+  setcheckedOftalmologica(false)
+  setcheckedParetal(true)
+  }
+  }
 />
 </View>
     <Button
@@ -42,6 +125,37 @@ const App = () => {
   </View>
   );
 };
+const mostrar=(n)=>{
+  var tipo=""
+  if(n==1){
+    tipo="Via Oral"
+    console.log(tipo);
+  }
+  if(n==2){
+    tipo="Via Intramuscular"
+    console.log(tipo);
+  }
+  if(n==3){
+    tipo="Via Inalatoria"
+    console.log(tipo);
+  }
+    if(n==4){
+    tipo="Via Nasal"
+    console.log(tipo);
+  }
+  if(n==5){
+    tipo="Via Topica"
+    console.log(tipo);
+  }
+  if(n==6){
+    tipo="Via Oftalmogica"
+    console.log(tipo);
+  }
+  if(n==7){
+    tipo="Via Parental"
+    console.log(tipo);
+  }
+}
 const styles = StyleSheet.create({
   container:{flex:1,
              backgroundColor:'#001B48',
@@ -51,11 +165,6 @@ const styles = StyleSheet.create({
   title:{fontSize:30,
          color:'white'
          },
-  imagen:{
-    height:200,
-    width:200,
-    borderRadius:100
-  },
   inputS:{
     height:40,
     width:350,
@@ -65,11 +174,7 @@ const styles = StyleSheet.create({
     marginTop:30,
     marginBottom:30,
     padding:15,
-  },
-  subtitle:{
-  color:'white',
-  margin:10,
-  fontSize:25
+    color:'white'
   },
   opciones:{
   margin:20
