@@ -1,8 +1,11 @@
 import React ,{useState} from "react";
 import {Text,View,StyleSheet,Button,TextInput} from 'react-native';
 import { CheckBox } from 'react-native-elements';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+var tipo=''
 const App = () => {
   const[nombre,setNombre]=useState('');
+
   const[checked,setcheckedOral]=useState(false);
   const[checkedIntramuscular,setcheckedIntramuscular]=useState(false);
   const[checkedInalatoria,setcheckedInalatoria]=useState(false);
@@ -10,10 +13,10 @@ const App = () => {
   const[checkedTopica,setcheckedTopica]=useState(false);
   const[checkedOftalmologica,setcheckedOftalmologica]=useState(false);
   const[checkedParetal,setcheckedParetal]=useState(false);
+
   return (<View style={styles.container}>
   <Text style={styles.title}>Nombre del Medicamento</Text>
   <TextInput style={styles.inputS}
-    placeholder="nombre Medicamento"
     value={nombre}
     onChangeText={text => setNombre(text)}
   />
@@ -120,13 +123,19 @@ const App = () => {
     <Button
     title="Continuar"
     color="#0093B7"
-    onPress={()=>console.log(nombre)}
+    onPress={()=>verificar(nombre,tipo)}
   />
   </View>
   );
 };
+const verificar=(text,tipo)=>{
+  if(text!='' && tipo!==''){
+    console.log("lleno un medicamento")
+  }else{
+    alert("Le faltan llenar campos")
+  }
+}
 const mostrar=(n)=>{
-  var tipo=""
   if(n==1){
     tipo="Via Oral"
     console.log(tipo);
