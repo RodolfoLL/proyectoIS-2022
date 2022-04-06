@@ -1,41 +1,33 @@
-import { StatusBar } from 'expo-status-bar';
-import { doc, setDoc } from 'firebase/firestore';
-import { StyleSheet, Text, View } from 'react-native';
-import { Button } from 'react-native';
-import {db} from './database/firebase'
+import { NavigationContainer } from '@react-navigation/native';
+import {createNativeStackNavigator} from '@react-navigation/native-stack'
+import QuantityOfMedicationsScreen from "./src/Components/quantityOfMedications";
+
+
+
+const Stack = createNativeStackNavigator() // contien nuestra navegación
+function MyStack(){
+  return(
+    <Stack.Navigator>
+      <Stack.Screen name="Dosis Del Medicamento" component={QuantityOfMedicationsScreen} options={{headerTintColor: 'white',
+                                                                                                  headerStyle:{ backgroundColor: "#0093B7"}}}/>
+    </Stack.Navigator>
+  )
+}
+
+
 export default function App() {
-
-  const Create = ()=>{
-
-    const myDoc = doc(db,'MyCollectionName','MyDocument');
-    const docdata = {
-      'name':"lopez",
-      'edad': "12"
-    }
-    setDoc(myDoc,docdata)
-      .then(()=> {
-        alert('document created');
-      })
-      .catch((error)=>{
-       alert(error.mesagge)
-    })
-
-  }
-
-
   return (
-    <View style={styles.container}>
-      <Button title = 'create New' onPress={Create}></Button>
-      <StatusBar style="auto" />
-    </View>
+    <NavigationContainer>
+      <MyStack/>
+    </NavigationContainer>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+// const styles = StyleSheet.create({
+//   container: {
+//     flex: 1,
+//     backgroundColor: '#fff',
+//     alignItems: 'center',
+//     justifyContent: 'center',
+//   },
+// });
