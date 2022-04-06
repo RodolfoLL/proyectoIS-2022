@@ -7,6 +7,9 @@ import STYLE_GROUP from "../styles/quantityOfMedicationsStyles"
 const QuantityOfMedicationsScreen = () => {
     const [selectedValue, setSelectedValue] = useState("1");
     const [selectedValue2, setSelectedValueN2] = useState("1");
+    const saveDose = () =>{
+        
+    };
     return (
         <ScrollView style={STYLE_GROUP.containerMain} >
             <View style={STYLE_GROUP.container}>
@@ -48,7 +51,7 @@ const QuantityOfMedicationsScreen = () => {
             <View>
 
                 <View style={STYLE_GROUP.button}>
-                    <Button title="continuar" onPress={() => alert(selectedValue2)} />
+                    <Button title="continuar" onPress={() => alert(selectedValue)} />
                 </View>
             </View>
 

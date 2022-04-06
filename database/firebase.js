@@ -1,5 +1,5 @@
 import { initializeApp } from 'firebase/app';
-import { getFirestore } from 'firebase/firestore'
+import { getFirestore, doc, setDoc } from 'firebase/firestore'
 // TODO: Replace the following with your app's Firebase project configuration
 const firebaseConfig = {
     apiKey: "AIzaSyDECpAeiikIk3id5UVyFXZRSBftPNBAneA",
@@ -10,5 +10,22 @@ const firebaseConfig = {
     appId: "1:447817509959:web:29fdec7565ecb5bb629562"
   };
 
-export const app = initializeApp(firebaseConfig);
-export const db = getFirestore(app);
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+const create = (docData, collectionName, documentName) => {
+  
+  const myDoc = doc(db, collectionName, documentName)
+  console.log(docData);
+  // setDoc(myDoc, docData)
+  //   .then(() => {
+  //     alert("Document Created!")
+  //   })
+  //   .catch((error) => {
+  //     alert(error.message)
+  //   })
+}
+
+
+
+export default { db, create };
