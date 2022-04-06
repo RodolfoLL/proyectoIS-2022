@@ -2,10 +2,13 @@ import React from "react";
 import {Text,View,StyleSheet,Button,TextInput} from 'react-native';
 import { CheckBox } from 'react-native-elements';
 const App = () => {
+  const[nombre,setNombre]=useState('');
   return (<View style={styles.container}>
   <Text style={styles.title}>Nombre del Medicamento</Text>
   <TextInput style={styles.inputS}
-    placeholder="nombreMed"
+    placeholder="nombre Medicamento"
+    value={nombre}
+    onChangeText={text => setNombre(text)}
   />
   <Text style={styles.title}>Tipo de administracion</Text>
   <View style={styles.opciones}>
@@ -34,7 +37,7 @@ const App = () => {
     <Button
     title="Continuar"
     color="#0093B7"
-    onPress={()=>console.log('continuar')}
+    onPress={()=>console.log(nombre)}
   />
   </View>
   );
