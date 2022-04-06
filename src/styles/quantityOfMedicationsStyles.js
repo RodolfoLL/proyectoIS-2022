@@ -12,11 +12,19 @@ const STYLE_GROUP = StyleSheet.create(
         {
             flex: 1,
             paddingHorizontal:20,
+            justifyContent:"space-between",
+            paddingVertical:"30%",
             color:"#FFFFFF",
          },
+         containerItem:{
+             flex:1,
+             marginVertical:20
+         },
         viewPicker:{
-            backgroundColor:"#C4C4C4", 
-            borderRadius:50,paddingLeft:20
+            backgroundColor: "#FFFFFF",
+             borderRadius: 50,
+              paddingLeft: 10,
+              fontSize:50
         },
         text:
         {
@@ -28,13 +36,11 @@ const STYLE_GROUP = StyleSheet.create(
         picker: {
             flex: 1,
             height:50,
-            fontSize: 22,borderRadius:50,paddingLeft:20
+            color: "#000000",
             
         },
         button:{
-            borderRadius:100,
             marginHorizontal:20,
-            backgroundColor: "#FFFFFF"
         }
     }
 );
