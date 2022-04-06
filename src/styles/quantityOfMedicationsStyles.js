@@ -32,6 +32,7 @@ const STYLE_GROUP = StyleSheet.create(
             alignItems: "flex-start",
             color: "#FFFFFF",
             fontSize: 28,
+            marginBottom:10
         },
         picker: {
             flex: 1,
