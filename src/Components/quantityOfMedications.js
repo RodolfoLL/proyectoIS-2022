@@ -1,14 +1,38 @@
 
 import React, { useState } from "react"
-import { Button, View, TextInput, ScrollView, Text } from "react-native";
+import { Button, View, ScrollView, Text } from "react-native";
 import { Picker } from '@react-native-picker/picker'
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import STYLE_GROUP from "../styles/quantityOfMedicationsStyles"
+
+const storeData = async (value) => {
+    try {
+      const jsonValue = JSON.stringify(value)
+      await AsyncStorage.setItem('@rec_scr2', jsonValue)
+    } catch (e) {
+      // saving error
+    }
+  }
+  const getData = async () => {
+    try {
+      const jsonValue = await AsyncStorage.getItem('@rec_scr2')
+        var value = jsonValue != null ? JSON.parse(jsonValue) : null;
+        alert(JSON.stringify(value));
+    } catch(e) {
+      // error reading value
+    }
+  }
 
 const QuantityOfMedicationsScreen = () => {
     const [selectDose, setselectDose] = useState("1");
     const [selectQuantity, setselectQuantity] = useState("1");
     const saveDose = () =>{
-    
+        if(selectDose != "" && selectQuantity != ""){
+            var quantityField = {quantityField:
+                {dose: selectDose, quantity: selectQuantity}
+            };
+            storeData(quantityField);
+        }
     };
     return (
         <ScrollView style={STYLE_GROUP.containerMain} >
@@ -49,9 +73,11 @@ const QuantityOfMedicationsScreen = () => {
             </View>
 
             <View>
-
+            <View style={STYLE_GROUP.button}>
+                    <Button title="obtener" onPress={() => getData()} />
+                </View>
                 <View style={STYLE_GROUP.button}>
-                    <Button title="continuar" onPress={() => alert(selectDose)} />
+                    <Button title="guardar" onPress={() => saveDose()} />
                 </View>
             </View>
 
