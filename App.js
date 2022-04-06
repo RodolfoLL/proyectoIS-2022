@@ -11,25 +11,6 @@ import FechaFinal from './screens/FechaFinal'
 const Stack = createNativeStackNavigator()
 
 export default function App() {
-
-  const Create = ()=>{
-
-    const myDoc = doc(db,'MyCollectionName','MyDocument');
-    const docdata = {
-      'name':"lopez",
-      'edad': "15"
-    }
-    setDoc(myDoc,docdata)
-      .then(()=> {
-        alert('document created');
-      })
-      .catch((error)=>{
-       alert(error.mesagge)
-    })
-
-  }
-
-
   return (
     <NavigationContainer>
       <Stack.Navigator>

@@ -1,7 +1,51 @@
-import React from 'react'
+import React, {useState} from 'react'
 import { View, Text, StyleSheet, TouchableOpacity} from 'react-native'
+import { doc, setDoc } from 'firebase/firestore';
+import {db} from '../database/firebase'
+//import firebase from "../database/firebase";
 
 const CrearRecordatorio1 = (props) => {
+    
+    /*const [state, setState] = useState({
+        duracion: ''
+    })
+
+    
+    /*const saveRecordatorio = async () => {
+        
+        if (state.duracion === '') {
+          alert("please provide a name");
+        } else {
+    
+          try {
+            await firebase.db.collection("recordatorio").add({
+                duracion: state.duracion
+            });
+    
+            //props.navigation.navigate("UsersList");
+          } catch (error) {
+            console.log(error)
+          }
+        }
+    };*/
+    
+    const guardarDuracion = (duracion)=>{
+
+        const myDoc = doc(db,'Recordatorios','Recordatorio');
+        const docdata = {
+          'Duracion del tratamiento': duracion
+        }
+        setDoc(myDoc,docdata)
+          .then(()=> {
+            //alert('document created');
+          })
+          .catch((error)=>{
+           alert(error.mesagge)
+        })
+        props.navigation.navigate("FechaFinal");
+        
+    }
+
     return(
         <View style={styles.container}>
             <View style={[styles.box, styles.box1]}>
@@ -10,19 +54,19 @@ const CrearRecordatorio1 = (props) => {
 
             <View style={[styles.box, styles.box2]}>
                 <TouchableOpacity style={styles.boton}
-                    onPress={() => {}}  >
+                    onPress={() => guardarDuracion('5 dias')} >
                     <Text style={styles.textBoton}>5 dias</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.boton}
-                    onPress={() => {}}  >
+                    onPress={() => guardarDuracion('10 dias')}  >
                     <Text style={styles.textBoton}>10 dias</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.boton}
-                    onPress={() => {}}  >
+                    onPress={() => guardarDuracion('1 semana')}  >
                     <Text style={styles.textBoton}>1 semana</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.boton}
-                    onPress={() => {}}  >
+                    onPress={() => guardarDuracion('30 dias')}  >
                     <Text style={styles.textBoton}>30 dias</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.boton}

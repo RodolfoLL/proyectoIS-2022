@@ -1,29 +1,22 @@
 import React, {useState} from 'react'
 import { View, Text, StyleSheet,TouchableOpacity,Button } from 'react-native'
-import { DateTimePicker } from '@react-native-community/datetimepicker'
+import  DateTimePicker  from '@react-native-community/datetimepicker'
 const FechaFinal = (props) => {
     const [date, setDate] = useState(new Date(1598051730000));
-  const [mode, setMode] = useState('date');
-  const [show, setShow] = useState(false);
+    const [mode, setMode] = useState('date');
+    const [show, setShow] = useState(false);
 
-  const onChange = (event, selectedDate) => {
-    const currentDate = selectedDate;
-    setShow(false);
-    setDate(currentDate);
-  };
+    const onChange = (event, selectedDate) => {
+            const currentDate = selectedDate;
+            setShow(false);
+            setDate(currentDate);
+            event=null
+    };
 
-  const showMode = (currentMode) => {
-    setShow(true);
-    setMode(currentMode);
-  };
-
-  const showDatepicker = () => {
-    showMode('date');
-  };
-
-  const showTimepicker = () => {
-    showMode('time');
-  };
+    const showMode = (currentMode) => {
+        setShow(true);
+        setMode(currentMode);
+    };
 
     return(
         <View style={styles.container}>
@@ -32,27 +25,26 @@ const FechaFinal = (props) => {
             </View>
 
             <View style={[styles.box, styles.box2]}>
+
+                <Text style={styles.fecha}>selected: {date.toLocaleString()}</Text>
+
                 <TouchableOpacity style={styles.boton}
-                    onPress={() => {showMode('date')} } >
-                    <Text style={styles.textBoton}>Show date picker!</Text>
+                    onPress={() => showMode('date') } >
+                    <Text style={styles.textBoton}>Mostrar Calendario</Text>
                 </TouchableOpacity>
-           
-                <TouchableOpacity style={styles.boton}
-                    onPress={() => {showMode('time')} }  >
-                    <Text style={styles.textBoton}>Show time picker!</Text>
-                </TouchableOpacity>
+
+                {show && (
+                    <DateTimePicker
+                        testID="dateTimePicker"
+                        value={date}
+                        mode={mode}
+                        is24Hour={true}
+                        display='default'
+                        onChange={onChange}
+                    />
+                )}
             </View>
-            <Text>selected: {date.toLocaleString()}</Text>
-            {show && (
-                <DateTimePicker
-                testID="dateTimePicker"
-                value={date}
-                mode={mode}
-                is24Hour={true}
-                display='default'
-                onChange={onChange}
-                />
-            )}
+            
 
             <View style={[styles.box, styles.box3]}>
                 <TouchableOpacity style={styles.boton}
@@ -76,22 +68,16 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         flexDirection: 'column'
       },
-      //header
       box1: {
           flex: 1,
-          //backgroundColor: '#2196F3',
           paddingTop: 50,
       },
-      //content
       box2: {
           flex: 6,
-          //backgroundColor: '#FA250B'
   
       },
-      //footer
       box3: {
           flex: 4,
-          //backgroundColor: '#e3aa1a'
       },
       title:{
           fontSize: 23,
@@ -110,7 +96,12 @@ const styles = StyleSheet.create({
       },
       botonCancelar:{
           width: 225
+      },
+      fecha:{
+          color: "#fff",
+          marginBottom: 20
       }
+
 });
 
 export default FechaFinal
