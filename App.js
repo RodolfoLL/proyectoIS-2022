@@ -29,7 +29,7 @@ export default function App() {
       <ButtonDateTime/>
       <ButtonCont/>
       <ButtonCancel/>
-      <StatusBar style="auto"/>
+      <StatusBar style="001B48"/>
     </View>
   );
 }

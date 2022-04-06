@@ -1,8 +1,6 @@
 import React, {useState} from 'react'
 import { View, Text,StyleSheet,TouchableOpacity} from 'react-native'
 import DateTimePicker from '@react-native-community/datetimepicker';
-import {db} from './database/firebase';
-import { doc, setDoc } from 'firebase/firestore';
 
 export const ButtonDateTime=()=>{
     const [date, setDate] = useState(new Date());
