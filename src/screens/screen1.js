@@ -1,26 +1,19 @@
 import React, {useEffect, useState} from "react";
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Image } from "react-native";
-import { useNavigation } from "@react-navigation/native";
 
 const HomeScreen = ({navigation}) => {
 
-    // const navigation = useNavigation();
-    const [data, setData] = useState([]);
-    const [filteredData, setFilteredData] = useState([]);
-    
-    useEffect(() => {
-        fetchData("https://randomuser.me/api/?results=20");
-    }, []);
-
-    useEffect(() => {
-        navigation.setOptions({
-            headerLargeTitle: true,
-            headerTitle: "Home",
-            headerRight: () => (
-                <TouchableOpacity
+    return (
+        <ScrollView>
+            <View style={{
+                    fontSize: 30,
+                    alignItems: "center",
+                    marginTop: "20%"
+                }}>
+            <TouchableOpacity
                     onPress={() => navigation.navigate("Dosis del medicamento")}
                     style={{
-                        backgroundColor: "purple",
+                        backgroundColor: "#FFC300",
                         width: 30,
                         height: 30,
                         borderRadius: 10,
@@ -35,60 +28,8 @@ const HomeScreen = ({navigation}) => {
                         }}
                     >+</Text>
                 </TouchableOpacity>
-            ),
-            headerSearchBarOptions: {
-                placeholder: "Friends",
-                onChangeText: (event) => {
-                    searchFilterFunction(event.nativeEvent.text);
-                },
-            },
-        });
-    }, [navigation]);
-
-    const fetchData = async (url) => {
-        try {
-            const response = await fetch(url);
-            const json = await response.json();
-            setData(json.results);
-            setFilteredData(json.results);
-            console.log(json.results);
-        } catch (error) {
-            console.error(error);
-        }
-    };
-
-    const searchFilterFunction = (text) => {
-        if(text){  
-            const newData = data.filter(item => {
-                const itemData = item.name.first ? item.name.first.toUpperCase() : ''.toUpperCase();
-                const textData = text.toUpperCase();
-                return itemData.indexOf(textData) > -1;
-            })
-            setFilteredData(newData);
-        } else {
-            setFilteredData(data);
-        }
-    }
-
-    return (
-        <ScrollView>
-            <Text style={styles.textFriends}>Friends</Text>
-            {
-                filteredData.map((item, index) => {
-                    return (
-                        <View key={index} style={styles.itemContainer}>
-                            <Image
-                                source={{ uri: item.picture.large }}
-                                style={styles.image}
-                            />
-                            <View>
-                                <Text style={styles.textName}>{item.name.first} {item.name.last}</Text>
-                                <Text style={styles.textEmail}>{item.login.username}</Text>
-                            </View>
-                        </View>
-                    )
-                })
-            }
+            </View>
+           
         </ScrollView>
     );
     }
