@@ -4,7 +4,7 @@ import { Button, View, ScrollView, Text, TouchableOpacity } from "react-native";
 import { Picker } from '@react-native-picker/picker'
 import { StyleSheet } from "react-native";
 
-const QuantityOfMedicationsScreen = () => {
+const QuantityOfMedicationsScreen = ({navigation}) => {
     const [selectDose, setselectDose] = useState("1");
     const [selectQuantity, setselectQuantity] = useState("1");
     const saveDose = () =>{
@@ -12,6 +12,7 @@ const QuantityOfMedicationsScreen = () => {
             var quantityField = {quantityField:
                 {dose: selectDose, quantity: selectQuantity}
             };
+            navigation.navigate("Stack")
         }
     };
     return (
