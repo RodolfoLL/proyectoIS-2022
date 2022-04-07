@@ -23,13 +23,6 @@ export const ButtonDateTime=()=>{
     }
       return (
         <View>
-            <TouchableOpacity
-                 onPress={()=>showMode('date')}
-            >
-                 <View style={styles.buttonDate}>
-                    <Text style={styles.texto}>Fecha</Text>
-                 </View>
-             </TouchableOpacity>
              <TouchableOpacity
                     onPress={()=>showMode('time')}
              >
@@ -49,28 +42,6 @@ export const ButtonDateTime=()=>{
             )}
         </View>
     )   
-}
-export const ButtonCont=()=>{
-    return(
-    <TouchableOpacity
-        onPress={()=>alert('desea continuar?')}
-        >
-        <View style={styles.buttonCont}>
-            <Text style={styles.texto}>Continuar</Text>
-        </View>
-    </TouchableOpacity>
-    )
-}
-export const ButtonCancel=()=>{
-    return(
-      <TouchableOpacity
-        onPress={()=>alert('Se cerro')}
-      >
-          <View style={styles.buttonCancel}>
-             <Text style={styles.texto}>Cancelar</Text>
-          </View>
-      </TouchableOpacity>
-  )
 }
 
 const styles = StyleSheet.create({
