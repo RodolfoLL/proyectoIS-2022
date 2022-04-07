@@ -24,13 +24,21 @@ const DuracionTratamiento = (props) => {
           }
         }
     };*/
+
+    const { dosis, cantidadMed, frecuencia, hora } = props.route.params;
     
     const guardarDuracion = (duracion)=>{
 
-        const myDoc = doc(db,'Recordatorios','Recordatorio');
-        const docdata = {
-          'Duracion del tratamiento': duracion
+        let datosRecordatorio = {
+            dosis: dosis, 
+            cantidadMed: cantidadMed,
+            frecuencia: frecuencia,
+            hora:hora,
+            duracion: duracion
         }
+
+        const myDoc = doc(db,'Recordatorios','Recordatorio');
+        const docdata = datosRecordatorio
         setDoc(myDoc,docdata)
           .then(()=> {
             //alert('document created');
@@ -38,8 +46,8 @@ const DuracionTratamiento = (props) => {
           .catch((error)=>{
            alert(error.mesagge)
         })
-        props.navigation.navigate("FechaFinal");
         
+        props.navigation.navigate("HomeScreen")
     }
 
     return(
@@ -66,7 +74,7 @@ const DuracionTratamiento = (props) => {
                     <Text style={styles.textBoton}>30 dias</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.boton}
-                    onPress={() => {props.navigation.navigate('FechaFinal')}}  >
+                    onPress={() => {props.navigation.navigate('FechaFinal', props.route.params)}}  >
                     <Text style={styles.textBoton}>Establecer la fecha final</Text>
                 </TouchableOpacity>
             </View>

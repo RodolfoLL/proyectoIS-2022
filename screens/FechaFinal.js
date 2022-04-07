@@ -1,6 +1,9 @@
 import React, {useState} from 'react'
 import { View, Text, StyleSheet,TouchableOpacity,Button } from 'react-native'
 import  DateTimePicker  from '@react-native-community/datetimepicker'
+import { doc, setDoc } from 'firebase/firestore';
+import {db} from '../database/firebase'
+
 const FechaFinal = (props) => {
     const [date, setDate] = useState(new Date());
     const [mode, setMode] = useState('date');
@@ -23,6 +26,31 @@ const FechaFinal = (props) => {
         setShow(true);
         setMode(currentMode);
     };
+
+    const { dosis, cantidadMed, frecuencia, hora } = props.route.params;
+    
+    const guardarDuracion = (duracion)=>{
+
+        let datosRecordatorio = {
+            dosis: dosis, 
+            cantidadMed: cantidadMed,
+            frecuencia: frecuencia,
+            hora:hora,
+            duracion: duracion
+        }
+
+        const myDoc = doc(db,'Recordatorios','Recordatorio');
+        const docdata = datosRecordatorio
+        setDoc(myDoc,docdata)
+          .then(()=> {
+            //alert('document created');
+          })
+          .catch((error)=>{
+           alert(error.mesagge)
+        })
+
+        props.navigation.navigate("HomeScreen")
+    }
 
     return(
         <View style={styles.container}>
@@ -54,7 +82,7 @@ const FechaFinal = (props) => {
 
             <View style={[styles.box, styles.box3]}>
                 <TouchableOpacity style={styles.boton}
-                    onPress={() => alert('Alert with one button')}  >
+                    onPress={() => guardarDuracion(textDate)}  >
                     <Text style={styles.textBoton}>Guardar</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.boton}

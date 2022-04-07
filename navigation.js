@@ -6,14 +6,17 @@ import { Ionicons } from '@expo/vector-icons';
 //Pantallas que utilize de ejemplo para la navegacion
 import DuracionTratamiento from './screens/DuracionTratamiento'
 import FechaFinal from './screens/FechaFinal'
+import HomeScreen from './screens/HomeScreen'
 
 const HomeStackNavigator = createNativeStackNavigator();
 
 function MyStacks(){
     return(
         <HomeStackNavigator.Navigator initialRouteName='Medicate'>
+            <HomeStackNavigator.Screen name="HomeScreen" component={HomeScreen}/>
             <HomeStackNavigator.Screen name="DuracionTratamiento" component={DuracionTratamiento}/>
             <HomeStackNavigator.Screen name="FechaFinal" component={FechaFinal}/>
+            
         </HomeStackNavigator.Navigator>
     );
 }
