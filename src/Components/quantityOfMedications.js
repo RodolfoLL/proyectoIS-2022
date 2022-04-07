@@ -2,26 +2,7 @@
 import React, { useState } from "react"
 import { Button, View, ScrollView, Text } from "react-native";
 import { Picker } from '@react-native-picker/picker'
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import STYLE_GROUP from "../styles/quantityOfMedicationsStyles"
-
-const storeData = async (value) => {
-    try {
-      const jsonValue = JSON.stringify(value)
-      await AsyncStorage.setItem('@rec_scr2', jsonValue)
-    } catch (e) {
-      // saving error
-    }
-  }
-  const getData = async () => {
-    try {
-      const jsonValue = await AsyncStorage.getItem('@rec_scr2')
-        var value = jsonValue != null ? JSON.parse(jsonValue) : null;
-        alert(JSON.stringify(value));
-    } catch(e) {
-      // error reading value
-    }
-  }
+import { StyleSheet } from "react-native";
 
 const QuantityOfMedicationsScreen = () => {
     const [selectDose, setselectDose] = useState("1");
@@ -31,20 +12,19 @@ const QuantityOfMedicationsScreen = () => {
             var quantityField = {quantityField:
                 {dose: selectDose, quantity: selectQuantity}
             };
-            storeData(quantityField);
         }
     };
     return (
         <ScrollView style={STYLE_GROUP.containerMain} >
             <View style={STYLE_GROUP.container}>
                 <View style={STYLE_GROUP.containerItem}>
-                    <View style={STYLE_GROUP.title1}>
+                    <View style={STYLE_GROUP.text}>
                         <Text style={STYLE_GROUP.text}>{"Dosis:"}</Text>
                     </View>
                     <View style={STYLE_GROUP.viewPicker}>
                         <Picker
                             selectedValue={selectDose}
-                            style={STYLE_GROUP.picker}
+                            // style={STYLE_GROUP.picker}
                             onValueChange={(itemValue, itemIndex) => setselectDose(itemValue)}
                         >
                             <Picker.Item label="1 Comprimido" value="1" />
@@ -62,8 +42,9 @@ const QuantityOfMedicationsScreen = () => {
                             selectedValue={selectQuantity}
                             style={STYLE_GROUP.picker}
                             onValueChange={(itemValue, itemIndex) => setselectQuantity(itemValue)}
+                            textStyle={{ fontSize: 60 }}
                         >
-                            <Picker.Item label="1" value="1" />
+                            <Picker.Item style={{fontSize: 30}} label="1111111111111111111111111111111" value="1" />
                             <Picker.Item label="2" value="2" />
                         </Picker>
                     </View>
@@ -74,7 +55,7 @@ const QuantityOfMedicationsScreen = () => {
 
             <View>
             <View style={STYLE_GROUP.button}>
-                    <Button title="obtener" onPress={() => getData()} />
+                    <Button title="obtener" onPress={() => console.log("ve a casa")} />
                 </View>
                 <View style={STYLE_GROUP.button}>
                     <Button title="guardar" onPress={() => saveDose()} />
@@ -85,5 +66,53 @@ const QuantityOfMedicationsScreen = () => {
         </ScrollView>
     );
 };
+
+const STYLE_GROUP = StyleSheet.create(
+    {
+        containerMain:
+        {
+            flex: 1,
+            backgroundColor: "#001B48",
+             
+         },
+        container:
+        {
+            flex: 1,
+            paddingHorizontal:20,
+            justifyContent:"space-between",
+            paddingVertical:"30%",
+            color:"#FFFFFF",
+         },
+         containerItem:{
+             flex:1,
+             marginVertical:20
+         },
+        viewPicker:{
+            backgroundColor: "#FFFFFF",
+            borderRadius: 50,
+            paddingHorizontal: 10,
+            maxWidth:1000
+        },
+        text:
+        {
+            flex: 1,
+            alignItems: "flex-start",
+            color: "#FFFFFF",
+            fontSize: 25,
+            marginBottom:10
+        },
+        picker: {
+            flex:1,
+            height:"100%",
+            color: "#000000",
+            transform: [{scaleX: 1.2}, {scaleY: 1.2}],
+            left:25,
+            width:"90%"
+        },
+        button:{
+            marginHorizontal:20,
+        }
+    }
+);
 
 export default QuantityOfMedicationsScreen
