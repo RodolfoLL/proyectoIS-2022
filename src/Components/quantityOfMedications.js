@@ -1,6 +1,6 @@
 
 import React, { useState } from "react"
-import { Button, View, ScrollView, Text } from "react-native";
+import { Button, View, ScrollView, Text, TouchableOpacity } from "react-native";
 import { Picker } from '@react-native-picker/picker'
 import { StyleSheet } from "react-native";
 
@@ -16,6 +16,9 @@ const QuantityOfMedicationsScreen = () => {
     };
     return (
         <ScrollView style={STYLE_GROUP.containerMain} >
+            <View style={STYLE_GROUP.containerEncabezado}>
+                        <Text style={STYLE_GROUP.encabezado} >{"Dosis Del Medicamento"}</Text>
+                    </View>
             <View style={STYLE_GROUP.container}>
                 <View style={STYLE_GROUP.containerItem}>
                     <View style={STYLE_GROUP.text}>
@@ -27,8 +30,8 @@ const QuantityOfMedicationsScreen = () => {
                             // style={STYLE_GROUP.picker}
                             onValueChange={(itemValue, itemIndex) => setselectDose(itemValue)}
                         >
-                            <Picker.Item label="1 Comprimido" value="1" />
-                            <Picker.Item label="2 Comprimido (s)" value="2" />
+                            <Picker.Item style={STYLE_GROUP.pickerItem} label="1 Comprimido" value="1" />
+                            <Picker.Item style={STYLE_GROUP.pickerItem} label="2 Comprimido (s)" value="2" />
                         </Picker>
                     </View>
                 </View>
@@ -44,8 +47,8 @@ const QuantityOfMedicationsScreen = () => {
                             onValueChange={(itemValue, itemIndex) => setselectQuantity(itemValue)}
                             textStyle={{ fontSize: 60 }}
                         >
-                            <Picker.Item style={{fontSize: 30}} label="1111111111111111111111111111111" value="1" />
-                            <Picker.Item label="2" value="2" />
+                            <Picker.Item style={STYLE_GROUP.pickerItem} label="1111111111111111111111111111111" value="1" />
+                            <Picker.Item style={STYLE_GROUP.pickerItem} label="2" value="2" />
                         </Picker>
                     </View>
                 </View>
@@ -53,12 +56,12 @@ const QuantityOfMedicationsScreen = () => {
 
             </View>
 
-            <View>
+            <View style={STYLE_GROUP.buttonContainer}>
             <View style={STYLE_GROUP.button}>
-                    <Button title="obtener" onPress={() => console.log("ve a casa")} />
+                    <Button title="CANCELAR" onPress={() => console.log("ve a casa")} />
                 </View>
                 <View style={STYLE_GROUP.button}>
-                    <Button title="guardar" onPress={() => saveDose()} />
+                    <Button style= {{with:135}} title="CONTINUAR" onPress={() => saveDose()} />
                 </View>
             </View>
 
@@ -73,19 +76,30 @@ const STYLE_GROUP = StyleSheet.create(
         {
             flex: 1,
             backgroundColor: "#001B48",
-             
+            width:"100%"
          },
+         containerEncabezado:{
+             flex:1,
+             alignItems:"center",
+             justifyContent:"center"
+         },
+        encabezado:{
+            flex: 1,
+            color: "#FFFFFF",
+            fontSize: 30,
+            paddingTop:20
+        },
         container:
         {
             flex: 1,
             paddingHorizontal:20,
-            justifyContent:"space-between",
-            paddingVertical:"30%",
+            paddingTop:"10%",
+            paddingBottom:"30%",
             color:"#FFFFFF",
          },
          containerItem:{
              flex:1,
-             marginVertical:20
+             marginVertical:20,
          },
         viewPicker:{
             backgroundColor: "#FFFFFF",
@@ -96,21 +110,29 @@ const STYLE_GROUP = StyleSheet.create(
         text:
         {
             flex: 1,
-            alignItems: "flex-start",
             color: "#FFFFFF",
             fontSize: 25,
             marginBottom:10
         },
         picker: {
-            flex:1,
-            height:"100%",
+            flex: 1,
+            height:60,
             color: "#000000",
-            transform: [{scaleX: 1.2}, {scaleY: 1.2}],
-            left:25,
-            width:"90%"
+            
+        },
+        pickerItem: {
+            flex: 1,
+            color: "#000000",
+            fontSize:24
+            
         },
         button:{
-            marginHorizontal:20,
+            width:135
+        },
+        buttonContainer:{
+            flex:1,
+            flexDirection:"row",
+            justifyContent:"space-around"
         }
     }
 );
