@@ -1,35 +1,49 @@
 import React, {useState} from 'react'
 import { View, Text,StyleSheet,TouchableOpacity} from 'react-native'
 import DateTimePicker from '@react-native-community/datetimepicker';
+// import {db} from './database/firebase';
+// import { doc, setDoc } from 'firebase/firestore';
 
-export const ButtonDateTime=()=>{
+
+export const HoraScreen=()=>{
+    // const {frecuencia} = route.params;
+    const [datos, setdatos] = useState([]);
     const [date, setDate] = useState(new Date());
     const [mode, setMode] = useState('date');
     const [show, setShow] = useState(false);
+    const [text, settext] = useState('');
     const onChange = (event, selectedDate) => {
-        if(event ==="cancel"){
-            const currentDate = selectedDate;
+        const currentDate = selectedDate || date;
             setDate(currentDate);
             setDate(currentDate);
             setShow(false);
-            // let template = new Date(currentDate);
-            // let fdate = template.getDate() + '/' + (template.getMonth()+1) +'/'+template.getFullYear();
-            // let ftime = 'Hours: '+template.getHours() + '| Minutes: '+template.getMinutes();
-        }
+            let template = new Date(currentDate);
+            let hora = template.getHours();
+            let minutos = template.getMinutes();
+            let time = `${hora}:${minutos}`;
+            const tiempos ={
+                id:hora,
+                time:time,
+                key:'id'
+            }
+            setdatos(tiempos)
+            settext(time)
     };
     const showMode=(currentMode)=>{
         setShow(true);
         setMode(currentMode);
     }
       return (
-        <View>
-             <TouchableOpacity
+        <View style={styles.container}>
+            {/* <Text style={styles.texto}>{ navigation.setParams({frecuencia}) }</Text> */}
+            <Text style={styles.texto}>{text}</Text>
+                <TouchableOpacity
                     onPress={()=>showMode('time')}
-             >
-                 <View style={styles.buttonTime}>
-                     <Text style={styles.texto}>Hora</Text>
-                 </View>
-             </TouchableOpacity>
+                >
+                    <View style={styles.buttonTime}>
+                        <Text style={styles.texto}>Hora</Text>
+                    </View>
+                </TouchableOpacity>
              {show && (
                 <DateTimePicker
                 testID="dateTimePicker"
@@ -44,16 +58,14 @@ export const ButtonDateTime=()=>{
     )   
 }
 
-const styles = StyleSheet.create({
 
-    buttonDate:{
-        alignItems:'center',
-        width: 200,
-        height:32,
-        backgroundColor: '#0093B7',
-        borderRadius:25,
-        bottom:10,
-    },
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        backgroundColor: '#001B48',
+        alignItems: 'center',
+        justifyContent: 'center',
+      },
     buttonTime:{
         backgroundColor: '#0093B7',
         width:200,
