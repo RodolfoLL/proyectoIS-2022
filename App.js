@@ -1,11 +1,12 @@
 import React ,{useState} from "react";
 import {Text,View,StyleSheet,Button,TextInput} from 'react-native';
 import { CheckBox } from 'react-native-elements';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-var tipo=''
-const App = () => {
-  const[nombre,setNombre]=useState('');
 
+var tipo='';
+
+const App = () => {
+  
+  const[nombre,setNombre]=useState('');
   const[checked,setcheckedOral]=useState(false);
   const[checkedIntramuscular,setcheckedIntramuscular]=useState(false);
   const[checkedInalatoria,setcheckedInalatoria]=useState(false);
@@ -13,8 +14,10 @@ const App = () => {
   const[checkedTopica,setcheckedTopica]=useState(false);
   const[checkedOftalmologica,setcheckedOftalmologica]=useState(false);
   const[checkedParetal,setcheckedParetal]=useState(false);
-
   return (<View style={styles.container}>
+  <View>
+  <Text style={styles.encabezado}>Registrar Medicamento</Text>
+  </View>
   <Text style={styles.title}>Nombre del Medicamento</Text>
   <TextInput style={styles.inputS}
     value={nombre}
@@ -120,11 +123,19 @@ const App = () => {
   }
 />
 </View>
+   <View style={styles.botones}>
     <Button
     title="Continuar"
     color="#0093B7"
     onPress={()=>verificar(nombre,tipo)}
   />
+   </View>
+  <View style={styles.botones}>
+  <Button
+    title="Cancelar"
+    color="#0093B7"
+  />
+  </View>
   </View>
   );
 };
@@ -168,10 +179,16 @@ const mostrar=(n)=>{
 const styles = StyleSheet.create({
   container:{flex:1,
              backgroundColor:'#001B48',
-             padding:30,
-             paddingTop:70,
+             paddingLeft:30,
+             paddingRight:30,
             },
-  title:{fontSize:30,
+  encabezado:{
+    color:'white',
+    fontSize:30,
+    textAlign:'center',
+    padding:20
+  },
+  title:{fontSize:25,
          color:'white'
          },
   inputS:{
@@ -186,7 +203,12 @@ const styles = StyleSheet.create({
     color:'white'
   },
   opciones:{
-  margin:20
+  margin:20,
+  },
+  botones:{
+    padding:7,
+    fontSize:20
   }
 });
+ 
 export default App;
