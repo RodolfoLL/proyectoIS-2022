@@ -2,10 +2,11 @@ import React, {useState} from 'react'
 import { View, Text, StyleSheet, TouchableOpacity} from 'react-native'
 import { doc, setDoc } from 'firebase/firestore';
 import {db} from '../../database/firebase'
+import {collection, addDoc,} from 'firebase/firestore';
 
 const DuracionTratamiento = (props) => {
 
-    const { nombreMed,tipoAdm,dose,quantity } = props.route.params;
+    const { nombreMed,tipoAdm,dose,quantity,item,hora } = props.route.params;
     
     const guardarDuracion = (duracion)=>{
 
@@ -14,20 +15,13 @@ const DuracionTratamiento = (props) => {
             tipoAdm: tipoAdm,
             dose: dose,
             quantity:quantity,
+            item: item,
+            hora:hora,
             duracion: duracion
         }
-
-        const myDoc = doc(db,'Recordatorios','Recordatorio');
-        const docdata = datosRecordatorio
-        setDoc(myDoc,docdata)
-          .then(()=> {
-            //alert('document created');
-          })
-          .catch((error)=>{
-           alert(error.mesagge)
-        })
+        addDoc(collection(db, 'Recordatorios'), datosRecordatorio)
         
-        props.navigation.navigate("ScreenHome")
+        props.navigation.navigate("screenHome")
     }
 
     return(

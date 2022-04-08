@@ -1,7 +1,7 @@
 import { View, Text, TouchableOpacity, ScrollView, Image } from "react-native";
 import image from '../assets/medicate.png'
 
-const ScreenHome = ({ navigation }) => {
+const screenHome = ({ navigation }) => {
 
     return (
         <ScrollView style={{ backgroundColor: '#001B48' }}>
@@ -45,4 +45,4 @@ const ScreenHome = ({ navigation }) => {
     );
 }
 
-export default ScreenHome;
+export default screenHome;

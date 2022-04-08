@@ -17,7 +17,7 @@ const CantidadMedicamentos = ({route, navigation }) => {
                 quantityField:
                     { dose: selectDose, quantity: selectQuantity }
             };
-            navigation.navigate("DuracionTratamiento", {
+            navigation.navigate("Frecuencia Dosis", {
                 nombreMed: nombreMed,
                 tipoAdm: tipoAdm,
                 dose: selectDose,

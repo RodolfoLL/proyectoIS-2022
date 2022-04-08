@@ -27,7 +27,7 @@ const FechaFinal = (props) => {
         setMode(currentMode);
     };
 
-    const { nombreMed,tipoAdm,dose,quantity } = props.route.params;
+    const { nombreMed,tipoAdm,dose,quantity,item,hora } = props.route.params;
     
     const guardarDuracion = (duracion)=>{
 
@@ -36,6 +36,8 @@ const FechaFinal = (props) => {
             tipoAdm: tipoAdm,
             dose: dose,
             quantity:quantity,
+            item: item,
+            hora:hora,
             duracion: duracion
         }
 
@@ -48,7 +50,7 @@ const FechaFinal = (props) => {
            alert(error.mesagge)
         })
 
-        props.navigation.navigate("ScreenHome")
+        props.navigation.navigate("screenHome")
     }
 
     return(
