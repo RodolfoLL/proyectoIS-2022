@@ -10,22 +10,5 @@ const firebaseConfig = {
     appId: "1:447817509959:web:29fdec7565ecb5bb629562"
   };
 
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-
-const create = (docData, collectionName, documentName) => {
-  
-  const myDoc = doc(db, collectionName, documentName)
-  console.log(docData);
-  // setDoc(myDoc, docData)
-  //   .then(() => {
-  //     alert("Document Created!")
-  //   })
-  //   .catch((error) => {
-  //     alert(error.message)
-  //   })
-}
-
-
-
-export default { db, create };
+export const app = initializeApp(firebaseConfig);
+export const db = getFirestore(app);

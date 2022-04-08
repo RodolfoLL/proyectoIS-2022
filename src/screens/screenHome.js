@@ -1,4 +1,5 @@
 import { View, Text, TouchableOpacity, ScrollView, Image } from "react-native";
+import image from '../assets/medicate.png'
 
 const HomeScreen = ({navigation}) => {
 
@@ -12,13 +13,15 @@ const HomeScreen = ({navigation}) => {
             <Text style={{fontSize:50,fontFamily:'Serif',color:'white'}}>
                 MEDICATE
             </Text>
+            <Image source={image}
+             style={{height:120,width:120,borderRadius:70}}
+            />
             <Text style={{textAlign:'center',fontFamily:'Arial',margin:20,color:'white'}}>
                 Aplicacion para el recordatorio de medicamentos
                 para nuestros adultos mayores porque merecen ser ayudados 
             </Text>
-
             <TouchableOpacity
-                    onPress={() => navigation.navigate("Screen2")}
+                    onPress={() => navigation.navigate("Registro de Medicamento")}
                     style={{
                         backgroundColor: "#0093B7",
                         width: 150,

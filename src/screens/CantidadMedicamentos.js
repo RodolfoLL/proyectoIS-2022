@@ -4,10 +4,11 @@ import { Button, View, ScrollView, Text, TouchableOpacity } from "react-native";
 import { Picker } from '@react-native-picker/picker'
 import { StyleSheet } from "react-native";
 
-const QuantityOfMedicationsScreen = ({navigation}) => {
+const CantidadMedicamentos = ({navigation}) => {
     const [selectDose, setselectDose] = useState("1");
     const [selectQuantity, setselectQuantity] = useState("1");
-    const saveDose = () =>{
+
+    const guardarCantidad = () =>{
         if(selectDose != "" && selectQuantity != ""){
             var quantityField = {quantityField:
                 {dose: selectDose, quantity: selectQuantity}
@@ -33,6 +34,14 @@ const QuantityOfMedicationsScreen = ({navigation}) => {
                         >
                             <Picker.Item style={STYLE_GROUP.pickerItem} label="1 Comprimido" value="1" />
                             <Picker.Item style={STYLE_GROUP.pickerItem} label="2 Comprimido (s)" value="2" />
+                            <Picker.Item style={STYLE_GROUP.pickerItem} label="3 Comprimido" value="3" />
+                            <Picker.Item style={STYLE_GROUP.pickerItem} label="4 Comprimido (s)" value="4" />
+                            <Picker.Item style={STYLE_GROUP.pickerItem} label="5 Comprimido" value="5" />
+                            <Picker.Item style={STYLE_GROUP.pickerItem} label="6 Comprimido (s)" value="6" />
+                            <Picker.Item style={STYLE_GROUP.pickerItem} label="7 Comprimido" value="7" />
+                            <Picker.Item style={STYLE_GROUP.pickerItem} label="8 Comprimido (s)" value="8" />
+                            <Picker.Item style={STYLE_GROUP.pickerItem} label="9 Comprimido" value="9" />
+                            <Picker.Item style={STYLE_GROUP.pickerItem} label="10 Comprimido (s)" value="10" />
                         </Picker>
                     </View>
                 </View>
@@ -48,8 +57,16 @@ const QuantityOfMedicationsScreen = ({navigation}) => {
                             onValueChange={(itemValue, itemIndex) => setselectQuantity(itemValue)}
                             textStyle={{ fontSize: 60 }}
                         >
-                            <Picker.Item style={STYLE_GROUP.pickerItem} label="1111111111111111111111111111111" value="1" />
+                            <Picker.Item style={STYLE_GROUP.pickerItem} label="1" value="1" />
                             <Picker.Item style={STYLE_GROUP.pickerItem} label="2" value="2" />
+                            <Picker.Item style={STYLE_GROUP.pickerItem} label="3" value="3" />
+                            <Picker.Item style={STYLE_GROUP.pickerItem} label="4" value="4" />
+                            <Picker.Item style={STYLE_GROUP.pickerItem} label="5" value="5" />
+                            <Picker.Item style={STYLE_GROUP.pickerItem} label="6" value="6" />
+                            <Picker.Item style={STYLE_GROUP.pickerItem} label="7" value="7" />
+                            <Picker.Item style={STYLE_GROUP.pickerItem} label="8" value="8" />
+                            <Picker.Item style={STYLE_GROUP.pickerItem} label="9" value="9" />
+                            <Picker.Item style={STYLE_GROUP.pickerItem} label="10" value="10" />
                         </Picker>
                     </View>
                 </View>
@@ -58,11 +75,8 @@ const QuantityOfMedicationsScreen = ({navigation}) => {
             </View>
 
             <View style={STYLE_GROUP.buttonContainer}>
-            <View style={STYLE_GROUP.button}>
-                    <Button title="CANCELAR" onPress={() => console.log("ve a casa")} />
-                </View>
                 <View style={STYLE_GROUP.button}>
-                    <Button style= {{with:135}} title="CONTINUAR" onPress={() => saveDose()} />
+                    <Button title="CONTINUAR" onPress={() => guardarCantidad()} />
                 </View>
             </View>
 
@@ -138,4 +152,4 @@ const STYLE_GROUP = StyleSheet.create(
     }
 );
 
-export default QuantityOfMedicationsScreen
+export default CantidadMedicamentos
