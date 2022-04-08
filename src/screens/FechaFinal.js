@@ -27,14 +27,16 @@ const FechaFinal = (props) => {
         setMode(currentMode);
     };
 
-    // const { dosis, cantidadMed, frecuencia, hora } = props.route.params;
+    const { nombreMed,tipoAdm,dose,quantity,item,hora } = props.route.params;
     
     const guardarDuracion = (duracion)=>{
 
         let datosRecordatorio = {
-            dosis: dosis, 
-            cantidadMed: cantidadMed,
-            frecuencia: frecuencia,
+            nombreMed: nombreMed, 
+            tipoAdm: tipoAdm,
+            dose: dose,
+            quantity:quantity,
+            item: item,
             hora:hora,
             duracion: duracion
         }
@@ -48,7 +50,7 @@ const FechaFinal = (props) => {
            alert(error.mesagge)
         })
 
-        props.navigation.navigate("HomeScreen")
+        props.navigation.navigate("screenHome")
     }
 
     return(

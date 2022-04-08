@@ -2,32 +2,26 @@ import React, {useState} from 'react'
 import { View, Text, StyleSheet, TouchableOpacity} from 'react-native'
 import { doc, setDoc } from 'firebase/firestore';
 import {db} from '../../database/firebase'
+import {collection, addDoc,} from 'firebase/firestore';
 
 const DuracionTratamiento = (props) => {
 
-    //const { dosis, cantidadMed, frecuencia, hora } = props.route.params;
+    const { nombreMed,tipoAdm,dose,quantity,item,hora } = props.route.params;
     
     const guardarDuracion = (duracion)=>{
 
         let datosRecordatorio = {
-            dosis: dosis, 
-            cantidadMed: cantidadMed,
-            frecuencia: frecuencia,
+            nombreMed: nombreMed, 
+            tipoAdm: tipoAdm,
+            dose: dose,
+            quantity:quantity,
+            item: item,
             hora:hora,
             duracion: duracion
         }
-
-        const myDoc = doc(db,'Recordatorios','Recordatorio');
-        const docdata = datosRecordatorio
-        setDoc(myDoc,docdata)
-          .then(()=> {
-            //alert('document created');
-          })
-          .catch((error)=>{
-           alert(error.mesagge)
-        })
+        addDoc(collection(db, 'Recordatorios'), datosRecordatorio)
         
-        props.navigation.navigate("HomeScreen")
+        props.navigation.navigate("screenHome")
     }
 
     return(
@@ -54,7 +48,7 @@ const DuracionTratamiento = (props) => {
                     <Text style={styles.textBoton}>30 dias</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.boton}
-                    onPress={() => {props.navigation.navigate('FechaFinal')}}  >
+                    onPress={() => {props.navigation.navigate('FechaFinal', props.route.params)}}  >
                     <Text style={styles.textBoton}>Establecer la fecha final</Text>
                 </TouchableOpacity>
             </View>
