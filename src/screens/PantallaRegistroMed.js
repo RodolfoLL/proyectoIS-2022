@@ -7,7 +7,7 @@ const PantallaRegistroMed = ({ navigation }) => {
   const verificar = (text, tipo) => {
     if (text != '' && tipo !== '') {
       console.log("lleno un medicamento")
-      navigation.navigate("Dosis del medicamento")
+      navigation.navigate("Screen3")
     } else {
       alert("Le faltan llenar campos")
     }
@@ -139,13 +139,6 @@ const PantallaRegistroMed = ({ navigation }) => {
         title="Continuar"
         color="#0093B7"
         onPress={() => verificar(nombre, tipo)}
-      />
-    </View>
-    <View style={styles.botones}>
-      <Button
-        title="Cancelar"
-        color="#0093B7"
-        onPress={() => navigation.navigate("Medicate")}
       />
     </View>
   </View>
