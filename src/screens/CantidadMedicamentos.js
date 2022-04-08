@@ -4,17 +4,25 @@ import { Button, View, ScrollView, Text, TouchableOpacity } from "react-native";
 import { Picker } from '@react-native-picker/picker'
 import { StyleSheet } from "react-native";
 
-const CantidadMedicamentos = ({ navigation }) => {
+const CantidadMedicamentos = ({route, navigation }) => {
     const [selectDose, setselectDose] = useState("1");
     const [selectQuantity, setselectQuantity] = useState("1");
 
     const guardarCantidad = () => {
         if (selectDose != "" && selectQuantity != "") {
+
+            let {nombreMed,tipoAdm} = route.params;
+
             var quantityField = {
                 quantityField:
                     { dose: selectDose, quantity: selectQuantity }
             };
-            navigation.navigate("Frecuencia Dosis")
+            navigation.navigate("Frecuencia Dosis", {
+                nombreMed: nombreMed,
+                tipoAdm: tipoAdm,
+                dose: selectDose,
+                quantity: selectQuantity
+            })
         }
     };
     return (

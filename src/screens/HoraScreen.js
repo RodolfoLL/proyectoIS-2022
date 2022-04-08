@@ -1,13 +1,13 @@
 import React, {useState} from 'react'
 import { View, Text,StyleSheet,TouchableOpacity} from 'react-native'
 import DateTimePicker from '@react-native-community/datetimepicker';
-import Navigation from '../navigation';
 // import {db} from './database/firebase';
 // import { doc, setDoc } from 'firebase/firestore';
 
 
 const HoraScreen=(props)=>{
-    const{frecuencia} = props.route.params;
+    const { nombreMed,tipoAdm,dose,quantity,item } = props.route.params;
+
     const [datos, setdatos] = useState([]);
     const [date, setDate] = useState(new Date());
     const [mode, setMode] = useState('date');
@@ -18,19 +18,34 @@ const HoraScreen=(props)=>{
             setDate(currentDate);
             setShow(false);
             let template = new Date(currentDate);
+            console.log(template.toTimeString())
             let hora = template.getHours();
             let minutos = template.getMinutes();
-            let time = hora+':'+minutos
-            setdatos(time)
-            console.log(template.getTime())
+            //let time = `${hora}:${minutos}`;
+            let time = hora+":"+minutos
+            setdatos(template.toTimeString())
     };
     const showMode=(currentMode)=>{
         setShow(true);
         setMode(currentMode);
     }
+
+    const guardarHora = (hora)=>{
+
+        let datosRecordatorio = {
+            nombreMed: nombreMed, 
+            tipoAdm: tipoAdm,
+            dose: dose,
+            quantity:quantity,
+            item: item,
+            hora:hora
+        }
+    
+        props.navigation.navigate('DuracionTratamiento',datosRecordatorio)
+     }
       return (
         <View style={styles.container}>
-            <Text style={styles.texto}>Numero de Periodos: {frecuencia}</Text>
+            <Text style={styles.texto}>Numero de Periodos: {item}</Text>
             <Text style={styles.texto}>{datos}</Text>
                 <TouchableOpacity
                     onPress={(valor)=>showMode('time')}
@@ -41,7 +56,7 @@ const HoraScreen=(props)=>{
                 </TouchableOpacity>
 
                 <TouchableOpacity
-                    onPress={()=>{props.navigation.navigate('DuracionTratamiento',{hora:datos})}}
+                    onPress={()=>guardarHora(datos)}
                 >
                     <View style={styles.buttonTime}>
                         <Text style={styles.texto}>Continuar</Text>
