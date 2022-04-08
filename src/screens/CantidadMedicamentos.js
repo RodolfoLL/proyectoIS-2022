@@ -69,11 +69,11 @@ const CantidadMedicamentos = ({ navigation }) => {
                     </View>
                 </View>
 
-                
+
             </View>
             <View style={STYLE_GROUP.button}>
-                    <Button title="CONTINUAR" onPress={() => guardarCantidad()} />
-                </View>
+                <Button title="CONTINUAR" onPress={() => guardarCantidad()} />
+            </View>
 
 
 
@@ -134,7 +134,7 @@ const STYLE_GROUP = StyleSheet.create(
         },
         button: {
             marginTop: "20%",
-            marginHorizontal:"13%"
+            marginHorizontal: "13%"
         },
     }
 );
