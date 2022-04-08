@@ -12,7 +12,6 @@ const PantallaRegistroMed = ({ navigation }) => {
       alert("Le faltan llenar campos")
     }
   }
-
   const [nombre, setNombre] = useState('');
   const [checked, setcheckedOral] = useState(false);
   const [checkedIntramuscular, setcheckedIntramuscular] = useState(false);
@@ -146,6 +145,7 @@ const PantallaRegistroMed = ({ navigation }) => {
       <Button
         title="Cancelar"
         color="#0093B7"
+        onPress={() => navigation.navigate("Medicate")}
       />
     </View>
   </View>
@@ -190,14 +190,9 @@ const styles = StyleSheet.create({
     paddingLeft: 30,
     paddingRight: 30,
   },
-  encabezado: {
-    color: 'white',
-    fontSize: 30,
-    textAlign: 'center',
-    padding: 20
-  },
   title: {
-    fontSize: 25,
+    fontSize: 20,
+    paddingTop:10,
     color: 'white'
   },
   inputS: {
@@ -206,9 +201,9 @@ const styles = StyleSheet.create({
     borderColor: 'white',
     borderWidth: 3,
     borderRadius: 5,
-    marginTop: 30,
-    marginBottom: 30,
-    padding: 15,
+    marginTop: 20,
+    marginBottom: 20,
+    padding: 10,
     color: 'white'
   },
   opciones: {
