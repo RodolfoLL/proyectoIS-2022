@@ -87,6 +87,7 @@ const styles = StyleSheet.create({
       },
     buttonTime:{
         backgroundColor: '#0093B7',
+        borderRadius:25,
         width:200,
         height:32,
         marginVertical:10,
