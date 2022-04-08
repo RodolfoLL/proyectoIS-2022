@@ -3,7 +3,6 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import {NavigationContainer} from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons'; 
-//Pantallas que utilize de ejemplo para la navegacion
 import DuracionTratamiento from './screens/DuracionTratamiento'
 import FechaFinal from './screens/FechaFinal'
 import HomeScreen from './screens/HomeScreen'

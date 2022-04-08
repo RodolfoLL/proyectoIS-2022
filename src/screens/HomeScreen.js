@@ -4,7 +4,7 @@ import { View,Text,StyleSheet,TouchableOpacity } from 'react-native'
 export const HomeScreen = (props) => {
 
   return (
-    <View>
+    <View style={styles.container}>
         <Text style={styles.texto}>Home Screen</Text>
         <TouchableOpacity
             onPress={() => {props.navigation.navigate("DuracionTratamiento", {
@@ -25,20 +25,26 @@ export const HomeScreen = (props) => {
 
 
 const styles = StyleSheet.create({
-    texto:{
-        fontSize:30,
-        textAlign:"center",
-        marginTop:"20%"
-    },
-    button:{
-      backgroundColor:'purple',
-      padding:10,
-      marginTop:"20%",
-      width:"50%",
-      alignSelf:"center",
-      borderRadius:10
-    }
-
+  container: {
+    flex: 1,
+    backgroundColor: '#001B48',
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexDirection: 'column'
+  },
+  texto:{
+    fontSize:30,
+    textAlign:"center",
+    marginTop: 10,
+    color: "#ffff"
+  },
+  button:{
+    backgroundColor: "#0093B7",
+    borderRadius: 2,
+    marginBottom: 20,
+    padding: 12,
+		alignItems: 'center'
+  }
 })
 
 export default HomeScreen

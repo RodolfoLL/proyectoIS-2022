@@ -1,29 +1,9 @@
 import React, {useState} from 'react'
 import { View, Text, StyleSheet, TouchableOpacity} from 'react-native'
 import { doc, setDoc } from 'firebase/firestore';
-import {db} from '../database/firebase'
-//import firebase from "../database/firebase";
+import {db} from '../../database/firebase'
 
 const DuracionTratamiento = (props) => {
-    
-    /*const guardarDuracion = async (duracion) => {
-        
-        if (duracion === '') {
-          alert("please provide a name");
-        } else {
-    
-          try {
-            await firebase.db.collection("recordatorio").add({
-                Duracion: duracion
-            });
-            
-            console.log("guardado")
-            //props.navigation.navigate("UsersList");
-          } catch (error) {
-            console.log(error)
-          }
-        }
-    };*/
 
     const { dosis, cantidadMed, frecuencia, hora } = props.route.params;
     
@@ -78,13 +58,6 @@ const DuracionTratamiento = (props) => {
                     <Text style={styles.textBoton}>Establecer la fecha final</Text>
                 </TouchableOpacity>
             </View>
-
-            <View style={[styles.box, styles.box3]}>
-                <TouchableOpacity style={[styles.boton, styles.botonCancelar]}
-                    onPress={() => alert('Alert with one button')}  >
-                    <Text style={styles.textBoton}>Cancelar</Text>
-                </TouchableOpacity>
-            </View>
         </View>
         
     )
@@ -105,11 +78,8 @@ const styles = StyleSheet.create({
     box2: {
         flex: 6
     },
-    box3: {
-        flex: 2,
-    },
     title:{
-        fontSize: 23,
+        fontSize: 25,
         color: '#fff'
     },
     boton:{
@@ -122,11 +92,7 @@ const styles = StyleSheet.create({
     textBoton:{
         fontSize: 20,
         color: "#fff"
-    },
-    botonCancelar:{
-        width: 235
     }
-
 });
 
 export default DuracionTratamiento

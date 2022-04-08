@@ -2,7 +2,7 @@ import React, {useState} from 'react'
 import { View, Text, StyleSheet,TouchableOpacity,Button } from 'react-native'
 import  DateTimePicker  from '@react-native-community/datetimepicker'
 import { doc, setDoc } from 'firebase/firestore';
-import {db} from '../database/firebase'
+import {db} from '../../database/firebase'
 
 const FechaFinal = (props) => {
     const [date, setDate] = useState(new Date());
@@ -43,7 +43,6 @@ const FechaFinal = (props) => {
         const docdata = datosRecordatorio
         setDoc(myDoc,docdata)
           .then(()=> {
-            //alert('document created');
           })
           .catch((error)=>{
            alert(error.mesagge)
@@ -85,10 +84,6 @@ const FechaFinal = (props) => {
                     onPress={() => guardarDuracion(textDate)}  >
                     <Text style={styles.textBoton}>Guardar</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.boton}
-                    onPress={() => {props.navigation.navigate('DuracionTratamiento')}}  >
-                    <Text style={styles.textBoton}>Cancelar</Text>
-                </TouchableOpacity>
             </View>
         </View>
     )
@@ -114,7 +109,7 @@ const styles = StyleSheet.create({
         flex: 1
     },
     title:{
-        fontSize: 23,
+        fontSize: 25,
         color: '#fff'
     },
     boton:{
