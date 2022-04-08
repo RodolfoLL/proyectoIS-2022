@@ -13,7 +13,7 @@ const CantidadMedicamentos = ({navigation}) => {
             var quantityField = {quantityField:
                 {dose: selectDose, quantity: selectQuantity}
             };
-            navigation.navigate("Stack")
+            navigation.navigate("DuracionTratamiento") 
         }
     };
     return (
