@@ -4,7 +4,7 @@ import { View,Text,StyleSheet,TouchableOpacity,FlatList} from 'react-native';
 // import { doc, setDoc } from 'firebase/firestore';
 
 
-export const FrecuenciaScreen = (props) => {
+const FrecuenciaScreen = (props) => {
   const{dosis,cantidadMed,hora} = props.route.params;
   const [numeroFrecuencia, setnumeroFrecuencia] = useState([
     {title:"Una vez al dia",frecuencia:1,key:1},
@@ -31,6 +31,7 @@ export const FrecuenciaScreen = (props) => {
     </View>
   )
 }
+export default FrecuenciaScreen
 
 const styles = StyleSheet.create({
   contain: {

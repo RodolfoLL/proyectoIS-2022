@@ -1,11 +1,12 @@
 import React, {useState} from 'react'
 import { View, Text,StyleSheet,TouchableOpacity} from 'react-native'
 import DateTimePicker from '@react-native-community/datetimepicker';
+import Navigation from '../navigation';
 // import {db} from './database/firebase';
 // import { doc, setDoc } from 'firebase/firestore';
 
 
-export const HoraScreen=(props)=>{
+const HoraScreen=({navigation})=>{
     const{frecuencia} = props.route.params;
     const [datos, setdatos] = useState([]);
     const [date, setDate] = useState(new Date());
@@ -38,13 +39,13 @@ export const HoraScreen=(props)=>{
                     </View>
                 </TouchableOpacity>
 
-                {/* <TouchableOpacity
-                    onPress={()=>alert('Gracias')}
+                <TouchableOpacity
+                    onPress={()=>navigation.navigate('DuracionTratamiento')}
                 >
                     <View style={styles.buttonTime}>
                         <Text style={styles.texto}>Continuar</Text>
                     </View>
-                </TouchableOpacity> */}
+                </TouchableOpacity>
              {show && (
                 <DateTimePicker
                 testID="dateTimePicker"
@@ -58,6 +59,7 @@ export const HoraScreen=(props)=>{
         </View>
     )   
 }
+export default HoraScreen
 
 
 const styles = StyleSheet.create({
