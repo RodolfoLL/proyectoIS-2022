@@ -6,7 +6,7 @@ import Navigation from '../navigation';
 // import { doc, setDoc } from 'firebase/firestore';
 
 
-const HoraScreen=({navigation})=>{
+const HoraScreen=(props)=>{
     const{frecuencia} = props.route.params;
     const [datos, setdatos] = useState([]);
     const [date, setDate] = useState(new Date());
@@ -40,7 +40,7 @@ const HoraScreen=({navigation})=>{
                 </TouchableOpacity>
 
                 <TouchableOpacity
-                    onPress={()=>navigation.navigate('DuracionTratamiento')}
+                    onPress={()=>{props.navigation.navigate('DuracionTratamiento',{hora:datos})}}
                 >
                     <View style={styles.buttonTime}>
                         <Text style={styles.texto}>Continuar</Text>
