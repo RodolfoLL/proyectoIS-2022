@@ -6,15 +6,7 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 
 
 export const HoraScreen=(props)=>{
-    const{title,frecuencia,key,dosis,cantidadMed,hora} = props.route.params;
-    let agregandoHoras={
-        title:title,
-        frecuencia:frecuencia,
-        key:key,
-        dosis:dosis,
-        cantidadMed:cantidadMed,
-        hora:datos
-    }
+    const{frecuencia} = props.route.params;
     const [datos, setdatos] = useState([]);
     const [date, setDate] = useState(new Date());
     const [mode, setMode] = useState('date');
@@ -53,7 +45,6 @@ export const HoraScreen=(props)=>{
                         <Text style={styles.texto}>Continuar</Text>
                     </View>
                 </TouchableOpacity> */}
-                <Text style={styles.texto}>{agregandoHoras.hora}</Text>
              {show && (
                 <DateTimePicker
                 testID="dateTimePicker"
