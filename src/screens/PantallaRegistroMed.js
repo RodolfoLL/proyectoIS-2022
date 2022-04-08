@@ -7,11 +7,11 @@ const PantallaRegistroMed = ({ navigation }) => {
   const verificar = (text, tipo) => {
     if (text != '' && tipo !== '') {
       console.log("lleno un medicamento")
-      navigation.navigate("Dosis del Medicamento"),
+      navigation.navigate("Dosis del Medicamento",
       {
         nombreMed: text,
         tipoAdm: tipo
-      }
+      })
     } else {
       alert("Le faltan llenar campos")
     }

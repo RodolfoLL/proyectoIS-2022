@@ -5,15 +5,15 @@ import {db} from '../../database/firebase'
 
 const DuracionTratamiento = (props) => {
 
-    //const { dosis, cantidadMed, frecuencia, hora } = props.route.params;
+    const { nombreMed,tipoAdm,dose,quantity } = props.route.params;
     
     const guardarDuracion = (duracion)=>{
 
         let datosRecordatorio = {
-            dosis: dosis, 
-            cantidadMed: cantidadMed,
-            frecuencia: frecuencia,
-            hora:hora,
+            nombreMed: nombreMed, 
+            tipoAdm: tipoAdm,
+            dose: dose,
+            quantity:quantity,
             duracion: duracion
         }
 
@@ -27,7 +27,7 @@ const DuracionTratamiento = (props) => {
            alert(error.mesagge)
         })
         
-        props.navigation.navigate("HomeScreen")
+        props.navigation.navigate("ScreenHome")
     }
 
     return(

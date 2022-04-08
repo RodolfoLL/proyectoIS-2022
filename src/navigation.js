@@ -7,7 +7,7 @@ import DuracionTratamiento from './screens/DuracionTratamiento'
 import FechaFinal from './screens/FechaFinal'
 
 
-import HomeScreen from "./screens/screenHome";
+import ScreenHome from "./screens/ScreenHome";
 import CantidadMedicamentos from "./screens/CantidadMedicamentos"
 import PantallaRegistroMed from "./screens/PantallaRegistroMed";
 const HomeStackNavigator = createNativeStackNavigator();
@@ -15,10 +15,10 @@ const HomeStackNavigator = createNativeStackNavigator();
 function MyStacks() {
     return (
         <HomeStackNavigator.Navigator initialRouteName='Medicate'>
-            <HomeStackNavigator.Screen name="Medicate" component={HomeScreen}
+            <HomeStackNavigator.Screen name="ScreenHome" component={ScreenHome}
                 options={{
                     headerTintColor: 'white',
-                    headerStyle: { backgroundColor: "#0093B7" }
+                    headerStyle: { backgroundColor: "#0093B7"}
                 }} />
             <HomeStackNavigator.Screen name="Registro de Medicamento" component={PantallaRegistroMed}
                 options={{
