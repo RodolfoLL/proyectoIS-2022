@@ -1,8 +1,18 @@
-import { View, Text, TouchableOpacity, ScrollView, Image } from "react-native";
+import { View, Text, TouchableOpacity, ScrollView, Image, Systrace } from "react-native";
 import image from '../assets/medicate.png'
+import {db} from '../../database/firebase'
+import { onSnapshot,collection } from "firebase/firestore";
+import React,{useEffect,useState } from "react";
+import {ListItem} from "react-native-elements";
 
 const screenHome = ({ navigation }) => {
-
+    const [recordatorios,setRecordatorio] =  useState([])
+    useEffect(() => {
+        onSnapshot(collection(db,"Recordatorios"),(snapshot) => {
+            setRecordatorio(snapshot.docs.map((doc) => ({...doc.data(),id:doc.id})))
+        } )
+    },[])
+    console.log(recordatorios);
     return (
         <ScrollView style={{ backgroundColor: '#001B48' }}>
             <View style={{
@@ -40,7 +50,28 @@ const screenHome = ({ navigation }) => {
                     >Añadir recordatorio</Text>
                 </TouchableOpacity>
             </View>
-
+         {recordatorios.map((recordatorio)=>{
+             return (
+                 <ListItem
+                 key={recordatorio.id}
+                 bottomDivider
+                 >
+                 <ListItem.Content>
+                     <ListItem.Title>{recordatorio.nombreMed}</ListItem.Title>
+                     <TouchableOpacity
+                    onPress={() => navigation.navigate("Registro de Medicamento")}
+                    style={{
+                        backgroundColor: "#0093B7",
+                        
+                        justifyContent: "right",
+                    }}
+                >
+                    <Text> EDIT</Text>
+                </TouchableOpacity>
+                 </ListItem.Content>
+                 </ListItem>
+             )
+         } )}   
         </ScrollView>
     );
 }
