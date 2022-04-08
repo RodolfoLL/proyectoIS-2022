@@ -21,7 +21,8 @@ const CantidadMedicamentos = ({route, navigation }) => {
                 nombreMed: nombreMed,
                 tipoAdm: tipoAdm,
                 dose: selectDose,
-                quantity: selectQuantity
+                quantity: selectQuantity,
+                editar:false
             })
         }
     };

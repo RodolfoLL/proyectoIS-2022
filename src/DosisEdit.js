@@ -26,6 +26,7 @@ const DosisEdit = ({route, navigation }) => {
             item: parametros.item,
             hora: parametros.hora,
             duracion: parametros.duracion,
+            editar:true
             })
         }
     };
