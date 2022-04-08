@@ -11,7 +11,7 @@ const RegistroEdit =({route,navigation}) => {
     const verificar = (text, tipo) => {
       if (text != '' && tipo !== '') {
         console.log("lleno un medicamento")
-        navigation.navigate("Dosis del Medicamento",{
+        navigation.navigate("Editar Dosis",{
             id: parametros.id,
             nombreMed:text,
             tipoAdm: tipo,

@@ -13,6 +13,7 @@ import HoraScreen from '../src/screens/HoraScreen';
 import screenHome from "./screens/screenHome";
 import CantidadMedicamentos from "./screens/CantidadMedicamentos"
 import PantallaRegistroMed from "./screens/PantallaRegistroMed";
+import DosisEdit from './DosisEdit';
 const HomeStackNavigator = createNativeStackNavigator();
 
 function MyStacks(){
@@ -41,6 +42,9 @@ function MyStacks(){
             options={{headerTintColor: 'white',
             headerStyle:{ backgroundColor: "#0093B7"}}}/>
            <HomeStackNavigator.Screen name="Editar Medicamento" component={RegistroMedEdit}
+            options={{headerTintColor: 'white',
+            headerStyle:{ backgroundColor: "#0093B7"}}}/>
+            <HomeStackNavigator.Screen name="Editar Dosis" component={DosisEdit}
             options={{headerTintColor: 'white',
             headerStyle:{ backgroundColor: "#0093B7"}}}/>
         
