@@ -20,8 +20,9 @@ const HoraScreen=(props)=>{
             let template = new Date(currentDate);
             let hora = template.getHours();
             let minutos = template.getMinutes();
-            let time = `${hora}:${minutos}`;
+            let time = hora+':'+minutos
             setdatos(time)
+            console.log(template.getTime())
     };
     const showMode=(currentMode)=>{
         setShow(true);
