@@ -1,7 +1,7 @@
 import React from "react";
 import { View, Text, Button } from "react-native";
 
-const Screen3 = () => {
+const Screen2 = ({navigation}) => {
     return (
         <View>
             <Text
@@ -10,13 +10,12 @@ const Screen3 = () => {
                     textAlign: "center",
                     marginTop: "20%"
                 }}
-            >Pantalla 3</Text>
+            >Pantalla 2</Text>
+            <Button title="Ir a Pantalla 3" onPress={() => navigation.navigate("Screen3")}>
+
+            </Button>
         </View>
     );
     }
 
-<<<<<<< HEAD
-export default StackScreen;
-=======
-export default Screen3;
->>>>>>> develop
+export default Screen2;
