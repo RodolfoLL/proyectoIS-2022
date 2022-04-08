@@ -10,13 +10,13 @@ const HomeScreen = ({navigation}) => {
                     alignItems: "center",
                     marginTop: "20%"
                 }}>
-            <Text style={{fontSize:50,fontFamily:'Serif',color:'white'}}>
+            <Text style={{fontSize:50,color:'white'}}>
                 MEDICATE
             </Text>
             <Image source={image}
              style={{height:120,width:120,borderRadius:70}}
             />
-            <Text style={{textAlign:'center',fontFamily:'Arial',margin:20,color:'white'}}>
+            <Text style={{textAlign:'center',margin:20,color:'white'}}>
                 Aplicacion para el recordatorio de medicamentos
                 para nuestros adultos mayores porque merecen ser ayudados 
             </Text>

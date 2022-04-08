@@ -187,7 +187,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#001B48',
-    paddingLeft: 30,
+    paddingLeft: 20,
     paddingRight: 30,
   },
   title: {
@@ -197,7 +197,7 @@ const styles = StyleSheet.create({
   },
   inputS: {
     height: 40,
-    width: 350,
+    width: "100%",
     borderColor: 'white',
     borderWidth: 3,
     borderRadius: 5,
