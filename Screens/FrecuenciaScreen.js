@@ -21,7 +21,7 @@ export const FrecuenciaScreen = (props) => {
         <Text style={styles.texto}>Frecuencia dias de las dosis</Text>
           <FlatList data={numeroFrecuencia} renderItem={({ item }) => (
           <TouchableOpacity
-              onPress={() => {props.navigation.navigate('HoraScreen',props.route.params)}}
+              onPress={() => {props.navigation.navigate('HoraScreen',item)}}
           >
             <View style={styles.button}>
               <Text style={styles.texto}>{ item.title }</Text>
