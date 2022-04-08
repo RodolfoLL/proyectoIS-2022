@@ -1,43 +1,68 @@
-import React from "react";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { NavigationContainer } from "@react-navigation/native";
+import React from 'react';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import {NavigationContainer} from '@react-navigation/native';
+import { Ionicons } from '@expo/vector-icons'; 
+import DuracionTratamiento from './screens/DuracionTratamiento'
+import FechaFinal from './screens/FechaFinal'
+
 
 import HomeScreen from "./screens/screenHome";
 import PantallaRegistroMed from "./screens/PantallaRegistroMed";
-import Screen2 from "./screens/screen2";
-import Screen3 from "./screens/screen3";
+const HomeStackNavigator = createNativeStackNavigator();
 
-const Stack = createNativeStackNavigator();
+function MyStacks(){
+    return(
+        <HomeStackNavigator.Navigator initialRouteName='Medicate'>
+            <HomeStackNavigator.Screen name="Medicate" component={HomeScreen}
+            options={{headerTintColor: 'white',
+            headerStyle:{ backgroundColor: "#0093B7"}}}/>
+            <HomeStackNavigator.Screen name="Registro de Medicamento" component={PantallaRegistroMed}
+            options={{headerTintColor: 'white',
+            headerStyle:{ backgroundColor: "#0093B7"}}}/>
+            <HomeStackNavigator.Screen name="DuracionTratamiento" component={DuracionTratamiento}
+            options={{headerTintColor: 'white',
+            headerStyle:{ backgroundColor: "#0093B7"}}}/>
+            <HomeStackNavigator.Screen name="FechaFinal" component={FechaFinal}
+            options={{headerTintColor: 'white',
+            headerStyle:{ backgroundColor: "#0093B7"}}}/>
+            
+            
+        </HomeStackNavigator.Navigator>
+    );
+}
 
-function MyStack() {
-    return (
-        <Stack.Navigator
-            initialRouteName="HomeScreen"
+const Tab = createBottomTabNavigator();
+
+function MyTabs(){
+    return(
+        <Tab.Navigator
+            initialRouteName='Medicate'
+            screenOptions={{
+                tabBarActiveTintColor:'black',
+                tabBarStyle:{
+                    backgroundColor:'#0093B7',
+                }
+            }}
         >
-             <Stack.Screen
-                name="Medicate"
-                component={HomeScreen}
-                options={{headerTintColor: 'white',
-                headerStyle:{ backgroundColor: "#0093B7"}}}
+            <Tab.Screen 
+                name="Medicate" 
+                component={MyStacks}
+                options={{
+                    tabBarLabel:'inicio',
+                    tabBarIcon:({color,size})=>(
+                        <Ionicons name="home-outline" size={size} color={color} />
+                    ),
+                    headerShown:false,
+                }}
             />
-            <Stack.Screen
-                name="Registro de Medicamento"
-                component={PantallaRegistroMed}
-                options={{headerTintColor: 'white',
-                headerStyle:{ backgroundColor: "#0093B7"}}}
-            />
-            <Stack.Screen
-                name="Screen3"
-                component={Screen3}
-            />
-        </Stack.Navigator>
-    )
-}   
-
-export default function Navigation() {
-  return (
-    <NavigationContainer>
-      <MyStack />
-    </NavigationContainer>
-  );
+        </Tab.Navigator>
+    );
+}
+export default function Navigation(){
+    return(
+        <NavigationContainer>
+            <MyTabs />
+        </NavigationContainer>
+    );
 }
