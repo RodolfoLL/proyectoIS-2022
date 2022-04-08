@@ -59,7 +59,17 @@ const screenHome = ({ navigation }) => {
                  <ListItem.Content>
                      <ListItem.Title>{recordatorio.nombreMed}</ListItem.Title>
                      <TouchableOpacity
-                    onPress={() => navigation.navigate("Registro de Medicamento")}
+                    onPress={() => navigation.navigate("Editar Medicamento",{
+                        id: recordatorio.id,
+                        nombreMed:recordatorio.nombreMed,
+                        tipoAdm: recordatorio.tipoAdm,
+                        dose: recordatorio.dose,
+                        quantity: recordatorio.quantity,
+                        item: recordatorio.item,
+                        hora: recordatorio.hora,
+                        duracion: recordatorio.duracion,
+
+                    })}
                     style={{
                         backgroundColor: "#0093B7",
                         
