@@ -27,7 +27,7 @@ const FechaFinal = (props) => {
         setMode(currentMode);
     };
 
-    const { dosis, cantidadMed, frecuencia, hora } = props.route.params;
+    // const { dosis, cantidadMed, frecuencia, hora } = props.route.params;
     
     const guardarDuracion = (duracion)=>{
 
