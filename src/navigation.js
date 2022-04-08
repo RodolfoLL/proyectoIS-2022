@@ -5,16 +5,28 @@ import {NavigationContainer} from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons'; 
 import DuracionTratamiento from './screens/DuracionTratamiento'
 import FechaFinal from './screens/FechaFinal'
-import HomeScreen from './screens/HomeScreen'
 
+
+import HomeScreen from "./screens/screenHome";
+import PantallaRegistroMed from "./screens/PantallaRegistroMed";
 const HomeStackNavigator = createNativeStackNavigator();
 
 function MyStacks(){
     return(
         <HomeStackNavigator.Navigator initialRouteName='Medicate'>
-            <HomeStackNavigator.Screen name="HomeScreen" component={HomeScreen}/>
-            <HomeStackNavigator.Screen name="DuracionTratamiento" component={DuracionTratamiento}/>
-            <HomeStackNavigator.Screen name="FechaFinal" component={FechaFinal}/>
+            <HomeStackNavigator.Screen name="Medicate" component={HomeScreen}
+            options={{headerTintColor: 'white',
+            headerStyle:{ backgroundColor: "#0093B7"}}}/>
+            <HomeStackNavigator.Screen name="Registro de Medicamento" component={PantallaRegistroMed}
+            options={{headerTintColor: 'white',
+            headerStyle:{ backgroundColor: "#0093B7"}}}/>
+            <HomeStackNavigator.Screen name="DuracionTratamiento" component={DuracionTratamiento}
+            options={{headerTintColor: 'white',
+            headerStyle:{ backgroundColor: "#0093B7"}}}/>
+            <HomeStackNavigator.Screen name="FechaFinal" component={FechaFinal}
+            options={{headerTintColor: 'white',
+            headerStyle:{ backgroundColor: "#0093B7"}}}/>
+            
             
         </HomeStackNavigator.Navigator>
     );

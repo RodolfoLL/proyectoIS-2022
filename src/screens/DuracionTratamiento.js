@@ -5,7 +5,7 @@ import {db} from '../../database/firebase'
 
 const DuracionTratamiento = (props) => {
 
-    const { dosis, cantidadMed, frecuencia, hora } = props.route.params;
+    //const { dosis, cantidadMed, frecuencia, hora } = props.route.params;
     
     const guardarDuracion = (duracion)=>{
 
