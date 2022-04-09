@@ -1,7 +1,6 @@
 import React, {useState} from 'react'
 import { View, Text, StyleSheet,TouchableOpacity,Button } from 'react-native'
 import  DateTimePicker  from '@react-native-community/datetimepicker'
-import { doc, setDoc } from 'firebase/firestore';
 import {db} from '../../database/firebase'
 
 const FechaFinal = (props) => {
@@ -41,14 +40,7 @@ const FechaFinal = (props) => {
             duracion: duracion
         }
 
-        const myDoc = doc(db,'Recordatorios','Recordatorio');
-        const docdata = datosRecordatorio
-        setDoc(myDoc,docdata)
-          .then(()=> {
-          })
-          .catch((error)=>{
-           alert(error.mesagge)
-        })
+        addDoc(collection(db, 'Recordatorios'), datosRecordatorio)
 
         props.navigation.navigate("screenHome")
     }
