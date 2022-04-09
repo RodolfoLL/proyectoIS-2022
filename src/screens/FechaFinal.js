@@ -5,12 +5,20 @@ import { doc, setDoc } from 'firebase/firestore';
 import {db} from '../../database/firebase'
 
 const FechaFinal = (props) => {
+    const {editar} = props.route.params;
+    if (editar){
+        var [textDate, setText] = useState(props.route.params.duracion);
+    }
+    else{
+        var [textDate, setText] = useState(false);
+    }
     const [date, setDate] = useState(new Date());
     const [mode, setMode] = useState('date');
     const [show, setShow] = useState(false);
-    const [textDate, setText] = useState(false);
+    
 
     const onChange = (event, selectedDate) => {
+
             const currentDate = selectedDate || date;
             setShow(false);
             setDate(currentDate);
@@ -27,7 +35,7 @@ const FechaFinal = (props) => {
         setMode(currentMode);
     };
 
-    const { nombreMed,tipoAdm,dose,quantity,item,hora,editar } = props.route.params;
+    const { nombreMed,tipoAdm,dose,quantity,item,hora } = props.route.params;
     
     const guardarDuracion = (duracion)=>{
         if(editar){

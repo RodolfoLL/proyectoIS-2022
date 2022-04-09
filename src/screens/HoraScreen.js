@@ -9,7 +9,13 @@ import Navigation from '../navigation';
 const HoraScreen=(props)=>{
     const { nombreMed,tipoAdm,dose,quantity,item,editar } = props.route.params;
     console.log(props.route.params)
-    const [datos, setdatos] = useState([]);
+    if (editar){
+        var [datos, setdatos] = useState(props.route.params.hora);
+    }
+    else{
+        var [datos, setdatos] = useState([]);
+    }
+    
     const [date, setDate] = useState(new Date());
     const [mode, setMode] = useState('date');
     const [show, setShow] = useState(false);

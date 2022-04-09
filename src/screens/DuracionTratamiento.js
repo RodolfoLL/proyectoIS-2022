@@ -6,22 +6,46 @@ import {collection, addDoc,} from 'firebase/firestore';
 
 const DuracionTratamiento = (props) => {
 
-    const { nombreMed,tipoAdm,dose,quantity,item,hora } = props.route.params;
+    const { nombreMed,tipoAdm,dose,quantity,item,hora,editar } = props.route.params;
     
     const guardarDuracion = (duracion)=>{
-
-        let datosRecordatorio = {
-            nombreMed: nombreMed, 
-            tipoAdm: tipoAdm,
-            dose: dose,
-            quantity:quantity,
-            item: item,
-            hora:hora,
-            duracion: duracion
+        if (editar){
+            
+            let datosRecordatorio = {
+                nombreMed: nombreMed, 
+                tipoAdm: tipoAdm,
+                dose: dose,
+                quantity:quantity,
+                item: item,
+                hora:hora,
+                duracion: duracion
+            } 
+            const id = props.route.params.id
+            guardarEdit(id,datosRecordatorio)
         }
-        addDoc(collection(db, 'Recordatorios'), datosRecordatorio)
+        else{
+            let datosRecordatorio = {
+                nombreMed: nombreMed, 
+                tipoAdm: tipoAdm,
+                dose: dose,
+                quantity:quantity,
+                item: item,
+                hora:hora,
+                duracion: duracion
+            }
+            addDoc(collection(db, 'Recordatorios'), datosRecordatorio)
+        }
+        
         
         props.navigation.navigate("screenHome")
+    }
+
+    const guardarEdit = async (id,datos) =>{
+        
+        const docref = doc(db,"Recordatorios",id)
+        console.log(docref)
+        console.log(datos);
+        await setDoc(docref,datos)
     }
 
     return(
