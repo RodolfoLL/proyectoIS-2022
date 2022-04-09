@@ -13,7 +13,7 @@ import HoraScreen from '../src/screens/HoraScreen';
 import screenHome from "./screens/screenHome";
 import CantidadMedicamentos from "./screens/CantidadMedicamentos"
 import PantallaRegistroMed from "./screens/PantallaRegistroMed";
-import DosisEdit from './DosisEdit';
+import DosisEdit from './screens/DosisEdit';
 const HomeStackNavigator = createNativeStackNavigator();
 
 function MyStacks(){
