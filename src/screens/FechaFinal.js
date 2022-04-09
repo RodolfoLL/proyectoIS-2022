@@ -27,32 +27,54 @@ const FechaFinal = (props) => {
         setMode(currentMode);
     };
 
-    const { nombreMed,tipoAdm,dose,quantity,item,hora } = props.route.params;
+    const { nombreMed,tipoAdm,dose,quantity,item,hora,editar } = props.route.params;
     
     const guardarDuracion = (duracion)=>{
-
-        let datosRecordatorio = {
-            nombreMed: nombreMed, 
-            tipoAdm: tipoAdm,
-            dose: dose,
-            quantity:quantity,
-            item: item,
-            hora:hora,
-            duracion: duracion
+        if(editar){
+            let datosRecordatorio = {
+                nombreMed: nombreMed, 
+                tipoAdm: tipoAdm,
+                dose: dose,
+                quantity:quantity,
+                item: item,
+                hora:hora,
+                duracion: duracion
+            }
+            const id = props.route.params.id
+            guardarEdit(id,datosRecordatorio)
         }
+        else{
+            let datosRecordatorio = {
+                nombreMed: nombreMed, 
+                tipoAdm: tipoAdm,
+                dose: dose,
+                quantity:quantity,
+                item: item,
+                hora:hora,
+                duracion: duracion
+            }
+    
+            const myDoc = doc(db,'Recordatorios','Recordatorio');
+            const docdata = datosRecordatorio
+            setDoc(myDoc,docdata)
+              .then(()=> {
+              })
+              .catch((error)=>{
+               alert(error.mesagge)
+            })
 
-        const myDoc = doc(db,'Recordatorios','Recordatorio');
-        const docdata = datosRecordatorio
-        setDoc(myDoc,docdata)
-          .then(()=> {
-          })
-          .catch((error)=>{
-           alert(error.mesagge)
-        })
+        }
+       
 
         props.navigation.navigate("screenHome")
     }
-
+    const guardarEdit = async (id,datos) =>{
+        
+        const docref = doc(db,"Recordatorios",id)
+        console.log(docref)
+        console.log(datos);
+        await setDoc(docref,datos)
+    }
     return(
         <View style={styles.container}>
             <View style={[styles.box, styles.box1]}>

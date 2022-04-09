@@ -2,13 +2,18 @@ import React, { useEffect, useState } from "react";
 import { Text, View, StyleSheet, Button, TextInput, ScrollView } from 'react-native';
 import { CheckBox, Switch } from 'react-native-elements';
 
+
+var editado = false;
 var tipo = '';
-
-
 const RegistroEdit =({route,navigation}) => {
+    
     const parametros  = route.params
-    tipo = parametros.tipoAdm
+    
+    
     const verificar = (text, tipo) => {
+      if (!editado){
+        tipo = parametros.tipoAdm
+      }
       if (text != '' && tipo !== '') {
         console.log("lleno un medicamento")
         navigation.navigate("Editar Dosis",{
@@ -71,7 +76,72 @@ const RegistroEdit =({route,navigation}) => {
         var [checkedParetal, setcheckedParetal] = useState(false);
     }
     
-    
+    const mostrar = (n) => {
+      if (n == 1) {
+        tipo = "Via Oral"
+        console.log(tipo);
+      }
+      if (n == 2) {
+        tipo = "Via Intramuscular"
+        console.log(tipo);
+      }
+      if (n == 3) {
+        tipo = "Via Inalatoria"
+        console.log(tipo);
+      }
+      if (n == 4) {
+        tipo = "Via Nasal"
+        console.log(tipo);
+      }
+      if (n == 5) {
+        tipo = "Via Topica"
+        console.log(tipo);
+      }
+      if (n == 6) {
+        tipo = "Via Oftalmogica"
+        console.log(tipo);
+      }
+      if (n == 7) {
+        tipo = "Via Parental"
+        console.log(tipo);
+      }
+    }
+    const setEditado = () =>{
+      editado = true;
+      console.log(editado)
+    }
+    const styles = StyleSheet.create({
+      container: {
+        flex: 1,
+        backgroundColor: '#001B48',
+        paddingLeft: 20,
+        paddingRight: 30,
+      },
+      title: {
+        fontSize: 20,
+        paddingTop: 10,
+        color: 'white'
+      },
+      inputS: {
+        height: 40,
+        width: "100%",
+        borderColor: 'white',
+        borderWidth: 3,
+        borderRadius: 5,
+        marginTop: 20,
+        marginBottom: 20,
+        padding: 10,
+        color: 'white'
+      },
+      opciones: {
+        margin: 20,
+      },
+      botones: {
+        padding: 7,
+        fontSize: 20
+      }
+    });
+  
     
   
    
@@ -99,6 +169,9 @@ const RegistroEdit =({route,navigation}) => {
                 setcheckedTopica(false)
                 setcheckedOftalmologica(false)
                 setcheckedParetal(false)
+                setEditado();
+                
+
               }
               }
             />
@@ -112,6 +185,7 @@ const RegistroEdit =({route,navigation}) => {
                 setcheckedInalatoria(false)
                 setcheckedNasal(false)
                 setcheckedTopica(false)
+                setEditado();
               }
               }
             />
@@ -127,6 +201,7 @@ const RegistroEdit =({route,navigation}) => {
                 setcheckedTopica(false)
                 setcheckedOftalmologica(false)
                 setcheckedParetal(false)
+                setEditado();
               }
               }
             />
@@ -142,6 +217,7 @@ const RegistroEdit =({route,navigation}) => {
                 setcheckedTopica(false)
                 setcheckedOftalmologica(false)
                 setcheckedParetal(false)
+                setEditado();
               }
               }
   
@@ -158,6 +234,7 @@ const RegistroEdit =({route,navigation}) => {
                 setcheckedTopica(true)
                 setcheckedOftalmologica(false)
                 setcheckedParetal(false)
+                setEditado();
               }
               }
             />
@@ -173,6 +250,7 @@ const RegistroEdit =({route,navigation}) => {
                 setcheckedTopica(false)
                 setcheckedOftalmologica(true)
                 setcheckedParetal(false)
+                setEditado();
               }
               }
             />
@@ -188,6 +266,7 @@ const RegistroEdit =({route,navigation}) => {
                 setcheckedTopica(false)
                 setcheckedOftalmologica(false)
                 setcheckedParetal(true)
+                setEditado();
               }
               }
             />
@@ -206,66 +285,5 @@ const RegistroEdit =({route,navigation}) => {
     );
   };
   
-  const mostrar = (n) => {
-    if (n == 1) {
-      tipo = "Via Oral"
-      console.log(tipo);
-    }
-    if (n == 2) {
-      tipo = "Via Intramuscular"
-      console.log(tipo);
-    }
-    if (n == 3) {
-      tipo = "Via Inalatoria"
-      console.log(tipo);
-    }
-    if (n == 4) {
-      tipo = "Via Nasal"
-      console.log(tipo);
-    }
-    if (n == 5) {
-      tipo = "Via Topica"
-      console.log(tipo);
-    }
-    if (n == 6) {
-      tipo = "Via Oftalmogica"
-      console.log(tipo);
-    }
-    if (n == 7) {
-      tipo = "Via Parental"
-      console.log(tipo);
-    }
-  }
-  const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      backgroundColor: '#001B48',
-      paddingLeft: 20,
-      paddingRight: 30,
-    },
-    title: {
-      fontSize: 20,
-      paddingTop: 10,
-      color: 'white'
-    },
-    inputS: {
-      height: 40,
-      width: "100%",
-      borderColor: 'white',
-      borderWidth: 3,
-      borderRadius: 5,
-      marginTop: 20,
-      marginBottom: 20,
-      padding: 10,
-      color: 'white'
-    },
-    opciones: {
-      margin: 20,
-    },
-    botones: {
-      padding: 7,
-      fontSize: 20
-    }
-  });
-
+ 
 export default RegistroEdit;

@@ -7,8 +7,8 @@ import Navigation from '../navigation';
 
 
 const HoraScreen=(props)=>{
-    const { nombreMed,tipoAdm,dose,quantity,item } = props.route.params;
-
+    const { nombreMed,tipoAdm,dose,quantity,item,editar } = props.route.params;
+    console.log(props.route.params)
     const [datos, setdatos] = useState([]);
     const [date, setDate] = useState(new Date());
     const [mode, setMode] = useState('date');
@@ -32,17 +32,33 @@ const HoraScreen=(props)=>{
     }
 
     const guardarHora = (hora)=>{
-
-        let datosRecordatorio = {
-            nombreMed: nombreMed, 
-            tipoAdm: tipoAdm,
-            dose: dose,
-            quantity:quantity,
-            item: item,
-            hora:hora
+        if (editar){
+            let datosRecordatorio = {
+                id: props.route.params.id,
+                nombreMed: nombreMed, 
+                tipoAdm: tipoAdm,
+                dose: dose,
+                quantity:quantity,
+                item: item,
+                hora:hora,
+                editar:editar
+            } 
+            props.navigation.navigate('DuracionTratamiento',datosRecordatorio)
         }
-    
-        props.navigation.navigate('DuracionTratamiento',datosRecordatorio)
+        else{
+            let datosRecordatorio = {
+                nombreMed: nombreMed, 
+                tipoAdm: tipoAdm,
+                dose: dose,
+                quantity:quantity,
+                item: item,
+                hora:hora,
+                editar:editar
+            }
+            props.navigation.navigate('DuracionTratamiento',datosRecordatorio)
+        }
+       
+        
      }
       return (
         <View style={styles.container}>
