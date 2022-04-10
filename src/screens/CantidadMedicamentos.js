@@ -1,6 +1,6 @@
 
 import React, { useState } from "react"
-import { Button, View, ScrollView, Text, TouchableOpacity } from "react-native";
+import { Button, View, ScrollView, Text } from "react-native";
 import { Picker } from '@react-native-picker/picker'
 import { StyleSheet } from "react-native";
 
@@ -42,6 +42,7 @@ const CantidadMedicamentos = ({ route, navigation }) => {
     let arregloItemDosis = generarArregloDosis(tipoDosis)
     let arregloCantidadMed = new Array(10)
     arregloCantidadMed.fill(2, 0, 10);
+
     const guardarCantidad = () => {
         if (selectDose != "" && selectQuantity != "") {
             navigation.navigate("Frecuencia Dosis", {
@@ -52,6 +53,7 @@ const CantidadMedicamentos = ({ route, navigation }) => {
             })
         }
     };
+
     return (
         <ScrollView style={STYLE_GROUP.containerMain} >
             <View style={STYLE_GROUP.container}>
@@ -65,9 +67,16 @@ const CantidadMedicamentos = ({ route, navigation }) => {
                             style={STYLE_GROUP.picker}
                             onValueChange={(itemValue) => setselectDose(itemValue)}
                         >
-                            {arregloItemDosis.map((item, key) => {
-                                return (<Picker.Item key={key} style={STYLE_GROUP.pickerItem} label={item} value={key + 1} />)
-                            })}
+                            {
+                                arregloItemDosis.map((item, key) => {
+                                    return (<Picker.Item
+                                        key={key}
+                                        style={STYLE_GROUP.pickerItem}
+                                        label={item}
+                                        value={key + 1} />
+                                    )
+                                })
+                            }
                         </Picker>
                     </View>
                 </View>
@@ -85,8 +94,13 @@ const CantidadMedicamentos = ({ route, navigation }) => {
                         >
                             {
                                 arregloCantidadMed.map((item, key) => {
-                                    return (<Picker.Item key={key} style={STYLE_GROUP.pickerItem} label={''+ (key + 1)} value={key + 1} />)
-                                })}
+                                    return (<Picker.Item
+                                        key={key}
+                                        style={STYLE_GROUP.pickerItem}
+                                        label={'' + (key + 1)}
+                                        value={key + 1} />)
+                                })
+                            }
                         </Picker>
                     </View>
                 </View>
@@ -96,10 +110,6 @@ const CantidadMedicamentos = ({ route, navigation }) => {
             <View style={STYLE_GROUP.button}>
                 <Button title='CONTINUAR' onPress={() => guardarCantidad()} />
             </View>
-
-
-
-
         </ScrollView>
     );
 };
@@ -111,11 +121,6 @@ const STYLE_GROUP = StyleSheet.create(
             flex: 1,
             backgroundColor: "#001B48",
             width: "100%"
-        },
-        containerEncabezado: {
-            flex: 1,
-            alignItems: "center",
-            justifyContent: "center"
         },
         container:
         {

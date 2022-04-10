@@ -1,22 +1,19 @@
 # Recordatorio de medicamentos
 
 Cada pantalla debe enviar sus datos en un objeto JSON a las siguiente pantalla, es decir la primera pantalla manda los datos a la segunda, la segunda debe mandar los datos de la primera y la segunda a la tercera pantalla, y la última pantalla debe guardar todos los datos obetenidos en la base de datos.
-'''json
-pantallaRegitrarMEdicamento = {regitrarMEdicamento:     
-                        {nombreMEdicamento:String,tipoAdministracion:String}}
 
-pantallaDosisDelMedicamento = { dosisDelMedicamento:
-                        {dosis:Int, cantidadMed:Int}}
+```json
+pantallaRegitrarMEdicamento = {regitrarMEdicamento:{nombreMedicamento:String,tipoAdministracion:String}}
 
-pantallaFrecuenciaMedicamento = {frecuenciaMedicamento:
-                        {frecuencica:Int}}
+pantallaDosisDelMedicamento = { dosisDelMedicamento: {dosis:Int, cantidadMed:Int}}
 
-pantallaHoraRecordatorio = {horaRecordatorio:
-                    {hora:[Datetime]}}
+pantallaFrecuenciaMedicamento = {frecuenciaMedicamento: {frecuencica:Int}}
 
-pantallaDuracionTratamiento = {duracionTratamiento:
-                        {duracion:String}}
-'''
+pantallaHoraRecordatorio = {horaRecordatorio: {hora:[Datetime]}}
+
+pantallaDuracionTratamiento = {duracionTratamiento: {duracion:String}}
+```
+
 ## Reglas
 - Para la navegación entre pantallas se usará el módulo navigation.js
 - Que App.js será el archivo principal de ejecución, que llamará a todos los módulos y pantallas
@@ -32,7 +29,7 @@ pantallaDuracionTratamiento = {duracionTratamiento:
     font: predeterminado
     
 ## Dependencias
-
+- @react-native-picker/picker
 
 
 
