@@ -4,19 +4,30 @@ import { Button, View, ScrollView, Text, TouchableOpacity } from "react-native";
 import { Picker } from '@react-native-picker/picker'
 import { StyleSheet } from "react-native";
 
+ function generarArregloDosis(name){
+    let arreglo =[]
+    for(let i=1;i<=10;i++){
+        if(i==0){
+            arreglo.push(i+" "+name);
+        }else{
+            arreglo.push(i+" "+name+" (s)");    
+        }
+        
+    }
+    return arreglo;
+ }
 const CantidadMedicamentos = ({route, navigation }) => {
+    const arregloItemDosis = generarArregloDosis("Comprimido")
     const [selectDose, setselectDose] = useState("1");
     const [selectQuantity, setselectQuantity] = useState("1");
-
+    let {nombreMed,tipoAdm} = route.params;
     const guardarCantidad = () => {
         if (selectDose != "" && selectQuantity != "") {
-
-            let {nombreMed,tipoAdm} = route.params;
-
             var quantityField = {
                 quantityField:
                     { dose: selectDose, quantity: selectQuantity }
             };
+            // console.log(generarArregloDosis("Comprimido"))
             navigation.navigate("Frecuencia Dosis", {
                 nombreMed: nombreMed,
                 tipoAdm: tipoAdm,
@@ -38,16 +49,10 @@ const CantidadMedicamentos = ({route, navigation }) => {
                             style={STYLE_GROUP.picker}
                             onValueChange={(itemValue, itemIndex) => setselectDose(itemValue)}
                         >
-                            <Picker.Item style={STYLE_GROUP.pickerItem} label="1 Comprimido" value="1" />
-                            <Picker.Item style={STYLE_GROUP.pickerItem} label="2 Comprimido (s)" value="2" />
-                            <Picker.Item style={STYLE_GROUP.pickerItem} label="3 Comprimido" value="3" />
-                            <Picker.Item style={STYLE_GROUP.pickerItem} label="4 Comprimido (s)" value="4" />
-                            <Picker.Item style={STYLE_GROUP.pickerItem} label="5 Comprimido" value="5" />
-                            <Picker.Item style={STYLE_GROUP.pickerItem} label="6 Comprimido (s)" value="6" />
-                            <Picker.Item style={STYLE_GROUP.pickerItem} label="7 Comprimido" value="7" />
-                            <Picker.Item style={STYLE_GROUP.pickerItem} label="8 Comprimido (s)" value="8" />
-                            <Picker.Item style={STYLE_GROUP.pickerItem} label="9 Comprimido" value="9" />
-                            <Picker.Item style={STYLE_GROUP.pickerItem} label="10 Comprimido (s)" value="10" />
+                            {arregloItemDosis.map((item, key) =>{
+                                return(<Picker.Item key={key} style={STYLE_GROUP.pickerItem} label={item} value={key+1} />)
+
+                            })}
                         </Picker>
                     </View>
                 </View>
@@ -63,16 +68,9 @@ const CantidadMedicamentos = ({route, navigation }) => {
                             onValueChange={(itemValue, itemIndex) => setselectQuantity(itemValue)}
                             textStyle={{ fontSize: 60 }}
                         >
-                            <Picker.Item style={STYLE_GROUP.pickerItem} label="1" value="1" />
-                            <Picker.Item style={STYLE_GROUP.pickerItem} label="2" value="2" />
-                            <Picker.Item style={STYLE_GROUP.pickerItem} label="3" value="3" />
-                            <Picker.Item style={STYLE_GROUP.pickerItem} label="4" value="4" />
-                            <Picker.Item style={STYLE_GROUP.pickerItem} label="5" value="5" />
-                            <Picker.Item style={STYLE_GROUP.pickerItem} label="6" value="6" />
-                            <Picker.Item style={STYLE_GROUP.pickerItem} label="7" value="7" />
-                            <Picker.Item style={STYLE_GROUP.pickerItem} label="8" value="8" />
-                            <Picker.Item style={STYLE_GROUP.pickerItem} label="9" value="9" />
-                            <Picker.Item style={STYLE_GROUP.pickerItem} label="10" value="10" />
+                            {arregloItemDosis.map((item, key) =>{
+                                return(<Picker.Item key={key} style={STYLE_GROUP.pickerItem} label={""+(key+1)} value={key+1} />)
+                            })}
                         </Picker>
                     </View>
                 </View>
