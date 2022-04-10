@@ -4,30 +4,46 @@ import { Button, View, ScrollView, Text, TouchableOpacity } from "react-native";
 import { Picker } from '@react-native-picker/picker'
 import { StyleSheet } from "react-native";
 
- function generarArregloDosis(name){
-    let arreglo =[]
-    for(let i=1;i<=10;i++){
-        if(i==0){
-            arreglo.push(i+" "+name);
-        }else{
-            arreglo.push(i+" "+name+" (s)");    
+function generarArregloDosis(name) {
+    let arreglo = []
+    for (let i = 1; i <= 10; i++) {
+        if (i == 1) {
+            arreglo.push(i + " " + name);
+        } else {
+            let ultimaPos = name.length - 1
+            if (ultimaPos != -1) {
+                const vocales = ["a", "e", "i", "o", "u"];
+                if (vocales.indexOf(name[ultimaPos]) === -1) {
+                    arreglo.push(i + " " + name + " (es)");
+                } else {
+                    arreglo.push(i + " " + name + " (s)");
+                }
+            }
+
         }
-        
+
     }
     return arreglo;
- }
-const CantidadMedicamentos = ({route, navigation }) => {
-    const arregloItemDosis = generarArregloDosis("Comprimido")
+}
+const CantidadMedicamentos = ({ route, navigation }) => {
+    let tipoDosis = ""
     const [selectDose, setselectDose] = useState("1");
     const [selectQuantity, setselectQuantity] = useState("1");
-    let {nombreMed,tipoAdm} = route.params;
+    let { nombreMed, tipoAdm } = route.params;
+
+    if (tipoAdm == "Via Oral") { tipoDosis = "Comprimido"; }
+    if (tipoAdm == "Via Intramuscular" ||
+        tipoAdm == "Via Parenteral") { tipoDosis = "Inyección"; }
+    if (tipoAdm == "Via Inalatoria") { tipoDosis = "Inhalación"; }
+    if (tipoAdm == "Via Nasal") { tipoDosis = "Aerosol"; }
+    if (tipoAdm == "Via Topica") { tipoDosis = "Aplicación"; }
+    if (tipoAdm == "Via Oftalmogica") { tipoDosis = "Gota"; }
+
+    let arregloItemDosis = generarArregloDosis(tipoDosis)
+    let arregloCantidadMed = new Array(10)
+    arregloCantidadMed.fill(2, 0, 10);
     const guardarCantidad = () => {
         if (selectDose != "" && selectQuantity != "") {
-            var quantityField = {
-                quantityField:
-                    { dose: selectDose, quantity: selectQuantity }
-            };
-            // console.log(generarArregloDosis("Comprimido"))
             navigation.navigate("Frecuencia Dosis", {
                 nombreMed: nombreMed,
                 tipoAdm: tipoAdm,
@@ -41,17 +57,16 @@ const CantidadMedicamentos = ({route, navigation }) => {
             <View style={STYLE_GROUP.container}>
                 <View style={STYLE_GROUP.containerItem}>
                     <View style={STYLE_GROUP.text}>
-                        <Text style={STYLE_GROUP.text}>{"Dosis:"}</Text>
+                        <Text style={STYLE_GROUP.text}>{'Dosis:'}</Text>
                     </View>
                     <View style={STYLE_GROUP.viewPicker}>
                         <Picker
                             selectedValue={selectDose}
                             style={STYLE_GROUP.picker}
-                            onValueChange={(itemValue, itemIndex) => setselectDose(itemValue)}
+                            onValueChange={(itemValue) => setselectDose(itemValue)}
                         >
-                            {arregloItemDosis.map((item, key) =>{
-                                return(<Picker.Item key={key} style={STYLE_GROUP.pickerItem} label={item} value={key+1} />)
-
+                            {arregloItemDosis.map((item, key) => {
+                                return (<Picker.Item key={key} style={STYLE_GROUP.pickerItem} label={item} value={key + 1} />)
                             })}
                         </Picker>
                     </View>
@@ -59,7 +74,7 @@ const CantidadMedicamentos = ({route, navigation }) => {
 
                 <View style={STYLE_GROUP.containerItem}>
                     <View>
-                        <Text style={STYLE_GROUP.text}>{" Cantidad de Medicamentos:"}</Text>
+                        <Text style={STYLE_GROUP.text}>{' Cantidad de Medicamentos:'}</Text>
                     </View>
                     <View style={STYLE_GROUP.viewPicker}>
                         <Picker
@@ -68,9 +83,10 @@ const CantidadMedicamentos = ({route, navigation }) => {
                             onValueChange={(itemValue, itemIndex) => setselectQuantity(itemValue)}
                             textStyle={{ fontSize: 60 }}
                         >
-                            {arregloItemDosis.map((item, key) =>{
-                                return(<Picker.Item key={key} style={STYLE_GROUP.pickerItem} label={""+(key+1)} value={key+1} />)
-                            })}
+                            {
+                                arregloCantidadMed.map((item, key) => {
+                                    return (<Picker.Item key={key} style={STYLE_GROUP.pickerItem} label={''+ (key + 1)} value={key + 1} />)
+                                })}
                         </Picker>
                     </View>
                 </View>
@@ -78,7 +94,7 @@ const CantidadMedicamentos = ({route, navigation }) => {
 
             </View>
             <View style={STYLE_GROUP.button}>
-                <Button title="CONTINUAR" onPress={() => guardarCantidad()} />
+                <Button title='CONTINUAR' onPress={() => guardarCantidad()} />
             </View>
 
 
