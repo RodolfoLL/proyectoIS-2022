@@ -48,9 +48,9 @@ const Tab = createBottomTabNavigator();
 function MyTabs(){
     return(
         <Tab.Navigator
-            initialRouteName='Medicate'
+            initialRouteName='MEDCATE /'
             screenOptions={{
-                tabBarActiveTintColor:'black',
+                tabBarActiveTintColor:'white',
                 tabBarStyle:{
                     backgroundColor:'#0093B7',
                 }
@@ -60,7 +60,7 @@ function MyTabs(){
                 name="Medicate" 
                 component={MyStacks}
                 options={{
-                    tabBarLabel:'inicio',
+                    tabBarLabel:'INICIO',
                     tabBarIcon:({color,size})=>(
                         <Ionicons name="home-outline" size={size} color={color} />
                     ),

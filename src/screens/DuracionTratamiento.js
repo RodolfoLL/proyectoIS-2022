@@ -2,7 +2,7 @@ import React, {useState} from 'react'
 import { View, Text, StyleSheet, TouchableOpacity} from 'react-native'
 import { doc, setDoc } from 'firebase/firestore';
 import {db} from '../../database/firebase'
-import {collection, addDoc,} from 'firebase/firestore';
+import {collection, addDoc} from 'firebase/firestore';
 
 const DuracionTratamiento = (props) => {
 
@@ -19,6 +19,7 @@ const DuracionTratamiento = (props) => {
             hora:hora,
             duracion: duracion
         }
+
         addDoc(collection(db, 'Recordatorios'), datosRecordatorio)
         
         props.navigation.navigate("screenHome")
