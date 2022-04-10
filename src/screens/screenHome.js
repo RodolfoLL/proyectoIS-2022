@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, TouchableOpacity, ScrollView, Image } from "react-native";
+import { View, Text, TouchableOpacity, ScrollView, Image,Alert } from "react-native";
 import image from '../../assets/medicate.png'
 import {db} from '../../database/firebase'
 
-import { collection, query, where, getDocs } from "firebase/firestore";
+import { collection, query, where, getDocs, deleteDoc,doc } from "firebase/firestore";
 import { FlatList } from "react-native-gesture-handler";
 import { render } from "react-dom";
 import { ListItem, Avatar } from 'react-native-elements'
+import { async } from "@firebase/util";
 
 const screenHome = ({ navigation }) => {
 
@@ -38,7 +39,19 @@ const screenHome = ({ navigation }) => {
     useEffect(() => {
             listarRecordatorio()
     }, []);
+    const elimnarRecordatorio = async (id) =>{
+        const docRef = doc(db,"Recordatorios",id)
+        
+        await deleteDoc(docRef)
+        navigation.navigate("screenHome")
+    }
+    const confirmarElimniar = (id) => {
+        Alert.alert("Eliminar recordatorio", "estas seguro?",[
+        {text: "Si" ,onPress: () =>{ elimnarRecordatorio(id)} },
+        {text: "No" ,onPress: () =>{ console.log("ok sin elimnar")} }
+        ])
 
+    }
     return (
         <ScrollView style={{ backgroundColor: '#001B48' }}>
             <View style={{
@@ -61,25 +74,33 @@ const screenHome = ({ navigation }) => {
                               <ListItem.Subtitle style={{ color: "white"}}>Hora: {recordatorio.hora}</ListItem.Subtitle>
                               <ListItem.Subtitle style={{ color: "white"}}>Duracion hasta: {recordatorio.duracion}</ListItem.Subtitle>
                               <TouchableOpacity
-                    onPress={() => navigation.navigate("Editar Medicamento",{
-                        id: recordatorio.id,
-                        nombreMed:recordatorio.nombreMed,
-                        tipoAdm: recordatorio.tipoAdm,
-                        dose: recordatorio.dose,
-                        quantity: recordatorio.quantity,
-                        item: recordatorio.item,
-                        hora: recordatorio.hora,
-                        duracion: recordatorio.duracion,
- 
-                    })}
-                    style={{
-                        backgroundColor: "#0093B7",
-                       
-                    }}
-                >
-                    <Text> EDIT</Text>
-                </TouchableOpacity>
-
+                                    onPress={() => navigation.navigate("Editar Medicamento",{
+                                        id: recordatorio.id,
+                                        nombreMed:recordatorio.nombreMed,
+                                        tipoAdm: recordatorio.tipoAdm,
+                                        dose: recordatorio.dose,
+                                        quantity: recordatorio.quantity,
+                                        item: recordatorio.item,
+                                        hora: recordatorio.hora,
+                                        duracion: recordatorio.duracion,
+                
+                                    })}
+                                    style={{
+                                        backgroundColor: "#0093B7",
+                                    
+                                    }}
+                                >
+                                    <Text> EDIT</Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity
+                                        onPress={() => confirmarElimniar(recordatorio.id)}
+                                        style={{
+                                            backgroundColor: "#0093B7",
+                                        
+                                        }}
+                                    >
+                                        <Text> eliminar</Text>
+                                    </TouchableOpacity>
                             </ListItem.Content>
                           </ListItem>
                         );
