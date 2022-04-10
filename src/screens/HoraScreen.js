@@ -8,9 +8,15 @@ import Navigation from '../navigation';
 
 const HoraScreen=(props)=>{
     const { nombreMed,tipoAdm,dose,quantity,item,editar } = props.route.params;
-    console.log(props.route.params)
+   
     if (editar){
-        var [datos, setdatos] = useState(props.route.params.hora);
+        let duracion = props.route.params.hora
+        let cadena = ""
+        duracion.forEach(element => {
+           cadena = cadena + element + " "
+        });
+        
+        var [datos, setdatos] = useState(cadena);
     }
     else{
         var [datos, setdatos] = useState([]);
@@ -30,7 +36,7 @@ const HoraScreen=(props)=>{
             let minutos = template.getMinutes();
             //let time = `${hora}:${minutos}`;
             let time = hora+":"+minutos
-            setdatos(template.toTimeString())
+            setdatos([template.toTimeString()])
     };
     const showMode=(currentMode)=>{
         setShow(true);

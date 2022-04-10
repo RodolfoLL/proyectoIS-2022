@@ -66,7 +66,7 @@ const DosisEdit = ({route, navigation }) => {
                             selectedValue={selectQuantity}
                             style={STYLE_GROUP.picker}
                             onValueChange={(itemValue, itemIndex) => setselectQuantity(itemValue)}
-                            textStyle={{ fontSize: 60 }}
+                           // textStyle={{ fontSize: 60 }}
                         >
                             <Picker.Item style={STYLE_GROUP.pickerItem} label="1" value="1" />
                             <Picker.Item style={STYLE_GROUP.pickerItem} label="2" value="2" />

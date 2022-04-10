@@ -38,7 +38,7 @@ const screenHome = ({ navigation }) => {
 
     useEffect(() => {
             listarRecordatorio()
-    });
+    },[]);
    
 
     const elimnarRecordatorio = async (id) =>{
