@@ -7,7 +7,9 @@ import {db} from '../../database/firebase'
 const FechaFinal = (props) => {
     const {editar} = props.route.params;
     if (editar){
-        var [textDate, setText] = useState(props.route.params.duracion);
+        let {duracion} = props.route.params
+        console.log(duracion)
+        var [textDate, setText] = useState(duracion);
     }
     else{
         var [textDate, setText] = useState(false);

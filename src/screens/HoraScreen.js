@@ -47,6 +47,7 @@ const HoraScreen=(props)=>{
                 quantity:quantity,
                 item: item,
                 hora:hora,
+                duracion: props.route.params.duracion,
                 editar:editar
             } 
             props.navigation.navigate('DuracionTratamiento',datosRecordatorio)
