@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, TouchableOpacity, ScrollView, Image} from "react-native";
+import { View, Text, TouchableOpacity, ScrollView, Image,Alert} from "react-native";
 import image from '../assets/medicate.png'
 import {db} from '../../database/firebase'
 import { StatusBar } from 'expo-status-bar';
-import { collection, query, where, getDocs } from "firebase/firestore";
+import { collection, query, where, getDocs, doc,deleteDoc } from "firebase/firestore";
 import { FlatList } from "react-native-gesture-handler";
 import { render } from "react-dom";
 import { ListItem ,Icon} from 'react-native-elements';
@@ -38,8 +38,23 @@ const screenHome = ({ navigation }) => {
 
     useEffect(() => {
             listarRecordatorio()
-    }, []);
+    });
    
+
+    const elimnarRecordatorio = async (id) =>{
+        console.log(id)
+        const docRef = doc(db,"Recordatorios",id)
+        console.log(docRef)
+         deleteDoc(docRef)
+        navigation.navigate("screenHome")
+    }
+    const confirmarElimniar = (id) => {
+        Alert.alert("Eliminar recordatorio", "estas seguro?",[
+       {text: "Si" ,onPress: () =>{ elimnarRecordatorio(id)} },
+       {text: "No" ,onPress: () =>{ console.log("ok sin elimnar")} }
+        ])
+
+    }
     return (
       
         <View>
@@ -76,12 +91,23 @@ const screenHome = ({ navigation }) => {
                                 <Icon type="material-community" 
                                     name={"pencil-circle"} size={50} 
                                     color={"#0093B7"} 
-                                    onPress={() => navigation.navigate("Registro de Medicamento")}  
+                                    onPress={() => navigation.navigate("Editar Medicamento",{
+                                        id: recordatorio.id,
+                                        nombreMed:recordatorio.nombreMed,
+                                        tipoAdm: recordatorio.tipoAdm,
+                                        dose: recordatorio.dose,
+                                        quantity: recordatorio.quantity,
+                                        item: recordatorio.item,
+                                        hora: recordatorio.hora,
+                                        duracion: recordatorio.duracion,
+                
+                                    })}
+                                
                                     style={{ marginTop: "0%"}}/>
                                 <Icon type="material-community" 
                                     name={"delete-circle"} 
                                     size={50} color={"#0093B7"} 
-                                    onPress={() => navigation.navigate("Registro de Medicamento")} 
+                                    onPress={() => confirmarElimniar(recordatorio.id)} 
                                     style={{ marginTop: "80%"}}/>
                             </View>
                           </ListItem>
