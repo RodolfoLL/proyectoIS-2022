@@ -19,8 +19,6 @@ const HoraScreen=(props)=>{
             setShow(false);
             let template = new Date(currentDate).toTimeString().substring(0,5);
             setdatos([...datos,template]);
-
-    
     };
     const showMode=(currentMode)=>{
             setShow(true);
@@ -38,17 +36,18 @@ const HoraScreen=(props)=>{
                 hora:hora
             }
             let nuevoArray = [...new Set(hora)]
-            if(nuevoArray.length == frecuencia){
+            if(nuevoArray.length === frecuencia){
                 props.navigation.navigate('DuracionTratamiento',datosRecordatorio)  
-            }else{
-                Alert.alert("upss","necesitas seleccionar"+ " "+`${frecuencia}`+" " +"horas diferentes")
+            }
+            else{
+                if(nuevoArray.length !== frecuencia){
+                    Alert.alert("upss","necesitas seleccionar"+ " "+`${frecuencia}`+" " +"horas(diferentes)")
+                }
             }
 
         }else{
             Alert.alert("upss","debes de ingresar una hora")
         }
-        console.log(datos.length);
-        console.log(frecuencia);
     }
       return (
         <View style={styles.container}>
