@@ -21,7 +21,7 @@ const DuracionTratamiento = (props) => {
         }
         addDoc(collection(db, 'Recordatorios'), datosRecordatorio)
         
-        props.navigation.navigate("screenHome")
+        props.navigation.navigate("screenHome");
     }
 
     return(
@@ -78,9 +78,9 @@ const styles = StyleSheet.create({
     },
     boton:{
         backgroundColor: "#0093B7",
-        borderRadius: 2,
+        borderRadius:25,
         marginBottom: 20,
-        padding: 12,
+        padding: 10,
 		alignItems: 'center'
     },
     textBoton:{

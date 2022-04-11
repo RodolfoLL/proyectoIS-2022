@@ -1,6 +1,6 @@
 
 import React, { useState } from "react"
-import { Button, View, ScrollView, Text } from "react-native";
+import { Button, View, ScrollView, Text,TouchableOpacity } from "react-native";
 import { Picker } from '@react-native-picker/picker'
 import { StyleSheet } from "react-native";
 
@@ -107,9 +107,13 @@ const CantidadMedicamentos = ({ route, navigation }) => {
 
 
             </View>
-            <View style={STYLE_GROUP.button}>
-                <Button title='CONTINUAR' onPress={() => guardarCantidad()} />
-            </View>
+            <TouchableOpacity
+                    onPress={()=>guardarCantidad()}
+                >
+                    <View style={STYLE_GROUP.button}>
+                        <Text style={STYLE_GROUP.texto}>Continuar</Text>
+                    </View>
+                </TouchableOpacity>
         </ScrollView>
     );
 };
@@ -121,6 +125,11 @@ const STYLE_GROUP = StyleSheet.create(
             flex: 1,
             backgroundColor: "#001B48",
             width: "100%"
+        },
+        containerEncabezado: {
+            flex: 1,
+            alignItems: "center",
+            justifyContent: "center"
         },
         container:
         {
@@ -159,11 +168,20 @@ const STYLE_GROUP = StyleSheet.create(
             fontSize: 24
 
         },
-        button: {
-            marginTop: "20%",
-            marginHorizontal: "13%"
+        button:{
+            alignSelf:'center',
+            backgroundColor:'#0093B7',
+            borderRadius:25,
+            width:150,
+            height:35,
         },
+        texto:{
+            color:'white',
+            fontFamily:'sans-serif',
+            fontSize:20,
+            textAlign:'center'  
+        },
+
     }
 );
-
 export default CantidadMedicamentos
