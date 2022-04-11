@@ -1,5 +1,5 @@
 import React, {useState} from 'react'
-import { View, Text,StyleSheet,TouchableOpacity,Alert} from 'react-native'
+import { View, Text,StyleSheet,TouchableOpacity,Alert,Platform} from 'react-native'
 import DateTimePicker from '@react-native-community/datetimepicker';
 // import {db} from './database/firebase';
 // import { doc, setDoc } from 'firebase/firestore';
@@ -8,23 +8,26 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 const HoraScreen=(props)=>{
     const { nombreMed,tipoAdm,dose,quantity,item } = props.route.params;
     let frecuencia = item;
-    const [contador, setcontador] = useState(frecuencia)
+    const [contador, setcontador] = useState(frecuencia);
     const [datos, setdatos] = useState([]);
     const [date, setDate] = useState(new Date());
     const [mode, setMode] = useState('date');
     const [show, setShow] = useState(false);
     const onChange = (event, selectedDate) => {
             const currentDate = selectedDate || date;
-            setDate(currentDate);
-            setDate(currentDate);
             setShow(false);
+            setDate(currentDate);
             let template = new Date(currentDate).toTimeString().substring(0,5);
             setdatos([...datos,template]);
             setcontador(contador -1);
     };
     const showMode=(currentMode)=>{
-            setShow(true);
-            setMode(currentMode);
+            if(contador === 0){
+                Alert.alert("Bien","No debes ingresar mas horas,presiona el boton 'continuar'")
+            }else{
+                setShow(true);
+                setMode(currentMode);
+            }
     }
 
     const guardarHora = (hora)=>{
@@ -38,12 +41,13 @@ const HoraScreen=(props)=>{
                 hora:hora
             }
             let nuevoArray = [...new Set(hora)]
+            console.log(nuevoArray.length)
             if(nuevoArray.length === frecuencia){
-                props.navigation.navigate('DuracionTratamiento',datosRecordatorio)  
+                props.navigation.navigate('DuracionTratamiento',datosRecordatorio) 
             }
             else{
-                if(nuevoArray.length !== frecuencia){
-                    Alert.alert("upss","necesitas seleccionar"+ " "+`${frecuencia}`+" " +"horas(diferentes)")
+                if(nuevoArray.length !== frecuencia || nuevoArray.length< frecuencia){
+                    Alert.alert("upss","necesitas seleccionar solo"+ " "+`${frecuencia}`+" " +"horas(diferentes)")
                 }
             }
 
@@ -53,6 +57,7 @@ const HoraScreen=(props)=>{
     }
     const RestablecerHoras =(datos)=>{
         setdatos(datos=>[]);
+        setcontador(frecuencia);
     }
       return (
         <View style={styles.container}>
