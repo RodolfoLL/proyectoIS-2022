@@ -13,10 +13,6 @@ pantallaHoraRecordatorio = {horaRecordatorio: {hora:[Datetime]}}
 pantallaDuracionTratamiento = {duracionTratamiento: {duracion:String}}
 ```
 
-pantallaDuracionTratamiento = {duracionTratamiento:
-                        {duracion:String}}
-'''
-
 Para la editar y elimnar datos por medio de las pantallas se utilizara los parametros
              {id:String,editar : boolean } 
 junto con todos los datos que manda cada pantalla
