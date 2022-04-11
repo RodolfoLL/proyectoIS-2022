@@ -52,15 +52,14 @@ const screenHome = ({ navigation  }) => {
     return (
       
         <View>  
-           <ScrollView
-                        refreshControl ={
+          
+      
+        <ScrollView  refreshControl ={
                             <RefreshControl 
                             refreshing={refresh}
                             onRefresh ={() => pullMe}
                             />}
-                            >
-      
-        <ScrollView   
+                            
         style={{ backgroundColor: '#001B48' }}>
          
             <View style={{
@@ -73,7 +72,7 @@ const screenHome = ({ navigation  }) => {
                     MEDICATE 
                 </Text>
 
-                <View style={{width: "90%", height: "25%"}}>
+                <View style={{width: "90%", height: "20%"}}>
                      
                     {recordatorios.map((recordatorio) => {
                         return (
@@ -147,7 +146,7 @@ const screenHome = ({ navigation  }) => {
                 
                 <StatusBar style="auto" />
          
-                </ScrollView>              
+                       
     </View>
    
     );
