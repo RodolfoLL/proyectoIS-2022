@@ -28,7 +28,7 @@ pantallaDuracionTratamiento = {duracionTratamiento: {duracion:String}}
     font: predeterminado
     
 ## Dependencias
-
+- @react-native-picker/picker
 
 
 

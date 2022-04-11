@@ -179,7 +179,7 @@ const mostrar = (n) => {
     console.log(tipo);
   }
   if (n == 7) {
-    tipo = "Via Parental"
+    tipo = "Via Parenteral"
     console.log(tipo);
   }
 }

@@ -7,7 +7,7 @@ import { View,Text,StyleSheet,TouchableOpacity,FlatList} from 'react-native';
 const FrecuenciaScreen = (props) => {
   
   const { nombreMed,tipoAdm,dose,quantity } = props.route.params;
-
+  console.log(dose)
   const [numeroFrecuencia, setnumeroFrecuencia] = useState([
     {title:"Una vez al dia",frecuencia:1,key:1},
     {title:"Dos veces al dia",frecuencia:2,key:2},
