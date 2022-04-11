@@ -39,11 +39,11 @@ const HoraScreen=(props)=>{
             }
             let nuevoArray = [...new Set(hora)]
             if(nuevoArray.length === frecuencia){
-                props.navigation.navigate('DuracionTratamiento',datosRecordatorio)  
+                props.navigation.navigate('DuracionTratamiento',datosRecordatorio)
             }
             else{
                 if(nuevoArray.length !== frecuencia){
-                    Alert.alert("upss","necesitas seleccionar"+ " "+`${frecuencia}`+" " +"horas(diferentes)")
+                    Alert.alert("upss","necesitas seleccionar solo"+ " "+`${frecuencia}`+" " +"horas(diferentes)")
                 }
             }
 
@@ -53,6 +53,7 @@ const HoraScreen=(props)=>{
     }
     const RestablecerHoras =(datos)=>{
         setdatos(datos=>[]);
+        setcontador(frecuencia);
     }
       return (
         <View style={styles.container}>
