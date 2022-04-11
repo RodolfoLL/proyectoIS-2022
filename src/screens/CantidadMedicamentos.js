@@ -79,9 +79,13 @@ const CantidadMedicamentos = ({route, navigation }) => {
 
 
             </View>
-            <View style={STYLE_GROUP.button}>
-                <Button title="CONTINUAR" onPress={() => guardarCantidad()} />
-            </View>
+            <TouchableOpacity
+                    onPress={()=>guardarCantidad()}
+                >
+                    <View style={STYLE_GROUP.button}>
+                        <Text style={STYLE_GROUP.texto}>Continuar</Text>
+                    </View>
+                </TouchableOpacity>
 
 
 
@@ -140,10 +144,20 @@ const STYLE_GROUP = StyleSheet.create(
             fontSize: 24
 
         },
-        button: {
-            marginTop: "20%",
-            marginHorizontal: "13%"
+        button:{
+            alignSelf:'center',
+            backgroundColor:'#0093B7',
+            borderRadius:25,
+            width:150,
+            height:35,
         },
+        texto:{
+            color:'white',
+            fontFamily:'sans-serif',
+            fontSize:20,
+            textAlign:'center'  
+        },
+
     }
 );
 
