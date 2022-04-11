@@ -4,12 +4,46 @@ import { Button, View, ScrollView, Text, TouchableOpacity } from "react-native";
 import { Picker } from '@react-native-picker/picker'
 import { StyleSheet } from "react-native";
 
+function generarArregloDosis(name) {
+    let arreglo = []
+    for (let i = 1; i <= 10; i++) {
+        if (i == 1) {
+            arreglo.push(i + " " + name);
+        } else {
+            let ultimaPos = name.length - 1
+            if (ultimaPos != -1) {
+                const vocales = ["a", "e", "i", "o", "u"];
+                if (vocales.indexOf(name[ultimaPos]) === -1) {
+                    arreglo.push(i + " " + name + " (es)");
+                } else {
+                    arreglo.push(i + " " + name + " (s)");
+                }
+            }
+
+        }
+
+    }
+    return arreglo;
+}
+
+
 const DosisEdit = ({route, navigation }) => {
     const parametros  = route.params
     console.log(parametros)
     const [selectDose, setselectDose] = useState(parametros.dose);
     const [selectQuantity, setselectQuantity] = useState(parametros.quantity);
-
+    let { tipoAdm } = route.params;
+    let tipoDosis = route.params.dose
+    if (tipoAdm == "Via Oral") { tipoDosis = "Comprimido"; }
+    if (tipoAdm == "Via Intramuscular" ||
+        tipoAdm == "Via Parenteral") { tipoDosis = "Inyección"; }
+    if (tipoAdm == "Via Inalatoria") { tipoDosis = "Inhalación"; }
+    if (tipoAdm == "Via Nasal") { tipoDosis = "Aerosol"; }
+    if (tipoAdm == "Via Topica") { tipoDosis = "Aplicación"; }
+    if (tipoAdm == "Via Oftalmogica") { tipoDosis = "Gota"; }
+    let arregloItemDosis = generarArregloDosis(tipoDosis)
+    let arregloCantidadMed = new Array(10)
+    arregloCantidadMed.fill(2, 0, 10);
     const guardarCantidad = () => {
         if (selectDose != "" && selectQuantity != "") {
       
@@ -35,62 +69,61 @@ const DosisEdit = ({route, navigation }) => {
             <View style={STYLE_GROUP.container}>
                 <View style={STYLE_GROUP.containerItem}>
                     <View style={STYLE_GROUP.text}>
-                        <Text style={STYLE_GROUP.text}>{"Dosis:"}</Text>
+                        <Text style={STYLE_GROUP.text}>{'Dosis:'}</Text>
                     </View>
                     <View style={STYLE_GROUP.viewPicker}>
                         <Picker
                             selectedValue={selectDose}
                             style={STYLE_GROUP.picker}
-                            onValueChange={(itemValue, itemIndex) => setselectDose(itemValue)}
+                            onValueChange={(itemValue) => setselectDose(itemValue)}
                         >
-                            <Picker.Item style={STYLE_GROUP.pickerItem} label="1 Comprimido" value="1" />
-                            <Picker.Item style={STYLE_GROUP.pickerItem} label="2 Comprimido (s)" value="2" />
-                            <Picker.Item style={STYLE_GROUP.pickerItem} label="3 Comprimido" value="3" />
-                            <Picker.Item style={STYLE_GROUP.pickerItem} label="4 Comprimido (s)" value="4" />
-                            <Picker.Item style={STYLE_GROUP.pickerItem} label="5 Comprimido" value="5" />
-                            <Picker.Item style={STYLE_GROUP.pickerItem} label="6 Comprimido (s)" value="6" />
-                            <Picker.Item style={STYLE_GROUP.pickerItem} label="7 Comprimido" value="7" />
-                            <Picker.Item style={STYLE_GROUP.pickerItem} label="8 Comprimido (s)" value="8" />
-                            <Picker.Item style={STYLE_GROUP.pickerItem} label="9 Comprimido" value="9" />
-                            <Picker.Item style={STYLE_GROUP.pickerItem} label="10 Comprimido (s)" value="10" />
+                            {
+                                arregloItemDosis.map((item, key) => {
+                                    return (<Picker.Item
+                                        key={key}
+                                        style={STYLE_GROUP.pickerItem}
+                                        label={item}
+                                        value={key + 1} />
+                                    )
+                                })
+                            }
                         </Picker>
                     </View>
                 </View>
 
                 <View style={STYLE_GROUP.containerItem}>
                     <View>
-                        <Text style={STYLE_GROUP.text}>{" Cantidad de Medicamentos:"}</Text>
+                        <Text style={STYLE_GROUP.text}>{' Cantidad de Medicamentos:'}</Text>
                     </View>
                     <View style={STYLE_GROUP.viewPicker}>
                         <Picker
                             selectedValue={selectQuantity}
                             style={STYLE_GROUP.picker}
                             onValueChange={(itemValue, itemIndex) => setselectQuantity(itemValue)}
-                           // textStyle={{ fontSize: 60 }}
+                            textStyle={{ fontSize: 60 }}
                         >
-                            <Picker.Item style={STYLE_GROUP.pickerItem} label="1" value="1" />
-                            <Picker.Item style={STYLE_GROUP.pickerItem} label="2" value="2" />
-                            <Picker.Item style={STYLE_GROUP.pickerItem} label="3" value="3" />
-                            <Picker.Item style={STYLE_GROUP.pickerItem} label="4" value="4" />
-                            <Picker.Item style={STYLE_GROUP.pickerItem} label="5" value="5" />
-                            <Picker.Item style={STYLE_GROUP.pickerItem} label="6" value="6" />
-                            <Picker.Item style={STYLE_GROUP.pickerItem} label="7" value="7" />
-                            <Picker.Item style={STYLE_GROUP.pickerItem} label="8" value="8" />
-                            <Picker.Item style={STYLE_GROUP.pickerItem} label="9" value="9" />
-                            <Picker.Item style={STYLE_GROUP.pickerItem} label="10" value="10" />
+                            {
+                                arregloCantidadMed.map((item, key) => {
+                                    return (<Picker.Item
+                                        key={key}
+                                        style={STYLE_GROUP.pickerItem}
+                                        label={'' + (key + 1)}
+                                        value={key + 1} />)
+                                })
+                            }
                         </Picker>
                     </View>
                 </View>
 
 
             </View>
-            <View style={STYLE_GROUP.button}>
-                <Button title="CONTINUAR" onPress={() => guardarCantidad()} />
-            </View>
-
-
-
-
+            <TouchableOpacity
+                    onPress={()=>guardarCantidad()}
+                >
+                    <View style={STYLE_GROUP.button}>
+                        <Text style={STYLE_GROUP.texto}>Continuar</Text>
+                    </View>
+                </TouchableOpacity>
         </ScrollView>
     );
 };
