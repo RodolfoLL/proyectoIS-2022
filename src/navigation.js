@@ -12,10 +12,12 @@ import HoraScreen from '../src/screens/HoraScreen';
 import screenHome from "./screens/screenHome";
 import CantidadMedicamentos from "./screens/CantidadMedicamentos"
 import PantallaRegistroMed from "./screens/PantallaRegistroMed";
+import { View } from 'react-native-web';
 const HomeStackNavigator = createNativeStackNavigator();
 
 function MyStacks(){
     return(
+ 
         <HomeStackNavigator.Navigator initialRouteName='Medicate'>
             <HomeStackNavigator.Screen name="screenHome" component={screenHome}
             options={{headerTintColor: 'white',
@@ -37,9 +39,9 @@ function MyStacks(){
             <HomeStackNavigator.Screen name="FechaFinal" component={FechaFinal}
             options={{headerTintColor: 'white',
             headerStyle:{ backgroundColor: "#0093B7"}}}/>
-            
-            
+         
         </HomeStackNavigator.Navigator>
+        
     );
 }
 
@@ -48,7 +50,7 @@ const Tab = createBottomTabNavigator();
 function MyTabs(){
     return(
         <Tab.Navigator
-            initialRouteName='MEDCATE /'
+            initialRouteName='MEDICATE '
             screenOptions={{
                 tabBarActiveTintColor:'white',
                 tabBarStyle:{

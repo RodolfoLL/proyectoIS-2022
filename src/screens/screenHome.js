@@ -7,11 +7,20 @@ import { collection, query, where, getDocs } from "firebase/firestore";
 import { FlatList } from "react-native-gesture-handler";
 import { render } from "react-dom";
 import { ListItem ,Icon} from '@rneui/themed';
+import { RefreshControl,StyleSheet,SafeAreaView} from 'react-native';
 
 
-const screenHome = ({ navigation }) => {
 
-    
+const screenHome = ({ navigation  }) => {
+    const[refresh, setRefresh] = React.useState(false)
+
+    const pullMe =() => {
+        setRefresh(true)
+        setTimeout(( ) => {
+            setRefresh(false)
+        },1000)
+        setRefresh(listarRecordatorio);
+    }
     const [recordatorios, setRecordatorios] = useState([]);
 
     async function listarRecordatorio(){
@@ -42,8 +51,18 @@ const screenHome = ({ navigation }) => {
    
     return (
       
-        <View>
-        <ScrollView style={{ backgroundColor: '#001B48' }}>
+        <View>  
+           <ScrollView
+                        refreshControl ={
+                            <RefreshControl 
+                            refreshing={refresh}
+                            onRefresh ={() => pullMe}
+                            />}
+                            >
+      
+        <ScrollView   
+        style={{ backgroundColor: '#001B48' }}>
+         
             <View style={{
                 fontSize: 30,
                 alignItems: "center",
@@ -53,7 +72,9 @@ const screenHome = ({ navigation }) => {
                 <Text style={{ fontSize: 50, color: 'white', fontWeight: 'bold' }}>
                     MEDICATE 
                 </Text>
-                <View style={{width: "90%", height: "30%"}}>
+
+                <View style={{width: "90%", height: "25%"}}>
+                     
                     {recordatorios.map((recordatorio) => {
                         return (
                           <ListItem key={recordatorio.id} style={{marginBottom: 10}}>
@@ -71,6 +92,8 @@ const screenHome = ({ navigation }) => {
 
                               
                             </ListItem.Content>
+
+                           
                             
                             <View style={{ flexDirection: "column", height: "100%"}}>
                                 <Icon type="material-community" 
@@ -92,8 +115,10 @@ const screenHome = ({ navigation }) => {
                       
                 
             </View>
-
+            
         </ScrollView>
+       
+       
         <TouchableOpacity
                     onPress={() => navigation.navigate("Registro de Medicamento")}
                     style={{
@@ -105,8 +130,8 @@ const screenHome = ({ navigation }) => {
                         marginTop: "15%",
                         position: 'absolute',
                         bottom: 0,
-                        left:260,
-                        top:460 
+                        left:'72%',
+                        top:420
                     }}
                 >
                     <Text
@@ -119,15 +144,16 @@ const screenHome = ({ navigation }) => {
                         }}
                     >+</Text>
                 </TouchableOpacity>
+                
                 <StatusBar style="auto" />
          
-                       
+                </ScrollView>              
     </View>
    
     );
                                     
-}
+};
+
 
 export default screenHome;
-
 
