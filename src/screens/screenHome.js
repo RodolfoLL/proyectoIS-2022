@@ -71,7 +71,7 @@ const screenHome = ({ navigation }) => {
                 <View style={{width: "90%", height: "30%"}}>
                     {recordatorios.map((recordatorio) => {
                         return (
-                          <ListItem key={recordatorio.id} style={{marginBottom: 10}}>
+                          <ListItem key={recordatorio.id} style={{marginBottom: 5}}>
                             
                             <ListItem.Content bottomDivider style={{width: "100%", height: "100%",}}>
                              
@@ -79,17 +79,15 @@ const screenHome = ({ navigation }) => {
                               
                               <ListItem.Subtitle style={{ color: "black"}}>Tipo de administracion: {recordatorio.tipoAdm}</ListItem.Subtitle>
                               <ListItem.Subtitle style={{ color: "black"}}>Dosis: {recordatorio.dose}</ListItem.Subtitle>
-                              <ListItem.Subtitle style={{ color: "black"}}>Cantidad de medicamentos: {recordatorio.quantity}</ListItem.Subtitle>
-                              <ListItem.Subtitle style={{ color: "black"}}>Frecuencia: {recordatorio.item}</ListItem.Subtitle>
+                             
                               <ListItem.Subtitle style={{ color: "black"}}>Hora: {recordatorio.hora}</ListItem.Subtitle>
-                              <ListItem.Subtitle style={{ color: "black"}}>Duracion hasta: {recordatorio.duracion}</ListItem.Subtitle>
 
                               
                             </ListItem.Content>
                             
                             <View style={{ flexDirection: "column", height: "100%"}}>
                                 <Icon type="material-community" 
-                                    name={"pencil-circle"} size={50} 
+                                    name={"pencil-circle"} size={40} 
                                     color={"#0093B7"} 
                                     onPress={() => navigation.navigate("Editar Medicamento",{
                                         id: recordatorio.id,
@@ -106,7 +104,7 @@ const screenHome = ({ navigation }) => {
                                     style={{ marginTop: "0%"}}/>
                                 <Icon type="material-community" 
                                     name={"delete-circle"} 
-                                    size={50} color={"#0093B7"} 
+                                    size={40} color={"#0093B7"} 
                                     onPress={() => confirmarElimniar(recordatorio.id)} 
                                     style={{ marginTop: "80%"}}/>
                             </View>
