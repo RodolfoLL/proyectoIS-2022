@@ -79,9 +79,8 @@ const styles = StyleSheet.create({
     boton:{
         backgroundColor: "#0093B7",
         borderRadius:25,
-        borderRadius: 2,
         marginBottom: 20,
-        padding: 12,
+        padding: 10,
 		alignItems: 'center'
     },
     textBoton:{

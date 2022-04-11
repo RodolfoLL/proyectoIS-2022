@@ -7,7 +7,8 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 
 const HoraScreen=(props)=>{
     const { nombreMed,tipoAdm,dose,quantity,item } = props.route.params;
-    const frecuencia = item;
+    let frecuencia = item;
+    const [contador, setcontador] = useState(frecuencia)
     const [datos, setdatos] = useState([]);
     const [date, setDate] = useState(new Date());
     const [mode, setMode] = useState('date');
@@ -19,6 +20,7 @@ const HoraScreen=(props)=>{
             setShow(false);
             let template = new Date(currentDate).toTimeString().substring(0,5);
             setdatos([...datos,template]);
+            setcontador(contador -1);
     };
     const showMode=(currentMode)=>{
             setShow(true);
@@ -49,10 +51,13 @@ const HoraScreen=(props)=>{
             Alert.alert("upss","debes de ingresar una hora")
         }
     }
+    const RestablecerHoras =(datos)=>{
+        setdatos(datos=>[]);
+    }
       return (
         <View style={styles.container}>
-            <Text style={styles.texto}>Horas a establecer: {item}</Text>
-            <Text style={styles.texto}>{datos +","}</Text>
+            <Text style={styles.texto}>Horas a establecer: {contador}</Text>
+            <Text style={styles.texto}>{'('+datos +")"}</Text>
                 <TouchableOpacity
                     onPress={()=> showMode('time')}
                 >
@@ -66,6 +71,13 @@ const HoraScreen=(props)=>{
                 >
                     <View style={styles.buttonTime}>
                         <Text style={styles.texto}>Continuar</Text>
+                    </View>
+                </TouchableOpacity>
+                <TouchableOpacity
+                    onPress={()=>RestablecerHoras(datos)}
+                >
+                    <View style={styles.buttonTime}>
+                        <Text style={styles.texto}>Restablecer Horas</Text>
                     </View>
                 </TouchableOpacity>
              {show && (
