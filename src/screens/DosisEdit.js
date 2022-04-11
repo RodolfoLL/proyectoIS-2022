@@ -3,7 +3,6 @@ import React, { useState } from "react"
 import { Button, View, ScrollView, Text, TouchableOpacity } from "react-native";
 import { Picker } from '@react-native-picker/picker'
 import { StyleSheet } from "react-native";
-
 function generarArregloDosis(name) {
     let arreglo = []
     for (let i = 1; i <= 10; i++) {
@@ -178,10 +177,20 @@ const STYLE_GROUP = StyleSheet.create(
             fontSize: 24
 
         },
-        button: {
-            marginTop: "20%",
-            marginHorizontal: "13%"
+        button:{
+            alignSelf:'center',
+            backgroundColor:'#0093B7',
+            borderRadius:25,
+            width:150,
+            height:35,
         },
+        texto:{
+            color:'white',
+            fontFamily:'sans-serif',
+            fontSize:20,
+            textAlign:'center'  
+        },
+
     }
 );
 
