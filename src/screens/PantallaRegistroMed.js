@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Text, View, StyleSheet, Button, TextInput, ScrollView } from 'react-native';
+import { Text, View, StyleSheet, TextInput, ScrollView,TouchableOpacity } from 'react-native';
 import { CheckBox } from 'react-native-elements';
 
 var tipo = '';
@@ -140,11 +140,11 @@ const PantallaRegistroMed = ({ navigation }) => {
           />
         </View>
         <View style={styles.botones}>
-          <Button
-            title="Continuar"
-            color="#0093B7"
-            onPress={() => verificar(nombre, tipo)}
-          />
+                <TouchableOpacity
+                    onPress={() => verificar(nombre, tipo)}
+                >
+                        <Text style={styles.title}>Continuar</Text>
+                </TouchableOpacity>
         </View>
       </View>
     </ScrollView>
@@ -179,7 +179,7 @@ const mostrar = (n) => {
     console.log(tipo);
   }
   if (n == 7) {
-    tipo = "Via Parental"
+    tipo = "Via Parenteral"
     console.log(tipo);
   }
 }
@@ -192,8 +192,9 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 20,
-    paddingTop: 10,
+    paddingTop: 5,
     color: 'white'
+
   },
   inputS: {
     height: 40,
@@ -210,8 +211,14 @@ const styles = StyleSheet.create({
     margin: 20,
   },
   botones: {
-    padding: 7,
-    fontSize: 20
+    alignItems:'center',
+    backgroundColor:'#0093B7',
+    marginBottom:'15%',
+    borderRadius:25,
+    fontSize: 20,
+    marginLeft:'25%',
+    height:35,
+    width:150,
   }
 });
 export default PantallaRegistroMed;

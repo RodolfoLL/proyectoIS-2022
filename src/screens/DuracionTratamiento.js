@@ -37,7 +37,7 @@ const DuracionTratamiento = (props) => {
         }
         
         
-        props.navigation.navigate("screenHome")
+        props.navigation.navigate("screenHome");
     }
 
     const guardarEdit = async (id,datos) =>{
@@ -102,9 +102,9 @@ const styles = StyleSheet.create({
     },
     boton:{
         backgroundColor: "#0093B7",
-        borderRadius: 2,
+        borderRadius:25,
         marginBottom: 20,
-        padding: 12,
+        padding: 10,
 		alignItems: 'center'
     },
     textBoton:{

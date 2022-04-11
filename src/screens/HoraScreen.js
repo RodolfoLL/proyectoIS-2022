@@ -1,7 +1,6 @@
 import React, {useState} from 'react'
-import { View, Text,StyleSheet,TouchableOpacity} from 'react-native'
+import { View, Text,StyleSheet,TouchableOpacity,Alert} from 'react-native'
 import DateTimePicker from '@react-native-community/datetimepicker';
-import Navigation from '../navigation';
 // import {db} from './database/firebase';
 // import { doc, setDoc } from 'firebase/firestore';
 
@@ -22,63 +21,60 @@ const HoraScreen=(props)=>{
         var [datos, setdatos] = useState([]);
     }
     
+   
+    let frecuencia = item;
+    const [contador, setcontador] = useState(frecuencia)
+    const [datos, setdatos] = useState([]);
     const [date, setDate] = useState(new Date());
     const [mode, setMode] = useState('date');
     const [show, setShow] = useState(false);
     const onChange = (event, selectedDate) => {
-        const currentDate = selectedDate || date;
+            const currentDate = selectedDate || date;
             setDate(currentDate);
             setDate(currentDate);
             setShow(false);
-            let template = new Date(currentDate);
-            console.log(template.toTimeString())
-            let hora = template.getHours();
-            let minutos = template.getMinutes();
-            //let time = `${hora}:${minutos}`;
-            let time = hora+":"+minutos
-            setdatos([template.toTimeString()])
+            let template = new Date(currentDate).toTimeString().substring(0,5);
+            setdatos([...datos,template]);
+            setcontador(contador -1);
     };
     const showMode=(currentMode)=>{
-        setShow(true);
-        setMode(currentMode);
+            setShow(true);
+            setMode(currentMode);
     }
 
     const guardarHora = (hora)=>{
-        if (editar){
-            let datosRecordatorio = {
-                id: props.route.params.id,
-                nombreMed: nombreMed, 
-                tipoAdm: tipoAdm,
-                dose: dose,
-                quantity:quantity,
-                item: item,
-                hora:hora,
-                duracion: props.route.params.duracion,
-                editar:editar
-            } 
-            props.navigation.navigate('DuracionTratamiento',datosRecordatorio)
-        }
-        else{
+        if(hora.length !== 0 ){
             let datosRecordatorio = {
                 nombreMed: nombreMed, 
                 tipoAdm: tipoAdm,
                 dose: dose,
                 quantity:quantity,
                 item: item,
-                hora:hora,
-                editar:editar
+                hora:hora
             }
-            props.navigation.navigate('DuracionTratamiento',datosRecordatorio)
+            let nuevoArray = [...new Set(hora)]
+            if(nuevoArray.length === frecuencia){
+                props.navigation.navigate('DuracionTratamiento',datosRecordatorio)  
+            }
+            else{
+                if(nuevoArray.length !== frecuencia){
+                    Alert.alert("upss","necesitas seleccionar"+ " "+`${frecuencia}`+" " +"horas(diferentes)")
+                }
+            }
+
+        }else{
+            Alert.alert("upss","debes de ingresar una hora")
         }
-       
-        
-     }
+    }
+    const RestablecerHoras =(datos)=>{
+        setdatos(datos=>[]);
+    }
       return (
         <View style={styles.container}>
-            <Text style={styles.texto}>Numero de Periodos: {item}</Text>
-            <Text style={styles.texto}>{datos}</Text>
+            <Text style={styles.texto}>Horas a establecer: {contador}</Text>
+            <Text style={styles.texto}>{'('+datos +")"}</Text>
                 <TouchableOpacity
-                    onPress={(valor)=>showMode('time')}
+                    onPress={()=> showMode('time')}
                 >
                     <View style={styles.buttonTime}>
                         <Text style={styles.texto}>Hora</Text>
@@ -90,6 +86,13 @@ const HoraScreen=(props)=>{
                 >
                     <View style={styles.buttonTime}>
                         <Text style={styles.texto}>Continuar</Text>
+                    </View>
+                </TouchableOpacity>
+                <TouchableOpacity
+                    onPress={()=>RestablecerHoras(datos)}
+                >
+                    <View style={styles.buttonTime}>
+                        <Text style={styles.texto}>Restablecer Horas</Text>
                     </View>
                 </TouchableOpacity>
              {show && (
@@ -117,6 +120,7 @@ const styles = StyleSheet.create({
       },
     buttonTime:{
         backgroundColor: '#0093B7',
+        borderRadius:25,
         width:200,
         height:32,
         marginVertical:10,

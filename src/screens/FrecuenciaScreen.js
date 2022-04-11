@@ -46,7 +46,7 @@ if (editar){
 
   return (
     <View style ={styles.contain}>
-        <Text style={styles.texto}>Frecuencia dias de las dosis</Text>
+        <Text style={styles.texto}>Frecuencia en dias de las dosis</Text>
           <FlatList data={numeroFrecuencia} renderItem={({ item }) => (
           <TouchableOpacity
               onPress={() => guardarFrecuencia(item.frecuencia)}
@@ -77,6 +77,7 @@ const styles = StyleSheet.create({
 },
   button:{
     backgroundColor:'#0093B7',
+    borderRadius:25,
     width:200,
     height:32,
     marginVertical:20,
