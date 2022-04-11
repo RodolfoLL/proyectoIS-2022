@@ -10,21 +10,16 @@ const HoraScreen=(props)=>{
    
     if (editar){
         let duracion = props.route.params.hora
-        let cadena = ""
-        duracion.forEach(element => {
-           cadena = cadena + element + " "
-        });
+       
         
-        var [datos, setdatos] = useState(cadena);
+        var [datos, setdatos] = useState(duracion);
     }
     else{
         var [datos, setdatos] = useState([]);
     }
-    
    
     let frecuencia = item;
     const [contador, setcontador] = useState(frecuencia)
-    const [datos, setdatos] = useState([]);
     const [date, setDate] = useState(new Date());
     const [mode, setMode] = useState('date');
     const [show, setShow] = useState(false);
@@ -44,14 +39,34 @@ const HoraScreen=(props)=>{
 
     const guardarHora = (hora)=>{
         if(hora.length !== 0 ){
-            let datosRecordatorio = {
-                nombreMed: nombreMed, 
-                tipoAdm: tipoAdm,
-                dose: dose,
-                quantity:quantity,
-                item: item,
-                hora:hora
+
+            if(editar){
+                var datosRecordatorio = {
+                    id: props.route.params.id,
+                    nombreMed: nombreMed, 
+                    tipoAdm: tipoAdm,
+                    dose: dose,
+                    quantity:quantity,
+                    item: item,
+                    hora:hora,
+                    duracion: props.route.params.duracion,
+                    editar:editar
             }
+            console.log(hora)
+        }
+            else{
+                    var datosRecordatorio = {
+                        nombreMed: nombreMed, 
+                        tipoAdm: tipoAdm,
+                        dose: dose,
+                        quantity:quantity,
+                        item: item,
+                        hora:hora,
+                        editar:editar
+                    }
+            }
+            
+            
             let nuevoArray = [...new Set(hora)]
             if(nuevoArray.length === frecuencia){
                 props.navigation.navigate('DuracionTratamiento',datosRecordatorio)  
