@@ -130,7 +130,7 @@ const PantallaRegistroMed = ({ navigation }) => {
             }
           />
           <CheckBox
-            title='Via Parental'
+            title='Via Parenteral'
             checked={checkedParetal}
             onPress={() => {
               mostrar(7)
