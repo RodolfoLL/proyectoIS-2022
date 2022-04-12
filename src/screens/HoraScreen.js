@@ -10,19 +10,17 @@ const HoraScreen=(props)=>{
    
     if (editar){
         let duracion = props.route.params.hora
-       
-        
-        var [datos, setdatos] = useState(duracion);
-    }
-    else{
+        var [datos, sedatos] = useState(duracion);
+    }else{
         var [datos, setdatos] = useState([]);
     }
-    let cantPres = 0;
 
-    const aumentarPresionado = () => {
-        cantPres = cantPres+1
-        console.log(cantPres)
-    }
+    // let cantPres = 0;
+
+    // const aumentarPresionado = () => {
+    //     cantPres = cantPres+1
+    //     console.log(cantPres)
+    // }
     
     const verificarPresionado = () => {
         if(editar){
@@ -34,18 +32,22 @@ const HoraScreen=(props)=>{
         }
     }
     let frecuencia = item;
+    var [datos, setdatos] = useState([]);
     const [contador, setcontador] = useState(frecuencia)
     const [date, setDate] = useState(new Date());
     const [mode, setMode] = useState('date');
     const [show, setShow] = useState(false);
     const onChange = (event, selectedDate) => {
-            const currentDate = selectedDate || date;
-            setDate(currentDate);
-            setShow(false);
-            setDate(currentDate);
-            let template = new Date(currentDate).toTimeString().substring(0,5);
-            setdatos([...datos,template]);
-            setcontador(contador -1);
+            if(event.type==='set'){
+                setShow(false);
+                const currentDate = selectedDate || date;
+                setDate(currentDate);
+                let template = new Date(currentDate).toTimeString().substring(0,5);
+                setdatos([...datos,template]);
+                setcontador(contador -1);
+            }else{
+                setShow(false)
+            }
     };
     const showMode=(currentMode)=>{
         if(contador === 0){
@@ -110,11 +112,8 @@ const HoraScreen=(props)=>{
             <Text style={styles.texto}>{'('+datos +")"}</Text>
                 <TouchableOpacity
                     onPress={()=> {showMode('time')
-                                aumentarPresionado()
-                                verificarPresionado()
-                }
-                                
-                }
+                                   verificarPresionado()
+                }}
                 >
                     <View style={styles.buttonTime}>
                         <Text style={styles.texto}>Hora</Text>
