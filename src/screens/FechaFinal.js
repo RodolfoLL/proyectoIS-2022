@@ -5,12 +5,22 @@ import { doc, setDoc } from 'firebase/firestore';
 import {db} from '../../database/firebase'
 
 const FechaFinal = (props) => {
+    const {editar} = props.route.params;
+    if (editar){
+        let {duracion} = props.route.params
+        console.log(duracion)
+        var [textDate, setText] = useState(duracion);
+    }
+    else{
+        var [textDate, setText] = useState(false);
+    }
     const [date, setDate] = useState(new Date());
     const [mode, setMode] = useState('date');
     const [show, setShow] = useState(false);
-    const [textDate, setText] = useState(false);
+    
 
     const onChange = (event, selectedDate) => {
+
             const currentDate = selectedDate || date;
             setShow(false);
             setDate(currentDate);
@@ -30,29 +40,51 @@ const FechaFinal = (props) => {
     const { nombreMed,tipoAdm,dose,quantity,item,hora } = props.route.params;
     
     const guardarDuracion = (duracion)=>{
-
-        let datosRecordatorio = {
-            nombreMed: nombreMed, 
-            tipoAdm: tipoAdm,
-            dose: dose,
-            quantity:quantity,
-            item: item,
-            hora:hora,
-            duracion: duracion
+        if(editar){
+            let datosRecordatorio = {
+                nombreMed: nombreMed, 
+                tipoAdm: tipoAdm,
+                dose: dose,
+                quantity:quantity,
+                item: item,
+                hora:hora,
+                duracion: duracion
+            }
+            const id = props.route.params.id
+            guardarEdit(id,datosRecordatorio)
         }
+        else{
+            let datosRecordatorio = {
+                nombreMed: nombreMed, 
+                tipoAdm: tipoAdm,
+                dose: dose,
+                quantity:quantity,
+                item: item,
+                hora:hora,
+                duracion: duracion
+            }
+    
+            const myDoc = doc(db,'Recordatorios','Recordatorio');
+            const docdata = datosRecordatorio
+            setDoc(myDoc,docdata)
+              .then(()=> {
+              })
+              .catch((error)=>{
+               alert(error.mesagge)
+            })
 
-        const myDoc = doc(db,'Recordatorios','Recordatorio');
-        const docdata = datosRecordatorio
-        setDoc(myDoc,docdata)
-          .then(()=> {
-          })
-          .catch((error)=>{
-           alert(error.mesagge)
-        })
+        }
+       
 
         props.navigation.navigate("screenHome")
     }
-
+    const guardarEdit = async (id,datos) =>{
+        
+        const docref = doc(db,"Recordatorios",id)
+        console.log(docref)
+        console.log(datos);
+        await setDoc(docref,datos)
+    }
     return(
         <View style={styles.container}>
             <View style={[styles.box, styles.box1]}>
