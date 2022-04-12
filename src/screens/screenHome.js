@@ -47,7 +47,7 @@ const screenHome = ({ navigation  }) => {
 
     useEffect(() => {
             listarRecordatorio()
-    }, []);
+    });
     const elimnarRecordatorio = async (id) =>{
         console.log(id)
         const docRef = doc(db,"Recordatorios",id)
@@ -93,7 +93,7 @@ const screenHome = ({ navigation  }) => {
                         return (
                           <ListItem key={recordatorio.id} style={{marginBottom: 10}}>
                             
-                            <ListItem.Content bottomDivider style={{width: "100%", height: "100%",}}>
+                            <ListItem.Content bottomDivider style={{width: "100%", height:150}}>
                              
                               <ListItem.Title style={{ color: "black", fontSize: 25, fontWeight: "bold"}}>{recordatorio.nombreMed}</ListItem.Title>
                               
