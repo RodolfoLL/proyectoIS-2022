@@ -10,7 +10,7 @@ const HoraScreen=(props)=>{
    
     if (editar){
         let duracion = props.route.params.hora
-        var [datos, sedatos] = useState(duracion);
+        var [datos, setdatos] = useState(duracion);
     }else{
         var [datos, setdatos] = useState([]);
     }
