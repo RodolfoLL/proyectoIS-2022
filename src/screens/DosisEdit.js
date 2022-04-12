@@ -1,9 +1,8 @@
 
 import React, { useState } from "react"
-import { Button, View, ScrollView, Text,TouchableOpacity } from "react-native";
+import { Button, View, ScrollView, Text, TouchableOpacity } from "react-native";
 import { Picker } from '@react-native-picker/picker'
 import { StyleSheet } from "react-native";
-
 function generarArregloDosis(name) {
     let arreglo = []
     for (let i = 1; i <= 10; i++) {
@@ -25,12 +24,15 @@ function generarArregloDosis(name) {
     }
     return arreglo;
 }
-const CantidadMedicamentos = ({ route, navigation }) => {
-    let tipoDosis = ""
-    const [selectDose, setselectDose] = useState("1");
-    const [selectQuantity, setselectQuantity] = useState("1");
-    let { nombreMed, tipoAdm } = route.params;
 
+
+const DosisEdit = ({route, navigation }) => {
+    const parametros  = route.params
+    console.log(parametros)
+    const [selectDose, setselectDose] = useState(parametros.dose);
+    const [selectQuantity, setselectQuantity] = useState(parametros.quantity);
+    let { tipoAdm } = route.params;
+    let tipoDosis = route.params.dose
     if (tipoAdm == "Via Oral") { tipoDosis = "Comprimido"; }
     if (tipoAdm == "Via Intramuscular" ||
         tipoAdm == "Via Parenteral") { tipoDosis = "Inyección"; }
@@ -38,23 +40,29 @@ const CantidadMedicamentos = ({ route, navigation }) => {
     if (tipoAdm == "Via Nasal") { tipoDosis = "Aerosol"; }
     if (tipoAdm == "Via Topica") { tipoDosis = "Aplicación"; }
     if (tipoAdm == "Via Oftalmogica") { tipoDosis = "Gota"; }
-
     let arregloItemDosis = generarArregloDosis(tipoDosis)
     let arregloCantidadMed = new Array(10)
     arregloCantidadMed.fill(2, 0, 10);
-
     const guardarCantidad = () => {
         if (selectDose != "" && selectQuantity != "") {
+      
+            var quantityField = {
+                quantityField:
+                    { dose: selectDose, quantity: selectQuantity }
+            };
             navigation.navigate("Frecuencia Dosis", {
-                nombreMed: nombreMed,
-                tipoAdm: tipoAdm,
-                dose: selectDose,
-                quantity: selectQuantity,
-                editar:false
+            id: parametros.id,
+            nombreMed:parametros.nombreMed,
+            tipoAdm: parametros.tipoAdm,
+            dose: selectDose,
+            quantity:selectQuantity,
+            item: parametros.item,
+            hora: parametros.hora,
+            duracion: parametros.duracion,
+            editar:true
             })
         }
     };
-
     return (
         <ScrollView style={STYLE_GROUP.containerMain} >
             <View style={STYLE_GROUP.container}>
@@ -185,4 +193,5 @@ const STYLE_GROUP = StyleSheet.create(
 
     }
 );
-export default CantidadMedicamentos
+
+export default DosisEdit

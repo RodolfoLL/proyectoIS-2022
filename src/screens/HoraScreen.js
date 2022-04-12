@@ -6,52 +6,94 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 
 
 const HoraScreen=(props)=>{
-    const { nombreMed,tipoAdm,dose,quantity,item } = props.route.params;
+    const { nombreMed,tipoAdm,dose,quantity,item,editar } = props.route.params;
+    if (editar){
+        let duracion = props.route.params.hora
+        var [datos, setdatos] = useState(duracion);
+    }else{
+        var [datos, setdatos] = useState([]);
+    }
+
+    // let cantPres = 0;
+
+    // const aumentarPresionado = () => {
+    //     cantPres = cantPres+1
+    //     console.log(cantPres)
+    // }
+    
+    const verificarPresionado = () => {
+        if(editar){
+            if (cantPres <= 1){
+                RestablecerHoras(datos);
+                
+            } 
+            console.log(datos)
+        }
+    }
     let frecuencia = item;
-    const [contador, setcontador] = useState(frecuencia);
-    const [datos, setdatos] = useState([]);
+    var [datos, setdatos] = useState([]);
+    const [contador, setcontador] = useState(frecuencia)
     const [date, setDate] = useState(new Date());
     const [mode, setMode] = useState('date');
     const [show, setShow] = useState(false);
     const onChange = (event, selectedDate) => {
             if(event.type==='set'){
-                const currentDate = selectedDate || date;
                 setShow(false);
+                const currentDate = selectedDate || date;
                 setDate(currentDate);
                 let template = new Date(currentDate).toTimeString().substring(0,5);
                 setdatos([...datos,template]);
                 setcontador(contador -1);
             }else{
-                setShow(false);
-                setdatos([]);
+                setShow(false)
             }
     };
     const showMode=(currentMode)=>{
-            if(contador === 0){
-                Alert.alert("Bien","No debes ingresar mas horas,presiona el boton 'continuar'")
-            }else{
-                setShow(true);
-                setMode(currentMode);
-            }
+        if(contador === 0){
+            Alert.alert("Ups","No puedes agregar mas horas");
+        }else{
+            setShow(true);
+            setMode(currentMode);
+        }
     }
 
     const guardarHora = (hora)=>{
         if(hora.length !== 0 ){
-            let datosRecordatorio = {
-                nombreMed: nombreMed, 
-                tipoAdm: tipoAdm,
-                dose: dose,
-                quantity:quantity,
-                item: item,
-                hora:hora
+
+            if(editar){
+                var datosRecordatorio = {
+                    id: props.route.params.id,
+                    nombreMed: nombreMed, 
+                    tipoAdm: tipoAdm,
+                    dose: dose,
+                    quantity:quantity,
+                    item: item,
+                    hora:hora,
+                    duracion: props.route.params.duracion,
+                    editar:editar
             }
+            console.log(hora)
+        }
+            else{
+                    var datosRecordatorio = {
+                        nombreMed: nombreMed, 
+                        tipoAdm: tipoAdm,
+                        dose: dose,
+                        quantity:quantity,
+                        item: item,
+                        hora:hora,
+                        editar:editar
+                    }
+            }
+            
+            
             let nuevoArray = [...new Set(hora)]
             console.log(nuevoArray.length)
             if(nuevoArray.length === frecuencia){
-                props.navigation.navigate('DuracionTratamiento',datosRecordatorio) 
+                props.navigation.navigate('DuracionTratamiento',datosRecordatorio)
             }
             else{
-                if(nuevoArray.length !== frecuencia || nuevoArray.length< frecuencia){
+                if(nuevoArray.length !== frecuencia){
                     Alert.alert("upss","necesitas seleccionar solo"+ " "+`${frecuencia}`+" " +"horas(diferentes)")
                 }
             }
@@ -69,7 +111,9 @@ const HoraScreen=(props)=>{
             <Text style={styles.texto}>Horas a establecer: {contador}</Text>
             <Text style={styles.texto}>{'('+datos +")"}</Text>
                 <TouchableOpacity
-                    onPress={()=> showMode('time')}
+                    onPress={()=> {showMode('time')
+                                   verificarPresionado()
+                }}
                 >
                     <View style={styles.buttonTime}>
                         <Text style={styles.texto}>Hora</Text>
