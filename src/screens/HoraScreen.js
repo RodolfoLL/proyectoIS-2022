@@ -39,17 +39,19 @@ const HoraScreen=(props)=>{
     const [mode, setMode] = useState('date');
     const [show, setShow] = useState(false);
     const onChange = (event, selectedDate) => {
-            const currentDate = selectedDate || date;
-            setShow(false);
-            setDate(currentDate);
+            if(event !== 'cancel'){
+                const currentDate = selectedDate || date;
+                setShow(false);
+                setDate(currentDate);
             
-            let template = new Date(currentDate).toTimeString().substring(0,5);
-            setdatos([...datos,template]);
-            setcontador(contador -1);
+                let template = new Date(currentDate).toTimeString().substring(0,5);
+                setdatos([...datos,template]);
+                setcontador(contador -1);
+            }
     };
     const showMode=(currentMode)=>{
         if(contador === 0){
-            Alert.alert("Bien","No debes ingresar mas horas,presiona el boton 'continuar'")
+            Alert.alert("Ups","No puedes agregar mas horas");
         }else{
             setShow(true);
             setMode(currentMode);
@@ -102,6 +104,7 @@ const HoraScreen=(props)=>{
     }
     const RestablecerHoras =(datos)=>{
         setdatos(datos=>[]);
+        setcontador(frecuencia);
     }
       return (
         <View style={styles.container}>
