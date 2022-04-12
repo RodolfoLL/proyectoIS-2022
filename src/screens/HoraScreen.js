@@ -14,12 +14,17 @@ const HoraScreen=(props)=>{
     const [mode, setMode] = useState('date');
     const [show, setShow] = useState(false);
     const onChange = (event, selectedDate) => {
-            const currentDate = selectedDate || date;
-            setShow(false);
-            setDate(currentDate);
-            let template = new Date(currentDate).toTimeString().substring(0,5);
-            setdatos([...datos,template]);
-            setcontador(contador -1);
+            if(event.type==='set'){
+                const currentDate = selectedDate || date;
+                setShow(false);
+                setDate(currentDate);
+                let template = new Date(currentDate).toTimeString().substring(0,5);
+                setdatos([...datos,template]);
+                setcontador(contador -1);
+            }else{
+                setShow(false);
+                setdatos([]);
+            }
     };
     const showMode=(currentMode)=>{
             if(contador === 0){
