@@ -1,17 +1,26 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, TouchableOpacity, ScrollView, Image,Alert} from "react-native";
+import { View, Text, TouchableOpacity, ScrollView, Image} from "react-native";
 import image from '../assets/medicate.png'
 import {db} from '../../database/firebase'
 import { StatusBar } from 'expo-status-bar';
-import { collection, query, where, getDocs, doc,deleteDoc } from "firebase/firestore";
+import { collection, query, where, getDocs ,doc, deleteDoc} from "firebase/firestore";
 import { FlatList } from "react-native-gesture-handler";
 import { render } from "react-dom";
 import { ListItem ,Icon} from 'react-native-elements';
+import { RefreshControl,StyleSheet,SafeAreaView,Alert} from 'react-native';
 
 
-const screenHome = ({ navigation }) => {
 
-    
+const screenHome = ({ navigation  }) => {
+    const[refresh, setRefresh] = React.useState(false)
+
+    const pullMe =() => {
+        setRefresh(true)
+        setTimeout(( ) => {
+            setRefresh(false)
+        },1000)
+        setRefresh(listarRecordatorio);
+    }
     const [recordatorios, setRecordatorios] = useState([]);
 
     async function listarRecordatorio(){
@@ -38,9 +47,7 @@ const screenHome = ({ navigation }) => {
 
     useEffect(() => {
             listarRecordatorio()
-    },[]);
-   
-
+    }, []);
     const elimnarRecordatorio = async (id) =>{
         console.log(id)
         const docRef = doc(db,"Recordatorios",id)
@@ -55,10 +62,21 @@ const screenHome = ({ navigation }) => {
         ])
 
     }
+
+
     return (
       
-        <View>
-        <ScrollView style={{ backgroundColor: '#001B48' }}>
+        <View>  
+          
+      
+        <ScrollView  refreshControl ={
+                            <RefreshControl 
+                            refreshing={refresh}
+                            onRefresh ={() => pullMe}
+                            />}
+                            
+        style={{ backgroundColor: '#001B48' }}>
+         
             <View style={{
                 fontSize: 30,
                 alignItems: "center",
@@ -68,10 +86,12 @@ const screenHome = ({ navigation }) => {
                 <Text style={{ fontSize: 50, color: 'white', fontWeight: 'bold' }}>
                     MEDICATE 
                 </Text>
-                <View style={{width: "90%", height: "30%"}}>
+
+                <View style={{width: "90%", height: "20%"}}>
+                     
                     {recordatorios.map((recordatorio) => {
                         return (
-                          <ListItem key={recordatorio.id} style={{marginBottom: 5}}>
+                          <ListItem key={recordatorio.id} style={{marginBottom: 10}}>
                             
                             <ListItem.Content bottomDivider style={{width: "100%", height: "100%",}}>
                              
@@ -79,15 +99,19 @@ const screenHome = ({ navigation }) => {
                               
                               <ListItem.Subtitle style={{ color: "black"}}>Tipo de administracion: {recordatorio.tipoAdm}</ListItem.Subtitle>
                               <ListItem.Subtitle style={{ color: "black"}}>Dosis: {recordatorio.dose}</ListItem.Subtitle>
-                             
+                              <ListItem.Subtitle style={{ color: "black"}}>Cantidad de medicamentos: {recordatorio.quantity}</ListItem.Subtitle>
+                              <ListItem.Subtitle style={{ color: "black"}}>Frecuencia: {recordatorio.item}</ListItem.Subtitle>
                               <ListItem.Subtitle style={{ color: "black"}}>Hora: {recordatorio.hora}</ListItem.Subtitle>
+                              <ListItem.Subtitle style={{ color: "black"}}>Duracion hasta: {recordatorio.duracion}</ListItem.Subtitle>
 
                               
                             </ListItem.Content>
+
+                           
                             
                             <View style={{ flexDirection: "column", height: "100%"}}>
                                 <Icon type="material-community" 
-                                    name={"pencil-circle"} size={40} 
+                                    name={"pencil-circle"} size={50} 
                                     color={"#0093B7"} 
                                     onPress={() => navigation.navigate("Editar Medicamento",{
                                         id: recordatorio.id,
@@ -100,11 +124,11 @@ const screenHome = ({ navigation }) => {
                                         duracion: recordatorio.duracion,
                 
                                     })}
-                                
+  
                                     style={{ marginTop: "0%"}}/>
                                 <Icon type="material-community" 
                                     name={"delete-circle"} 
-                                    size={40} color={"#0093B7"} 
+                                    size={50} color={"#0093B7"} 
                                     onPress={() => confirmarElimniar(recordatorio.id)} 
                                     style={{ marginTop: "80%"}}/>
                             </View>
@@ -116,8 +140,10 @@ const screenHome = ({ navigation }) => {
                       
                 
             </View>
-
+            
         </ScrollView>
+       
+       
         <TouchableOpacity
                     onPress={() => navigation.navigate("Registro de Medicamento")}
                     style={{
@@ -129,8 +155,8 @@ const screenHome = ({ navigation }) => {
                         marginTop: "15%",
                         position: 'absolute',
                         bottom: 0,
-                        left:260,
-                        top:460 
+                        left:'72%',
+                        top:420
                     }}
                 >
                     <Text
@@ -143,6 +169,7 @@ const screenHome = ({ navigation }) => {
                         }}
                     >+</Text>
                 </TouchableOpacity>
+                
                 <StatusBar style="auto" />
          
                        
@@ -150,6 +177,8 @@ const screenHome = ({ navigation }) => {
    
     );
                                     
-}
+};
+
 
 export default screenHome;
+
