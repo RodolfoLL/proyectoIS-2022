@@ -40,16 +40,20 @@ const HoraScreen=(props)=>{
     const [show, setShow] = useState(false);
     const onChange = (event, selectedDate) => {
             const currentDate = selectedDate || date;
-            setDate(currentDate);
-            setDate(currentDate);
             setShow(false);
+            setDate(currentDate);
+            
             let template = new Date(currentDate).toTimeString().substring(0,5);
             setdatos([...datos,template]);
             setcontador(contador -1);
     };
     const showMode=(currentMode)=>{
+        if(contador === 0){
+            Alert.alert("Bien","No debes ingresar mas horas,presiona el boton 'continuar'")
+        }else{
             setShow(true);
             setMode(currentMode);
+        }
     }
 
     const guardarHora = (hora)=>{
