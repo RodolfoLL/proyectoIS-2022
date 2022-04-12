@@ -8,7 +8,11 @@ const DuracionTratamiento = (props) => {
 
     const { nombreMed,tipoAdm,dose,quantity,item,hora,editar } = props.route.params;
     
-    const guardarDuracion = (duracion)=>{
+    const guardarDuracion = (nDias)=>{
+        let fechaActual = new Date()
+        let fechaTemporal = new Date(fechaActual.getFullYear(),fechaActual.getMonth(),fechaActual.getDate()+nDias)
+        let duracion = fechaTemporal.toDateString()
+
         if (editar){
             
             let datosRecordatorio = {
@@ -56,19 +60,19 @@ const DuracionTratamiento = (props) => {
 
             <View style={[styles.box, styles.box2]}>
                 <TouchableOpacity style={styles.boton}
-                    onPress={() => guardarDuracion('5 dias')} >
+                    onPress={() => guardarDuracion(5)} >
                     <Text style={styles.textBoton}>5 dias</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.boton}
-                    onPress={() => guardarDuracion('10 dias')}  >
+                    onPress={() => guardarDuracion(10)}  >
                     <Text style={styles.textBoton}>10 dias</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.boton}
-                    onPress={() => guardarDuracion('1 semana')}  >
+                    onPress={() => guardarDuracion(7)}  >
                     <Text style={styles.textBoton}>1 semana</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.boton}
-                    onPress={() => guardarDuracion('30 dias')}  >
+                    onPress={() => guardarDuracion(30)}  >
                     <Text style={styles.textBoton}>30 dias</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.boton}

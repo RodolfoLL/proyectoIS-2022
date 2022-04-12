@@ -1,7 +1,7 @@
 import React, {useState} from 'react'
 import { View, Text, StyleSheet,TouchableOpacity,Button } from 'react-native'
 import  DateTimePicker  from '@react-native-community/datetimepicker'
-import { doc, setDoc } from 'firebase/firestore';
+import { doc, setDoc,collection, addDoc} from 'firebase/firestore';
 import {db} from '../../database/firebase'
 
 const FechaFinal = (props) => {
@@ -26,8 +26,9 @@ const FechaFinal = (props) => {
             setDate(currentDate);
 
             let temporalDate = new Date(currentDate)
-            let fecha = temporalDate.getDate() +'/'+ (temporalDate.getMonth()+1)+'/'+ temporalDate.getFullYear() 
-            setText(fecha)
+            //let fecha = temporalDate.getDate() +'/'+ (temporalDate.getMonth()+1)+'/'+ temporalDate.getFullYear() 
+            let miFecha = temporalDate.toDateString()
+            setText(miFecha)
             
             console.log(currentDate)
     };
@@ -64,18 +65,8 @@ const FechaFinal = (props) => {
                 duracion: duracion
             }
     
-            const myDoc = doc(db,'Recordatorios','Recordatorio');
-            const docdata = datosRecordatorio
-            setDoc(myDoc,docdata)
-              .then(()=> {
-              })
-              .catch((error)=>{
-               alert(error.mesagge)
-            })
-
+            addDoc(collection(db, 'Recordatorios'), datosRecordatorio)
         }
-       
-
         props.navigation.navigate("screenHome")
     }
     const guardarEdit = async (id,datos) =>{
