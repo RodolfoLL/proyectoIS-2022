@@ -13,6 +13,10 @@ pantallaHoraRecordatorio = {horaRecordatorio: {hora:[Datetime]}}
 pantallaDuracionTratamiento = {duracionTratamiento: {duracion:String}}
 ```
 
+Para la editar y elimnar datos por medio de las pantallas se utilizara los parametros
+             {id:String,editar : boolean } 
+junto con todos los datos que manda cada pantalla
+
 ## Reglas
 - Para la navegación entre pantallas se usará el módulo navigation.js
 - Que App.js será el archivo principal de ejecución, que llamará a todos los módulos y pantallas
@@ -28,7 +32,7 @@ pantallaDuracionTratamiento = {duracionTratamiento: {duracion:String}}
     font: predeterminado
     
 ## Dependencias
-
+- @react-native-picker/picker
 
 
 

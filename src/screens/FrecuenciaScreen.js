@@ -6,8 +6,8 @@ import { View,Text,StyleSheet,TouchableOpacity,FlatList} from 'react-native';
 
 const FrecuenciaScreen = (props) => {
   
-  const { nombreMed,tipoAdm,dose,quantity } = props.route.params;
-
+  const { nombreMed,tipoAdm,dose,quantity,editar } = props.route.params;
+    
   const [numeroFrecuencia, setnumeroFrecuencia] = useState([
     {title:"Una vez al dia",frecuencia:1,key:1},
     {title:"Dos veces al dia",frecuencia:2,key:2},
@@ -17,17 +17,30 @@ const FrecuenciaScreen = (props) => {
     {title:"Seis veces al dia",frecuencia:6,key:6},
   ]);
   // setnumeroFrecuencia([...numeroFrecuencia,dosis,cantidadMed,hora])
-
+  
+  
   const guardarFrecuencia = (item)=>{
-
-    let datosRecordatorio = {
-        nombreMed: nombreMed, 
-        tipoAdm: tipoAdm,
-        dose: dose,
-        quantity:quantity,
-        item: item
+if (editar){
+   var datosRecordatorio = { 
+      id: props.route.params.id,
+      nombreMed: nombreMed, 
+      tipoAdm: tipoAdm,
+      dose: dose,
+      quantity:quantity,
+      item: item,
+      hora: props.route.params.hora,
+      duracion: props.route.params.duracion,
+      editar:true
     }
-
+  }
+  else{
+    var datosRecordatorio = { 
+      nombreMed: nombreMed, 
+      tipoAdm: tipoAdm,
+      dose: dose,
+      quantity:quantity,
+      item: item  
+    }}
     props.navigation.navigate('HoraScreen',datosRecordatorio)
   }
 
