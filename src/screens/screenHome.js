@@ -1,53 +1,28 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, TouchableOpacity, ScrollView, Image} from "react-native";
+import { View, Text, TouchableOpacity, ScrollView, Image, SafeAreaView,Alert,FlatList} from "react-native";
 import image from '../assets/medicate.png'
 import {db} from '../../database/firebase'
 import { StatusBar } from 'expo-status-bar';
-import { collection, query, where, getDocs ,doc, deleteDoc} from "firebase/firestore";
-import { FlatList } from "react-native-gesture-handler";
+import { collection, query, where, getDocs ,doc, deleteDoc, onSnapshot} from "firebase/firestore";
 import { render } from "react-dom";
 import { ListItem ,Icon} from 'react-native-elements';
-import { RefreshControl,StyleSheet,SafeAreaView,Alert} from 'react-native';
+
 
 
 
 const screenHome = ({ navigation  }) => {
-    const[refresh, setRefresh] = React.useState(false)
 
-    const pullMe =() => {
-        setRefresh(true)
-        setTimeout(( ) => {
-            setRefresh(false)
-        },1000)
-        setRefresh(listarRecordatorio);
-    }
     const [recordatorios, setRecordatorios] = useState([]);
+    console.log(recordatorios)
+    useEffect(
+        () => 
+            onSnapshot(collection(db,"Recordatorios"), (snapshot) =>
+                setRecordatorios(snapshot.docs.map((doc) => ({...doc.data(),id: doc.id})))
 
-    async function listarRecordatorio(){
-        const listaRecordatorios = [];
-        const q = query(collection(db, "Recordatorios"));
-        const querySnapshot = await getDocs(q);
+            ),
+            []
+            );
 
-        querySnapshot.forEach((doc) => {
-            const { nombreMed,tipoAdm,dose,quantity,item,hora, duracion } = doc.data()
-            listaRecordatorios.push({
-                id: doc.id,
-                nombreMed,
-                tipoAdm,
-                dose,
-                quantity,
-                item,
-                hora,
-                duracion
-            });
-        });
-
-        setRecordatorios(listaRecordatorios);
-    }
-
-    useEffect(() => {
-            listarRecordatorio()
-    });
     const elimnarRecordatorio = async (id) =>{
         console.log(id)
         const docRef = doc(db,"Recordatorios",id)
@@ -66,16 +41,10 @@ const screenHome = ({ navigation  }) => {
 
     return (
       
-        <View>  
+        <SafeAreaView style={{ backgroundColor: '#001B48' }}>  
           
       
-        <ScrollView  refreshControl ={
-                            <RefreshControl 
-                            refreshing={refresh}
-                            onRefresh ={() => pullMe}
-                            />}
-                            
-        style={{ backgroundColor: '#001B48' }}>
+      
          
             <View style={{
                 fontSize: 30,
@@ -86,63 +55,63 @@ const screenHome = ({ navigation  }) => {
                 <Text style={{ fontSize: 50, color: 'white', fontWeight: 'bold' }}>
                     MEDICATE 
                 </Text>
-
-                <View style={{width: "90%", height: "20%"}}>
-                     
-                    {recordatorios.map((recordatorio) => {
-                        return (
-                          <ListItem key={recordatorio.id} style={{marginBottom: 10}}>
-                            
-                            <ListItem.Content bottomDivider style={{width: "100%", height:150}}>
-                             
-                              <ListItem.Title style={{ color: "black", fontSize: 25, fontWeight: "bold"}}>{recordatorio.nombreMed}</ListItem.Title>
-                              
-                              <ListItem.Subtitle style={{ color: "black"}}>Tipo de administracion: {recordatorio.tipoAdm}</ListItem.Subtitle>
-                              <ListItem.Subtitle style={{ color: "black"}}>Dosis: {recordatorio.dose}</ListItem.Subtitle>
-                              <ListItem.Subtitle style={{ color: "black"}}>Cantidad de medicamentos: {recordatorio.quantity}</ListItem.Subtitle>
-                              <ListItem.Subtitle style={{ color: "black"}}>Frecuencia: {recordatorio.item}</ListItem.Subtitle>
-                              <ListItem.Subtitle style={{ color: "black"}}>Hora: {recordatorio.hora}</ListItem.Subtitle>
-                              <ListItem.Subtitle style={{ color: "black"}}>Duracion hasta: {recordatorio.duracion}</ListItem.Subtitle>
-
-                              
-                            </ListItem.Content>
-
-                           
-                            
-                            <View style={{ flexDirection: "column", height: "100%"}}>
-                                <Icon type="material-community" 
-                                    name={"pencil-circle"} size={50} 
-                                    color={"#0093B7"} 
-                                    onPress={() => navigation.navigate("Editar Medicamento",{
-                                        id: recordatorio.id,
-                                        nombreMed:recordatorio.nombreMed,
-                                        tipoAdm: recordatorio.tipoAdm,
-                                        dose: recordatorio.dose,
-                                        quantity: recordatorio.quantity,
-                                        item: recordatorio.item,
-                                        hora: recordatorio.hora,
-                                        duracion: recordatorio.duracion,
-                
-                                    })}
-  
-                                    style={{ marginTop: "0%"}}/>
-                                <Icon type="material-community" 
-                                    name={"delete-circle"} 
-                                    size={50} color={"#0093B7"} 
-                                    onPress={() => confirmarElimniar(recordatorio.id)} 
-                                    style={{ marginTop: "80%"}}/>
-                            </View>
-                          </ListItem>
-                        );
-                      })}
-                </View>
-                
-                      
+                                  
                 
             </View>
             
-        </ScrollView>
        
+        
+        <FlatList
+            data={recordatorios}
+            keyExtractor =  {(item) => item.id}
+            renderItem = { ({item,index}) => 
+            
+            <View style={{width: "90%", height: "20%"}}>
+            <ListItem key={item.id} style={{ marginBottom:70}}>
+                            
+            <ListItem.Content bottomDivider style={{width: "100%", height:150 }}>
+             
+              <ListItem.Title style={{ color: "black", fontSize: 25, fontWeight: "bold"}}>{item.nombreMed}</ListItem.Title>
+              
+            <ListItem.Subtitle style={{ color: "black"}}>Tipo de administracion: {item.tipoAdm}</ListItem.Subtitle>
+            <ListItem.Subtitle style={{ color: "black"}}>Dosis: {item.dose}</ListItem.Subtitle>
+            <ListItem.Subtitle style={{ color: "black"}}>Cantidad de medicamentos: {item.quantity}</ListItem.Subtitle>
+            <ListItem.Subtitle style={{ color: "black"}}>Hora: {item.hora.toString()}</ListItem.Subtitle>
+            <ListItem.Subtitle style={{ color: "black"}}>Duracion hasta: {item.duracion}</ListItem.Subtitle>
+
+              
+            </ListItem.Content>
+
+           
+            
+            <View style={{ flexDirection: "column", height: "100%"}}>
+                <Icon type="material-community" 
+                    name={"pencil-circle"} size={50} 
+                    color={"#0093B7"} 
+                    onPress={() => navigation.navigate("Editar Medicamento",{
+                        id: item.id,
+                        nombreMed:item.nombreMed,
+                        tipoAdm: item.tipoAdm,
+                        dose: item.dose,
+                        quantity: item.quantity,
+                        item: item.item,
+                        hora: item.hora,
+                        duracion: item.duracion,
+
+                    })}
+
+                    style={{ marginTop: "0%"}}/>
+                <Icon type="material-community" 
+                    name={"delete-circle"} 
+                    size={50} color={"#0093B7"} 
+                    onPress={() => confirmarElimniar(item.id)} 
+                    style={{ marginTop: "80%"}}/>
+            </View>
+          </ListItem>
+          </View>
+          }
+                    
+        />
        
         <TouchableOpacity
                     onPress={() => navigation.navigate("Registro de Medicamento")}
@@ -173,7 +142,7 @@ const screenHome = ({ navigation  }) => {
                 <StatusBar style="auto" />
          
                        
-    </View>
+    </SafeAreaView>
    
     );
                                     
