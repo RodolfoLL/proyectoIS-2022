@@ -14,22 +14,18 @@ const HoraScreen=(props)=>{
         var [datos, setdatos] = useState([]);
     }
 
-    // let cantPres = 0;
+    let cantPres = 0;
 
-    // const aumentarPresionado = () => {
-    //     cantPres = cantPres+1
-    //     console.log(cantPres)
-    // }
-    
-    const verificarPresionado = () => {
-        if(editar){
-            if (cantPres <= 1){
-                RestablecerHoras(datos);
-                
-            } 
-            console.log(datos)
-        }
+    const aumentarPresionado = () => {
+        cantPres = cantPres+1
+        console.log(cantPres)
     }
+    
+    // const verificarPresionado = () => {
+    //     if(editar){
+    //         setdatos([...datos,])
+    //     }
+    // }
     let frecuencia = item;
     var [datos, setdatos] = useState([]);
     const [contador, setcontador] = useState(frecuencia)
@@ -112,7 +108,7 @@ const HoraScreen=(props)=>{
             <Text style={styles.texto}>{'('+datos +")"}</Text>
                 <TouchableOpacity
                     onPress={()=> {showMode('time')
-                                   verificarPresionado()
+                                   aumentarPresionado()
                 }}
                 >
                     <View style={styles.buttonTime}>
