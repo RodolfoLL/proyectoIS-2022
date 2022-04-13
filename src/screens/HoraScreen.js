@@ -10,7 +10,7 @@ const HoraScreen=(props)=>{
    
     if (editar){
         let duracion = props.route.params.hora
-        var [datos, sedatos] = useState(duracion);
+        var [datos, setdatos] = useState(duracion);
     }else{
         var [datos, setdatos] = useState([]);
     }
@@ -90,11 +90,11 @@ const HoraScreen=(props)=>{
             
             let nuevoArray = [...new Set(hora)]
             if(nuevoArray.length === frecuencia){
-                props.navigation.navigate('DuracionTratamiento',datosRecordatorio)  
+                props.navigation.navigate('DuracionTratamiento',datosRecordatorio)
             }
             else{
                 if(nuevoArray.length !== frecuencia){
-                    Alert.alert("upss","necesitas seleccionar"+ " "+`${frecuencia}`+" " +"horas(diferentes)")
+                    Alert.alert("upss","necesitas seleccionar solo"+ " "+`${frecuencia}`+" " +"horas(diferentes)")
                 }
             }
 
