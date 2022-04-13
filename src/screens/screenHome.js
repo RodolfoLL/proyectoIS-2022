@@ -43,11 +43,12 @@ const screenHome = ({ navigation  }) => {
         });
 
         setRecordatorios(listaRecordatorios);
+        console.log(listaRecordatorios)
     }
 
     useEffect(() => {
             listarRecordatorio()
-    });
+    },[]);
     const elimnarRecordatorio = async (id) =>{
         console.log(id)
         const docRef = doc(db,"Recordatorios",id)
