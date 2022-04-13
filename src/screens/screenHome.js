@@ -43,6 +43,7 @@ const screenHome = ({ navigation  }) => {
         });
 
         setRecordatorios(listaRecordatorios);
+        console.log(listaRecordatorios)
     }
 
     useEffect(() => {
@@ -63,7 +64,6 @@ const screenHome = ({ navigation  }) => {
 
     }
 
-
     return (
       
         <View>  
@@ -75,7 +75,7 @@ const screenHome = ({ navigation  }) => {
                             onRefresh ={() => pullMe}
                             />}
                             
-        style={{ backgroundColor: '#001B48' }}>
+            style={{ backgroundColor: '#001B48' }}>
          
             <View style={{
                 fontSize: 30,
