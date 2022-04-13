@@ -1,12 +1,12 @@
 {
   "expo": {
-    "name": "appIS-2022",
-    "slug": "appIS-2022",
-    "version": "1.0.0",
+    "name": "Medicate",
+    "slug": "MedicateRecordatorio",
+    "version": "0.5.0",
     "orientation": "portrait",
-    "icon": "./scr/assets/icon.png",
+    "icon": "./src/assets/medicate.png",
     "splash": {
-      "image": "./scr/assets/splash.png",
+      "image": "./src/assets/splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -20,8 +20,10 @@
       "supportsTablet": true
     },
     "android": {
+      "package": "com.ingenieriadelsoftware.medicate",
+      "versionCode": 1,
       "adaptiveIcon": {
-        "foregroundImage": "./scr/assets/adaptive-icon.png",
+        "foregroundImage": "./src/assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
       }
     },

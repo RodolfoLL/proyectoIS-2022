@@ -11,7 +11,7 @@ import { RefreshControl,StyleSheet,SafeAreaView,Alert} from 'react-native';
 
 
 
-const screenHome = ({ navigation  }) => {
+const PantallaInicio = ({ navigation  }) => {
     const[refresh, setRefresh] = React.useState(false)
 
     const pullMe =() => {
@@ -180,5 +180,5 @@ const screenHome = ({ navigation  }) => {
 };
 
 
-export default screenHome;
+export default PantallaInicio;
 
