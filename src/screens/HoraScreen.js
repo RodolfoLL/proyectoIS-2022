@@ -15,16 +15,17 @@ const HoraScreen=(props)=>{
         var [datos, setdatos] = useState([]);
     }
 
-    // let cantPres = 0;
+     let cantPres = 0;
 
-    // const aumentarPresionado = () => {
-    //     cantPres = cantPres+1
-    //     console.log(cantPres)
-    // }
+    const aumentarPresionado = () => {
+
+         cantPres = cantPres+1
+         console.log(cantPres)
+     }
     
     const verificarPresionado = () => {
         if(editar){
-            if (cantPres <= 1){
+            if (cantPres < 1){
                 RestablecerHoras(datos);
                 
             } 
@@ -112,6 +113,7 @@ const HoraScreen=(props)=>{
             <Text style={styles.texto}>{'('+datos +")"}</Text>
                 <TouchableOpacity
                     onPress={()=> {showMode('time')
+                                    aumentarPresionado()
                                    verificarPresionado()
                 }}
                 >
