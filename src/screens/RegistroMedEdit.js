@@ -27,8 +27,8 @@ const RegistroEdit =({route,navigation}) => {
               quantity: parametros.quantity,
               item: parametros.item,
               hora: parametros.hora,
-              duracion: parametros.hora,
-              editar: true
+              duracion: parametros.duracion,
+              editar:true
             })
         } else {
           Alert.alert("Nombre del Medicamento","Ingresar solo letras en el nombre")

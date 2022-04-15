@@ -10,7 +10,7 @@ import { ListItem ,Icon} from 'react-native-elements';
 
 
 
-const screenHome = ({ navigation  }) => {
+const pantallaInicio = ({ navigation  }) => {
 
     const [recordatorios, setRecordatorios] = useState([]);
     console.log(recordatorios)
@@ -28,7 +28,7 @@ const screenHome = ({ navigation  }) => {
         const docRef = doc(db,"Recordatorios",id)
         console.log(docRef)
          deleteDoc(docRef)
-        navigation.navigate("screenHome")
+        
     }
     const confirmarElimniar = (id) => {
         Alert.alert("Eliminar recordatorio", "estas seguro?",[
@@ -148,5 +148,5 @@ const screenHome = ({ navigation  }) => {
 };
 
 
-export default screenHome;
+export default pantallaInicio;
 

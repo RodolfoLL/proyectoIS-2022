@@ -41,7 +41,7 @@ const DuracionTratamiento = (props) => {
         }
         
         
-        props.navigation.navigate("screenHome");
+        props.navigation.navigate("Recordatorio De Medicamentos");
     }
 
     const guardarEdit = async (id,datos) =>{

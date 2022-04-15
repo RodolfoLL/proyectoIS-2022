@@ -75,7 +75,7 @@ const HoraScreen=(props)=>{
                     duracion: props.route.params.duracion,
                     editar:editar
             }
-            console.log(hora)
+
         }
             else{
                     var datosRecordatorio = {
@@ -91,7 +91,7 @@ const HoraScreen=(props)=>{
             
             
             let nuevoArray = [...new Set(hora)]
-            if(nuevoArray.length === frecuencia){
+           if(nuevoArray.length === frecuencia){
                 props.navigation.navigate('DuracionTratamiento',datosRecordatorio)
             }
             else{
