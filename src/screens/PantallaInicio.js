@@ -66,7 +66,7 @@ const pantallaInicio = ({ navigation  }) => {
             renderItem = { ({item,index}) => 
             
             <View style={{width: "90%", height: "20%"}}>
-            <ListItem key={item.id} style={{ marginBottom:70}}>
+            <ListItem key={item.id} style={{ marginBottom:70, marginLeft:40}}>
                             
             <ListItem.Content bottomDivider style={{width: "100%", height:150 }}>
              
