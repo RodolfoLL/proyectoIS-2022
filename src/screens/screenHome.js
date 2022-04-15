@@ -11,7 +11,40 @@ import { ListItem ,Icon} from 'react-native-elements';
 
 
 const screenHome = ({ navigation  }) => {
-
+    navigation.setOptions({
+        headerRight: () => (
+            <TouchableOpacity
+            onPress={() => navigation.navigate("Registro de Medicamento")}
+            style={{
+                width: 100,
+                height: 40,
+                borderRadius: 50,
+                backgroundColor:'#40AEC9',
+                borderColor:'#000000' ,
+                justifyContent: "center"
+            }}
+        >
+            <Text
+                style={{
+                    fontSize: 25,
+                    textAlign: "center",
+                    color: "white",
+                    marginBottom:0,
+                    paddingBottom:0,
+                    lineHeight:24
+                }}
+            >{'+'}</Text>
+            <Text
+                style={{
+                    fontSize: 17,
+                    textAlign: "center",
+                    color: "white",
+                    lineHeight:16
+                }}
+            >{'añadir'}</Text>
+        </TouchableOpacity>)}
+        
+    );
     const [recordatorios, setRecordatorios] = useState([]);
     console.log(recordatorios)
     useEffect(
@@ -67,7 +100,7 @@ const screenHome = ({ navigation  }) => {
             renderItem = { ({item,index}) => 
             
             <View style={{width: "90%", height: "20%"}}>
-            <ListItem key={item.id} style={{ marginBottom:70}}>
+            <ListItem key={item.id} style={{ marginBottom:10}}>
                             
             <ListItem.Content bottomDivider style={{width: "100%", height:150 }}>
              
@@ -112,33 +145,7 @@ const screenHome = ({ navigation  }) => {
           }
                     
         />
-       
-        <TouchableOpacity
-                    onPress={() => navigation.navigate("Registro de Medicamento")}
-                    style={{
-                        backgroundColor: "#001B48",
-                        width: 80,
-                        height: 40,
-                        borderRadius: 1000,
-                        justifyContent: "center",
-                        marginTop: "15%",
-                        position: 'absolute',
-                        bottom: 0,
-                        left:'72%',
-                        top:420
-                    }}
-                >
-                    <Text
-                        style={{
-                            fontSize: 40,
-                            textAlign: "center",
-                            color: "white",
-                            width: 80,
-                            fontWeight: "bold"
-                        }}
-                    >+</Text>
-                </TouchableOpacity>
-                
+
                 <StatusBar style="auto" />
          
                        
