@@ -104,7 +104,6 @@ const HoraScreen=(props)=>{
                     }
             }
             
-            
             let nuevoArray = [...new Set(hora)]
             console.log(nuevoArray.length)
             if(nuevoArray.length === frecuencia){
@@ -129,10 +128,7 @@ const HoraScreen=(props)=>{
             <Text style={styles.texto}>Horas a establecer: {contador}</Text>
             <Text style={styles.texto}>{'('+datos +")"}</Text>
                 <TouchableOpacity
-                    onPress={()=> {showMode('time')
-                                    aumentarPresionado()
-                                   verificarPresionado()
-                }}
+                    onPress={()=>showMode('time')}
                 >
                     <View style={styles.buttonTime}>
                         <Text style={styles.texto}>Hora</Text>

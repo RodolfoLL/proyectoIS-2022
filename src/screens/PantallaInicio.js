@@ -1,16 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, TouchableOpacity, ScrollView, Image, SafeAreaView,Alert,FlatList} from "react-native";
-import image from '../assets/medicate.png'
+import { View, Text, TouchableOpacity,SafeAreaView,Alert,FlatList} from "react-native";
 import {db} from '../../database/firebase'
 import { StatusBar } from 'expo-status-bar';
-import { collection, query, where, getDocs ,doc, deleteDoc, onSnapshot} from "firebase/firestore";
-import { render } from "react-dom";
+import { collection,doc, deleteDoc, onSnapshot} from "firebase/firestore";
 import { ListItem ,Icon} from 'react-native-elements';
 
 
 
 
-const screenHome = ({ navigation  }) => {
+const PantallaInicio = ({ navigation  }) => {
 
     const [recordatorios, setRecordatorios] = useState([]);
     console.log(recordatorios)
@@ -65,13 +63,12 @@ const screenHome = ({ navigation  }) => {
             keyExtractor =  {(item) => item.id}
             renderItem = { ({item,index}) => 
             
-            <View style={{width: "90%", height: "20%"}}>
+            <View style={{width: "80%", height: "20%",alignContent:"center",marginLeft:"10%"}}>
             <ListItem key={item.id} style={{ marginBottom:70}}>
                             
-            <ListItem.Content bottomDivider style={{width: "100%", height:150 }}>
+            <ListItem.Content bottomDivider style={{width: "100%", height:150}}>
              
-              <ListItem.Title style={{ color: "black", fontSize: 25, fontWeight: "bold"}}>{item.nombreMed}</ListItem.Title>
-              
+            <ListItem.Title style={{ color: "black", fontSize: 25, fontWeight: "bold"}}>{item.nombreMed}</ListItem.Title>  
             <ListItem.Subtitle style={{ color: "black"}}>Tipo de administracion: {item.tipoAdm}</ListItem.Subtitle>
             <ListItem.Subtitle style={{ color: "black"}}>Dosis: {item.dose}</ListItem.Subtitle>
             <ListItem.Subtitle style={{ color: "black"}}>Cantidad de medicamentos: {item.quantity}</ListItem.Subtitle>
@@ -112,7 +109,7 @@ const screenHome = ({ navigation  }) => {
                     
         />
        
-        <TouchableOpacity
+       <TouchableOpacity
                     onPress={() => navigation.navigate("Registro de Medicamento")}
                     style={{
                         backgroundColor: "#001B48",
@@ -148,4 +145,4 @@ const screenHome = ({ navigation  }) => {
 };
 
 
-export default screenHome;
+export default PantallaInicio;
