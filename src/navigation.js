@@ -19,7 +19,7 @@ const HomeStackNavigator = createNativeStackNavigator();
 function MyStacks(){
     return(
         <HomeStackNavigator.Navigator initialRouteName='Medicate'>
-            <HomeStackNavigator.Screen name="screenHome" component={screenHome}
+            <HomeStackNavigator.Screen name="Recordatorio" component={screenHome}
             options={{headerTintColor: 'white',
             headerStyle:{ backgroundColor: "#0093B7"}}}/>
              

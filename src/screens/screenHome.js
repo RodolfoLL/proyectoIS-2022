@@ -19,21 +19,31 @@ const screenHome = ({ navigation  }) => {
                 width: 70,
                 height: 70,
                 borderRadius: 50,
-                backgroundColor:'#17A589',
+                backgroundColor:'#40AEC9',
                 borderColor:'#000000' ,
-                justifyContent: "center",
-                marginRight:10
+                justifyContent: "center"
             }}
         >
             <Text
                 style={{
-                    fontSize: 20,
+                    fontSize: 25,
                     textAlign: "center",
                     color: "white",
-                    lineHeight: 17,
+                    marginBottom:0,
+                    paddingBottom:0,
+                    lineHeight:20
                 }}
-            >{'+\nañadir'}</Text>
+            >{'+'}</Text>
+            <Text
+                style={{
+                    fontSize: 17,
+                    textAlign: "center",
+                    color: "white",
+                    lineHeight:16
+                }}
+            >{'añadir'}</Text>
         </TouchableOpacity>)}
+        
     );
 
     const [recordatorios, setRecordatorios] = useState([]);
