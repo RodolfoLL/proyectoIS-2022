@@ -17,6 +17,8 @@ import { getFirestore, doc, setDoc } from 'firebase/firestore'
   messagingSenderId: "773458624086",
   appId: "1:773458624086:web:094ce57013c8a9249345f7"
 };*/
+
+//Base de dato Jhonn
 const firebaseConfig = {
   apiKey: "AIzaSyCQvqh5cT-RXLXIPCHja4-WOKPl4XSZ3nQ",
   authDomain: "bd-pruebas-is-2022.firebaseapp.com",
