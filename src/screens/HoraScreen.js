@@ -7,32 +7,34 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 
 const HoraScreen=(props)=>{
     const { nombreMed,tipoAdm,dose,quantity,item,editar } = props.route.params;
-   
+    console.log(props.route.params)
     if (editar){
-        let duracion = props.route.params.hora
-        var [datos, setdatos] = useState(duracion);
+        let hora = props.route.params.hora
+        var [datos, setdatos] = useState(hora);
     }else{
         var [datos, setdatos] = useState([]);
     }
 
-    // let cantPres = 0;
+     let cantPres = 0;
 
-    // const aumentarPresionado = () => {
-    //     cantPres = cantPres+1
-    //     console.log(cantPres)
-    // }
+    const aumentarPresionado = () => {
+         if (editar){
+            cantPres = cantPres+1
+         console.log(cantPres)
+         }   
+         
+     }
     
-    // const verificarPresionado = () => {
-    //     if(editar){
-    //         if (cantPres <= 1){
-    //             RestablecerHoras(datos);
+    const verificarPresionado = () => {
+        if(editar){
+            if (cantPres <= 1){
+                RestablecerHoras(datos);
                 
-    //         } 
-    //         console.log(datos)
-    //     }
-    // }
+             } 
+        }
+     }
     let frecuencia = item;
-    var [datos, setdatos] = useState([]);
+   
     const [contador, setcontador] = useState(frecuencia)
     const [date, setDate] = useState(new Date());
     const [mode, setMode] = useState('date');
@@ -73,7 +75,7 @@ const HoraScreen=(props)=>{
                     duracion: props.route.params.duracion,
                     editar:editar
             }
-            console.log(hora)
+
         }
             else{
                     var datosRecordatorio = {
@@ -89,7 +91,7 @@ const HoraScreen=(props)=>{
             
             
             let nuevoArray = [...new Set(hora)]
-            if(nuevoArray.length === frecuencia){
+           if(nuevoArray.length === frecuencia){
                 props.navigation.navigate('DuracionTratamiento',datosRecordatorio)
             }
             else{
@@ -112,6 +114,8 @@ const HoraScreen=(props)=>{
             <Text style={styles.texto}>{'('+datos +")"}</Text>
                 <TouchableOpacity
                     onPress={()=> {showMode('time')
+                                    aumentarPresionado()
+                                   verificarPresionado()
                 }}
                 >
                     <View style={styles.buttonTime}>
