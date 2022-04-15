@@ -96,7 +96,7 @@ const screenHome = ({ navigation  }) => {
                         item: item.item,
                         hora: item.hora,
                         duracion: item.duracion,
-
+                        editar: true
                     })}
 
                     style={{ marginTop: "0%"}}/>
