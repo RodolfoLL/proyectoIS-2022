@@ -38,7 +38,6 @@ const screenHome = ({ navigation  }) => {
 
     }
 
-
     return (
       
         <SafeAreaView style={{ backgroundColor: '#001B48' }}>  

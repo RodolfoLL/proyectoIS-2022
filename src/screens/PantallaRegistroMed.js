@@ -1,19 +1,25 @@
 import React, { useState } from "react";
-import { Text, View, StyleSheet, TextInput, ScrollView,TouchableOpacity } from 'react-native';
+import { Text, View, StyleSheet, TextInput, ScrollView, TouchableOpacity, Alert } from 'react-native';
 import { CheckBox } from 'react-native-elements';
 
 var tipo = '';
+let regex = new RegExp("^[a-zA-Z ]+$");
 const PantallaRegistroMed = ({ navigation }) => {
   const verificar = (text, tipo) => {
     if (text != '' && tipo !== '') {
-      console.log("lleno un medicamento")
-      navigation.navigate("Dosis del Medicamento",
-      {
-        nombreMed: text,
-        tipoAdm: tipo
-      })
+      if (regex.test(text)) {
+        console.log("lleno un medicamento")
+        navigation.navigate("Dosis del Medicamento",
+          {
+            nombreMed: text,
+            tipoAdm: tipo
+          })
+      } else {
+        Alert.alert("Nombre del Medicamento","Ingresar solo letras en el nombre")
+
+      }
     } else {
-      alert("Le faltan llenar campos")
+       Alert.alert("Nombre de Medicamento","Debe llenar todos los campos")
     }
   }
   const [nombre, setNombre] = useState('');
@@ -124,7 +130,7 @@ const PantallaRegistroMed = ({ navigation }) => {
             }
           />
           <CheckBox
-            title='Via Parental'
+            title='Via Parenteral'
             checked={checkedParetal}
             onPress={() => {
               mostrar(7)
@@ -140,11 +146,11 @@ const PantallaRegistroMed = ({ navigation }) => {
           />
         </View>
         <View style={styles.botones}>
-                <TouchableOpacity
-                    onPress={() => verificar(nombre, tipo)}
-                >
-                        <Text style={styles.title}>Continuar</Text>
-                </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => verificar(nombre, tipo)}
+          >
+            <Text style={styles.title}>Continuar</Text>
+          </TouchableOpacity>
         </View>
       </View>
     </ScrollView>
@@ -211,14 +217,14 @@ const styles = StyleSheet.create({
     margin: 20,
   },
   botones: {
-    alignItems:'center',
-    backgroundColor:'#0093B7',
-    marginBottom:'15%',
-    borderRadius:25,
+    alignItems: 'center',
+    backgroundColor: '#0093B7',
+    marginBottom: '15%',
+    borderRadius: 25,
     fontSize: 20,
-    marginLeft:'25%',
-    height:35,
-    width:150,
+    marginLeft: '25%',
+    height: 35,
+    width: 150,
   }
 });
 export default PantallaRegistroMed;
