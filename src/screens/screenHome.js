@@ -11,6 +11,30 @@ import { ListItem ,Icon} from 'react-native-elements';
 
 
 const screenHome = ({ navigation  }) => {
+    navigation.setOptions({
+    headerRight: () => (
+        <TouchableOpacity
+            onPress={() => navigation.navigate("Registro de Medicamento")}
+            style={{
+                width: 70,
+                height: 70,
+                borderRadius: 50,
+                backgroundColor:'#17A589',
+                borderColor:'#000000' ,
+                justifyContent: "center",
+                marginRight:10
+            }}
+        >
+            <Text
+                style={{
+                    fontSize: 20,
+                    textAlign: "center",
+                    color: "white",
+                    lineHeight: 17,
+                }}
+            >{'+\nañadir'}</Text>
+        </TouchableOpacity>)}
+    );
 
     const [recordatorios, setRecordatorios] = useState([]);
     console.log(recordatorios)
@@ -112,32 +136,6 @@ const screenHome = ({ navigation  }) => {
           }
                     
         />
-       
-        <TouchableOpacity
-                    onPress={() => navigation.navigate("Registro de Medicamento")}
-                    style={{
-                        backgroundColor: "#001B48",
-                        width: 80,
-                        height: 40,
-                        borderRadius: 1000,
-                        justifyContent: "center",
-                        marginTop: "15%",
-                        position: 'absolute',
-                        bottom: 0,
-                        left:'72%',
-                        top:420
-                    }}
-                >
-                    <Text
-                        style={{
-                            fontSize: 40,
-                            textAlign: "center",
-                            color: "white",
-                            width: 80,
-                            fontWeight: "bold"
-                        }}
-                    >+</Text>
-                </TouchableOpacity>
                 
                 <StatusBar style="auto" />
          
