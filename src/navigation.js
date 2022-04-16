@@ -2,12 +2,7 @@ import React from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import {NavigationContainer} from '@react-navigation/native';
-import { Ionicons } from '@expo/vector-icons';
-<<<<<<< HEAD
-import { MaterialCommunityIcons } from '@expo/vector-icons';
-=======
 import {Icon} from 'react-native-elements';
->>>>>>> develop
 import RegistroMedEdit from "./screens/RegistroMedEdit"
 import DuracionTratamiento from './screens/DuracionTratamiento'
 import FechaFinal from './screens/FechaFinal'
@@ -26,11 +21,7 @@ const HomeStackNavigator = createNativeStackNavigator();
 function MyStacks(){
     return(
         <HomeStackNavigator.Navigator initialRouteName='Medicate'>
-<<<<<<< HEAD
-            <HomeStackNavigator.Screen name="Recordatorio de medicamentos" component={PantallaInicio}
-=======
             <HomeStackNavigator.Screen name="Recordatorios" component={PantallaInicio}
->>>>>>> develop
             options={{headerTintColor: 'white',
             headerStyle:{ backgroundColor: "#0093B7"}}}/>
             <HomeStackNavigator.Screen name="Registro de Medicamento" component={PantallaRegistroMed}

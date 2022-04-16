@@ -63,13 +63,7 @@ const FechaFinal = (props) => {
     
             addDoc(collection(db, 'Recordatorios'), datosRecordatorio)
         }
-<<<<<<< HEAD
-       
-
-        props.navigation.navigate("Recordatorio de medicamentos")
-=======
         props.navigation.navigate("Recordatorios")
->>>>>>> develop
     }
     const guardarEdit = async (id,datos) =>{
         
