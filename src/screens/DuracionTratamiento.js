@@ -40,7 +40,7 @@ const DuracionTratamiento = (props) => {
             addDoc(collection(db, 'Recordatorios'), datosRecordatorio)
         }
         
-        props.navigation.navigate("screenHome");
+        props.navigation.navigate("Recordatorios");
     }
 
     const guardarEdit = async (id,datos) =>{
