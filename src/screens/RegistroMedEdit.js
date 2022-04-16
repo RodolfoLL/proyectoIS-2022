@@ -5,7 +5,7 @@ import { CheckBox, Switch } from 'react-native-elements';
 
 var editado = false;
 var tipo = '';
-let regex = new RegExp("^[a-zA-Z ]+$");
+let regex = new RegExp("^[a-zA-ZÀ-ÿ ]+$");
 let letras= new RegExp("[a-zA-Z]");
 const RegistroEdit =({route,navigation}) => {
     
