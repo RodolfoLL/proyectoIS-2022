@@ -3,10 +3,15 @@ import { Text, View, StyleSheet, TextInput, ScrollView, TouchableOpacity, Alert 
 import { CheckBox } from 'react-native-elements';
 
 var tipo = '';
-let regex = new RegExp("^[a-zA-Z ]+$");
-const PantallaRegistroMed = ({ navigation }) => {
-  const verificar = (text, tipo) => {
+let regex = new RegExp("^[a-zA-ZÀ-ÿ ]+$");
+let letras= new RegExp("[a-zA-Z]");
+const PantallaRegistroMed = ({ navigation },{props}) => {
+  const verificar = (text, tipo) => { 
     if (text != '' && tipo !== '') {
+      if (!letras.test(text)) {
+        Alert.alert("Nombre del Medicamento","No añadiste el nombre del medicamento")
+    }else
+      
       if (regex.test(text)) {
         console.log("lleno un medicamento")
         navigation.navigate("Dosis del Medicamento",
@@ -34,7 +39,9 @@ const PantallaRegistroMed = ({ navigation }) => {
     <ScrollView style={styles.container}>
       <View style={styles.container}>
         <Text style={styles.title}>Nombre del Medicamento</Text>
-        <TextInput style={styles.inputS}
+        <TextInput {...props} 
+                      editable 
+                        maxLength={25} style={styles.inputS}
           value={nombre}
           onChangeText={text => setNombre(text)}
         />

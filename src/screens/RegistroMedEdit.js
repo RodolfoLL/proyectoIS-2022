@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { Text, View, StyleSheet, Button, TextInput, ScrollView } from 'react-native';
+import { Text, View, StyleSheet, Button, TextInput, ScrollView,Alert } from 'react-native';
 import { CheckBox, Switch } from 'react-native-elements';
 
 
 var editado = false;
 var tipo = '';
+let regex = new RegExp("^[a-zA-ZÀ-ÿ ]+$");
+let letras= new RegExp("[a-zA-Z]");
 const RegistroEdit =({route,navigation}) => {
     
     const parametros  = route.params
@@ -15,20 +17,33 @@ const RegistroEdit =({route,navigation}) => {
         tipo = parametros.tipoAdm
       }
       if (text != '' && tipo !== '') {
-        console.log("lleno un medicamento")
-        navigation.navigate("Editar Dosis",{
-            id: parametros.id,
-            nombreMed:text,
-            tipoAdm: tipo,
-            dose: parametros.dose,
-            quantity: parametros.quantity,
-            item: parametros.item,
-            hora: parametros.hora,
-            duracion: parametros.duracion,
+        if (!letras.test(text)) {
+          Alert.alert("Nombre del Medicamento","No añadiste el nombre del medicamento")
+      }else
+        if(text.length>30){
+          Alert.alert("Nombre del Medicamento","El nombre del medicamento excede el tamaño de texto permitido")
+        }else
+        if (regex.test(text)) {
+          console.log("lleno un medicamento")
+          navigation.navigate("Editar Dosis",
+            {
+              id: parametros.id,
+              nombreMed: text,
+              tipoAdm: tipo,
+              dose: parametros.dose,
+              quantity: parametros.quantity,
+              item: parametros.item,
+              hora: parametros.hora,
+              duracion: parametros.duracion,
+              editar:true
+
+            })
+        } else {
+          Alert.alert("Nombre del Medicamento","Ingresar solo letras en el nombre")
+  
         }
-        )
       } else {
-        alert("Le faltan llenar campos")
+         Alert.alert("Nombre de Medicamento","Debe llenar todos los campos")
       }
     }
     

@@ -7,9 +7,13 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 
 const HoraScreen=(props)=>{
     const { nombreMed,tipoAdm,dose,quantity,item,editar } = props.route.params;
+<<<<<<< HEAD
+=======
+    console.log(props.route.params)
+>>>>>>> develop
     if (editar){
-        let duracion = props.route.params.hora
-        var [datos, setdatos] = useState(duracion);
+        let hora = props.route.params.hora
+        var [datos, setdatos] = useState(hora);
     }else{
         var [datos, setdatos] = useState([]);
     }
@@ -17,19 +21,19 @@ const HoraScreen=(props)=>{
      let cantPres = 0;
 
     const aumentarPresionado = () => {
-
-         cantPres = cantPres+1
+         if (editar){
+            cantPres = cantPres+1
          console.log(cantPres)
+         }   
+         
      }
     
     const verificarPresionado = () => {
         if(editar){
-            if (cantPres < 1){
-                RestablecerHoras(datos);
-                
-            } 
-            console.log(datos)
+            if (cantPres <= 1){
+             } 
         }
+<<<<<<< HEAD
     }
     
     // const verificarPresionado = () => {
@@ -39,6 +43,10 @@ const HoraScreen=(props)=>{
     // }
     let frecuencia = item;
     // var [datos, setdatos] = useState([]);
+=======
+     }
+    let frecuencia = item;
+>>>>>>> develop
     const [contador, setcontador] = useState(frecuencia)
     const [date, setDate] = useState(new Date());
     const [mode, setMode] = useState('date');
@@ -49,11 +57,16 @@ const HoraScreen=(props)=>{
                 const currentDate = selectedDate || date;
                 setDate(currentDate);
                 let template = new Date(currentDate);
+<<<<<<< HEAD
                 const  formatAMPM = (date)=> {
+=======
+                const formatAMPM = (date) => {
+>>>>>>> develop
                     var hours = date.getHours();
                     var minutes = date.getMinutes();
                     var ampm = hours >= 12 ? 'PM' : 'AM';
                     hours = hours % 12;
+<<<<<<< HEAD
                     hours = hours ? hours : 12; // the hour '0' should be '12'
                     minutes = minutes < 10 ? '0'+minutes : minutes;
                     var strTime = hours + ':' + minutes + ' ' + ampm;
@@ -61,6 +74,15 @@ const HoraScreen=(props)=>{
                   }
                   template = formatAMPM(template);
                 setdatos([...datos,template]);
+=======
+                    hours = hours ? hours : 12;
+                    minutes = minutes < 10 ? '0'+minutes : minutes;
+                    var strTime = hours + ':' + minutes + ' ' + ampm;
+                    return strTime;
+                }
+                template = formatAMPM(template);
+                setdatos([template,...datos]);
+>>>>>>> develop
                 setcontador(contador -1);
             }else{
                 setShow(false)
@@ -90,7 +112,7 @@ const HoraScreen=(props)=>{
                     duracion: props.route.params.duracion,
                     editar:editar
             }
-            console.log(hora)
+
         }
             else{
                     var datosRecordatorio = {
@@ -104,9 +126,15 @@ const HoraScreen=(props)=>{
                     }
             }
             
+<<<<<<< HEAD
             let nuevoArray = [...new Set(hora)].sort();
             console.log(nuevoArray.length)
             if(nuevoArray.length === frecuencia){
+=======
+            
+            let nuevoArray = [...new Set(hora)].sort();
+           if(nuevoArray.length === frecuencia){
+>>>>>>> develop
                 props.navigation.navigate('DuracionTratamiento',datosRecordatorio)
             }
             else{
