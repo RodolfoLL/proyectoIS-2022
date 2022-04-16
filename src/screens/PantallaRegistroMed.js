@@ -3,10 +3,17 @@ import { Text, View, StyleSheet, TextInput, ScrollView, TouchableOpacity, Alert 
 import { CheckBox } from 'react-native-elements';
 
 var tipo = '';
-let regex = new RegExp("^[a-zA-Z ]+$");
+let regex = new RegExp("^[a-zA-ZÀ-ÿ ]+$");
+let letras= new RegExp("[a-zA-Z]");
 const PantallaRegistroMed = ({ navigation }) => {
-  const verificar = (text, tipo) => {
+  const verificar = (text, tipo) => { 
     if (text != '' && tipo !== '') {
+      if (!letras.test(text)) {
+        Alert.alert("Nombre del Medicamento","No añadiste el nombre del medicamento")
+    }else
+      if(text.length>30){
+        Alert.alert("Nombre del Medicamento","El nombre del medicamento excede el tamaño de texto permitido")
+      }else
       if (regex.test(text)) {
         console.log("lleno un medicamento")
         navigation.navigate("Dosis del Medicamento",
