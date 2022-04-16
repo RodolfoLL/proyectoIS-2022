@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React from 'react'
 import { View, Text, StyleSheet, TouchableOpacity} from 'react-native'
 import { doc, setDoc } from 'firebase/firestore';
 import {db} from '../../database/firebase'
@@ -11,7 +11,7 @@ const DuracionTratamiento = (props) => {
     const guardarDuracion = (nDias)=>{
         let fechaActual = new Date()
         let fechaTemporal = new Date(fechaActual.getFullYear(),fechaActual.getMonth(),fechaActual.getDate()+nDias)
-        let duracion = fechaTemporal.toDateString()
+        let duracion = fechaTemporal.getDate() +'/'+ (fechaTemporal.getMonth()+1)+'/'+ fechaTemporal.getFullYear() 
 
         if (editar){
             
@@ -40,8 +40,7 @@ const DuracionTratamiento = (props) => {
             addDoc(collection(db, 'Recordatorios'), datosRecordatorio)
         }
         
-        
-        props.navigation.navigate("Recordatorio De Medicamentos");
+        props.navigation.navigate("Recordatorios");
     }
 
     const guardarEdit = async (id,datos) =>{
