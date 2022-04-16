@@ -9,6 +9,40 @@ import { ListItem ,Icon} from 'react-native-elements';
 
 
 const PantallaInicio = ({ navigation  }) => {
+    navigation.setOptions({
+        headerRight: () => (
+            <TouchableOpacity
+            onPress={() => navigation.navigate("Registro de Medicamento")}
+            style={{
+                width: 100,
+                height: 40,
+                borderRadius: 50,
+                backgroundColor:'#40AEC9',
+                borderColor:'#000000' ,
+                justifyContent: "center"
+            }}
+        >
+            <Text
+                style={{
+                    fontSize: 25,
+                    textAlign: "center",
+                    color: "white",
+                    marginBottom:0,
+                    paddingBottom:0,
+                    lineHeight:24
+                }}
+            >{'+'}</Text>
+            <Text
+                style={{
+                    fontSize: 17,
+                    textAlign: "center",
+                    color: "white",
+                    lineHeight:16
+                }}
+            >{'añadir'}</Text>
+        </TouchableOpacity>)}
+        
+    );
 
     const [recordatorios, setRecordatorios] = useState([]);
     console.log(recordatorios)
@@ -49,7 +83,7 @@ const PantallaInicio = ({ navigation  }) => {
                 marginTop: "5%"
                 
             }}>
-                <Text style={{ fontSize: 50, color: 'white', fontWeight: 'bold' }}>
+                <Text style={{ fontSize: 50, color: 'white', fontWeight: 'bold',marginBottom:"-6%",bottom:20 }}>
                     MEDICATE 
                 </Text>
                                   
@@ -63,10 +97,10 @@ const PantallaInicio = ({ navigation  }) => {
             keyExtractor =  {(item) => item.id}
             renderItem = { ({item,index}) => 
             
-            <View style={{width: "80%", height: "20%",alignContent:"center",marginLeft:"10%"}}>
-            <ListItem key={item.id} style={{ marginBottom:70}}>
+            <View style={{width: "80%", height: "20%",alignContent:"center",marginLeft:"10%",position:'relative',flex:1,marginBottom:-40}}>
+            <ListItem key={item.id} style={{marginBottom:"15%"}}>
                             
-            <ListItem.Content bottomDivider style={{width: "100%", height:150}}>
+            <ListItem.Content bottomDivider style={{width: "100%", height:120}}>
              
             <ListItem.Title style={{ color: "black", fontSize: 25, fontWeight: "bold"}}>{item.nombreMed}</ListItem.Title>  
             <ListItem.Subtitle style={{ color: "black"}}>Tipo de administracion: {item.tipoAdm}</ListItem.Subtitle>
@@ -109,7 +143,7 @@ const PantallaInicio = ({ navigation  }) => {
                     
         />
        
-       <TouchableOpacity
+       {/* <TouchableOpacity
                     onPress={() => navigation.navigate("Registro de Medicamento")}
                     style={{
                         backgroundColor: "#001B48",
@@ -133,7 +167,7 @@ const PantallaInicio = ({ navigation  }) => {
                             fontWeight: "bold"
                         }}
                     >+</Text>
-                </TouchableOpacity>
+                </TouchableOpacity> */}
                 
                 <StatusBar style="auto" />
          

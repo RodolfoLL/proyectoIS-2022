@@ -38,7 +38,7 @@ const HoraScreen=(props)=>{
     //     }
     // }
     let frecuencia = item;
-    var [datos, setdatos] = useState([]);
+    // var [datos, setdatos] = useState([]);
     const [contador, setcontador] = useState(frecuencia)
     const [date, setDate] = useState(new Date());
     const [mode, setMode] = useState('date');
@@ -104,7 +104,7 @@ const HoraScreen=(props)=>{
                     }
             }
             
-            let nuevoArray = [...new Set(hora)]
+            let nuevoArray = [...new Set(hora)].sort();
             console.log(nuevoArray.length)
             if(nuevoArray.length === frecuencia){
                 props.navigation.navigate('DuracionTratamiento',datosRecordatorio)

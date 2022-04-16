@@ -41,12 +41,12 @@ if (editar){
       quantity:quantity,
       item: item  
     }}
-    props.navigation.navigate('HoraScreen',datosRecordatorio)
+    props.navigation.navigate('Establecer horas',datosRecordatorio)
   }
 
   return (
     <View style ={styles.contain}>
-        <Text style={styles.texto}>Frecuencia en dias de las dosis</Text>
+        <Text style={styles.texto}>{"¿Con que frecuencia toma el\n"+" medicamento?"}</Text>
           <FlatList data={numeroFrecuencia} renderItem={({ item }) => (
           <TouchableOpacity
               onPress={() => guardarFrecuencia(item.frecuencia)}
@@ -67,13 +67,14 @@ const styles = StyleSheet.create({
     backgroundColor: '#001B48',
     alignItems: 'center',
     justifyContent: 'center',
-    paddingTop:30
+    paddingTop:70
   },
   texto:{
     color:'white',
     fontFamily:'sans-serif',
     fontSize:20,
-    textAlign:'center'  
+    textAlign:'center',
+    
 },
   button:{
     backgroundColor:'#0093B7',
