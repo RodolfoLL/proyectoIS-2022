@@ -5,7 +5,7 @@ import { CheckBox } from 'react-native-elements';
 var tipo = '';
 let regex = new RegExp("^[a-zA-ZÀ-ÿ ]+$");
 let letras= new RegExp("[a-zA-Z]");
-const PantallaRegistroMed = ({ navigation }) => {
+const PantallaRegistroMed = ({ navigation },{props}) => {
   const verificar = (text, tipo) => { 
     if (text != '' && tipo !== '') {
       if (!letras.test(text)) {
@@ -39,7 +39,9 @@ const PantallaRegistroMed = ({ navigation }) => {
     <ScrollView style={styles.container}>
       <View style={styles.container}>
         <Text style={styles.title}>Nombre del Medicamento</Text>
-        <TextInput editable maxlength={8} style={styles.inputS}
+        <TextInput {...props} 
+                      editable 
+                        maxLength={25} style={styles.inputS}
           value={nombre}
           onChangeText={text => setNombre(text)}
         />
