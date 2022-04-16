@@ -28,13 +28,10 @@ const HoraScreen=(props)=>{
     const verificarPresionado = () => {
         if(editar){
             if (cantPres <= 1){
-                RestablecerHoras(datos);
-                
              } 
         }
      }
     let frecuencia = item;
-   
     const [contador, setcontador] = useState(frecuencia)
     const [date, setDate] = useState(new Date());
     const [mode, setMode] = useState('date');
@@ -44,8 +41,19 @@ const HoraScreen=(props)=>{
                 setShow(false);
                 const currentDate = selectedDate || date;
                 setDate(currentDate);
-                let template = new Date(currentDate).toTimeString().substring(0,5);
-                setdatos([...datos,template]);
+                let template = new Date(currentDate);
+                const formatAMPM = (date) => {
+                    var hours = date.getHours();
+                    var minutes = date.getMinutes();
+                    var ampm = hours >= 12 ? 'PM' : 'AM';
+                    hours = hours % 12;
+                    hours = hours ? hours : 12;
+                    minutes = minutes < 10 ? '0'+minutes : minutes;
+                    var strTime = hours + ':' + minutes + ' ' + ampm;
+                    return strTime;
+                }
+                template = formatAMPM(template);
+                setdatos([template,...datos]);
                 setcontador(contador -1);
             }else{
                 setShow(false)
@@ -90,7 +98,7 @@ const HoraScreen=(props)=>{
             }
             
             
-            let nuevoArray = [...new Set(hora)]
+            let nuevoArray = [...new Set(hora)].sort();
            if(nuevoArray.length === frecuencia){
                 props.navigation.navigate('DuracionTratamiento',datosRecordatorio)
             }
