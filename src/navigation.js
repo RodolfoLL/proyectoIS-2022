@@ -33,7 +33,7 @@ function MyStacks(){
             <HomeStackNavigator.Screen name="Frecuencia Dosis" component={FrecuenciaScreen}
             options={{headerTintColor: 'white',
             headerStyle:{ backgroundColor: "#0093B7"}}}/>
-            <HomeStackNavigator.Screen name="HoraScreen" component={HoraScreen}
+            <HomeStackNavigator.Screen name="Establecer horas" component={HoraScreen}
             options={{headerTintColor: 'white',
             headerStyle:{ backgroundColor: "#0093B7"}}}/>
             <HomeStackNavigator.Screen name="DuracionTratamiento" component={DuracionTratamiento}
