@@ -1,7 +1,7 @@
 import React, {useState} from 'react'
-import { View, Text, StyleSheet,TouchableOpacity,Button } from 'react-native'
+import { View, Text, StyleSheet,TouchableOpacity} from 'react-native'
 import  DateTimePicker  from '@react-native-community/datetimepicker'
-import { doc, setDoc } from 'firebase/firestore';
+import { doc, setDoc,collection, addDoc} from 'firebase/firestore';
 import {db} from '../../database/firebase'
 
 const FechaFinal = (props) => {
@@ -18,18 +18,15 @@ const FechaFinal = (props) => {
     const [mode, setMode] = useState('date');
     const [show, setShow] = useState(false);
     
-
     const onChange = (event, selectedDate) => {
 
             const currentDate = selectedDate || date;
             setShow(false);
             setDate(currentDate);
 
-            let temporalDate = new Date(currentDate)
-            let fecha = temporalDate.getDate() +'/'+ (temporalDate.getMonth()+1)+'/'+ temporalDate.getFullYear() 
+            let fechaTemporal = new Date(currentDate)
+            let fecha = fechaTemporal.getDate() +'/'+ (fechaTemporal.getMonth()+1)+'/'+ fechaTemporal.getFullYear()
             setText(fecha)
-            
-            console.log(currentDate)
     };
 
     const showMode = (currentMode) => {
@@ -64,19 +61,9 @@ const FechaFinal = (props) => {
                 duracion: duracion
             }
     
-            const myDoc = doc(db,'Recordatorios','Recordatorio');
-            const docdata = datosRecordatorio
-            setDoc(myDoc,docdata)
-              .then(()=> {
-              })
-              .catch((error)=>{
-               alert(error.mesagge)
-            })
-
+            addDoc(collection(db, 'Recordatorios'), datosRecordatorio)
         }
-       
-
-        props.navigation.navigate("screenHome")
+        props.navigation.navigate("Recordatorios")
     }
     const guardarEdit = async (id,datos) =>{
         
@@ -108,6 +95,7 @@ const FechaFinal = (props) => {
                         is24Hour={true}
                         display='default'
                         onChange={onChange}
+                        minimumDate={new Date()}
                     />
                 )}
             </View>
