@@ -15,22 +15,22 @@ const HoraScreen=(props)=>{
         var [datos, setdatos] = useState([]);
     }
 
-     let cantPres = 0;
+    //  let cantPres = 0;
 
-    const aumentarPresionado = () => {
-         if (editar){
-            cantPres = cantPres+1
-         console.log(cantPres)
-         }   
+    // const aumentarPresionado = () => {
+    //      if (editar){
+    //         cantPres = cantPres+1
+    //      console.log(cantPres)
+    //      }   
          
-     }
+    //  }
     
-    const verificarPresionado = () => {
-        if(editar){
-            if (cantPres <= 1){
-             } 
-        }
-     }
+    // const verificarPresionado = () => {
+    //     if(editar){
+    //         if (cantPres <= 1){
+    //          } 
+    //     }
+    //  }
     let frecuencia = item;
     const [contador, setcontador] = useState(frecuencia)
     const [date, setDate] = useState(new Date());
@@ -46,14 +46,16 @@ const HoraScreen=(props)=>{
                     var hours = date.getHours();
                     var minutes = date.getMinutes();
                     var ampm = hours >= 12 ? 'PM' : 'AM';
-                    hours = hours % 12;
+                    if(hours < 10){
+                        hours = "0" + hours;
+                    }
                     hours = hours ? hours : 12;
                     minutes = minutes < 10 ? '0'+minutes : minutes;
                     var strTime = hours + ':' + minutes + ' ' + ampm;
                     return strTime;
                 }
                 template = formatAMPM(template);
-                setdatos([template,...datos]);
+                setdatos([...datos,template]);
                 setcontador(contador -1);
             }else{
                 setShow(false)
@@ -79,7 +81,15 @@ const HoraScreen=(props)=>{
                     dose: dose,
                     quantity:quantity,
                     item: item,
-                    hora:hora,
+                    hora:hora.sort((a,b)=>{
+                        if(a.substring(0,1) < b.substring(0,1)){
+                            return -1;
+                        }else if(a.substring(0,1) > b.substring(0,1)){
+                            return 1;
+                        }else{
+                            return 0;
+                        }
+                    }),
                     duracion: props.route.params.duracion,
                     editar:editar
             }
@@ -92,13 +102,21 @@ const HoraScreen=(props)=>{
                         dose: dose,
                         quantity:quantity,
                         item: item,
-                        hora:hora,
+                        hora:hora.sort((a,b)=>{
+                            if(a.substring(0,1) < b.substring(0,1)){
+                                return -1;
+                            }else if(a.substring(0,1) > b.substring(0,1)){
+                                return 1;
+                            }else{
+                                return 0;
+                            }
+                        }),
                         editar:editar
                     }
             }
             
             
-            let nuevoArray = [...new Set(hora)].sort();
+            let nuevoArray = [...new Set(hora)]
            if(nuevoArray.length === frecuencia){
                 props.navigation.navigate('DuracionTratamiento',datosRecordatorio)
             }
