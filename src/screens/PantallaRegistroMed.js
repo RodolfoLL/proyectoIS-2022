@@ -11,9 +11,7 @@ const PantallaRegistroMed = ({ navigation }) => {
       if (!letras.test(text)) {
         Alert.alert("Nombre del Medicamento","No añadiste el nombre del medicamento")
     }else
-      if(text.length>30){
-        Alert.alert("Nombre del Medicamento","El nombre del medicamento excede el tamaño de texto permitido")
-      }else
+      
       if (regex.test(text)) {
         console.log("lleno un medicamento")
         navigation.navigate("Dosis del Medicamento",
@@ -41,7 +39,7 @@ const PantallaRegistroMed = ({ navigation }) => {
     <ScrollView style={styles.container}>
       <View style={styles.container}>
         <Text style={styles.title}>Nombre del Medicamento</Text>
-        <TextInput style={styles.inputS}
+        <TextInput editable maxlength={8} style={styles.inputS}
           value={nombre}
           onChangeText={text => setNombre(text)}
         />
