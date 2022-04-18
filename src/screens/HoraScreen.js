@@ -11,26 +11,12 @@ const HoraScreen=(props)=>{
     if (editar){
         let hora = props.route.params.hora
         var [datos, setdatos] = useState(hora);
+
     }else{
         var [datos, setdatos] = useState([]);
     }
-
-     let cantPres = 0;
-
-    const aumentarPresionado = () => {
-         if (editar){
-            cantPres = cantPres+1
-         console.log(cantPres)
-         }   
-         
-     }
-    
-    const verificarPresionado = () => {
-        if(editar){
-            if (cantPres <= 1){
-             } 
-        }
-     }
+    const [presionado, setPresionado] = useState(false)
+   
     let frecuencia = item;
     const [contador, setcontador] = useState(frecuencia)
     const [date, setDate] = useState(new Date());
@@ -121,9 +107,14 @@ const HoraScreen=(props)=>{
             <Text style={styles.texto}>Horas a establecer: {contador}</Text>
             <Text style={styles.texto}>{'('+datos +")"}</Text>
                 <TouchableOpacity
-                    onPress={()=> {showMode('time')
-                                    aumentarPresionado()
-                                   verificarPresionado()
+                    onPress={()=> {
+                        if(editar && !presionado){
+                            setPresionado(true)
+                            RestablecerHoras(datos)
+                            console.log("entro")
+                        }
+                        showMode('time')
+
                 }}
                 >
                     <View style={styles.buttonTime}>
