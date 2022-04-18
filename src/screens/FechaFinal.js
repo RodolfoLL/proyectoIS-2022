@@ -52,9 +52,16 @@ const FechaFinal = (props) => {
     const { nombreMed,tipoAdm,dose,quantity,item,hora } = props.route.params;
 
     const validarHora = () =>{
-        let horaCompletoActual = new Date().toTimeString().substring(0,5);
+        /*let horaCompletoActual = new Date().toTimeString().substring(0,5);
         let horaActual = parseInt(horaCompletoActual.substring(0,2)) 
-        let minutoActual = parseInt(horaCompletoActual.substring(3,5))
+        let minutoActual = parseInt(horaCompletoActual.substring(3,5))*/
+        let fechaActual = new Date()
+        let hours = fechaActual.getHours();
+        let minutes = fechaActual.getMinutes();
+        let ampm = hours >= 12 ? 'PM' : 'AM';
+        hours = hours % 12;
+        let horaActual = hours ? hours : 12;
+        let minutoActual = minutes < 10 ? '0'+minutes : minutes;
 
         let validacion = false
         for(var i=0; i < hora.length ; i++){
@@ -63,14 +70,20 @@ const FechaFinal = (props) => {
             console.log("hora registrada: "+hora[i])
             let horaTemporal = parseInt(horaRegistrada.substring(0,2)) 
             let minutoTemporal = parseInt(horaRegistrada.substring(3,5))
-
-            if(horaTemporal > horaActual){
-                validacion = true
-            }else if(horaTemporal == horaActual && minutoTemporal > minutoActual){
-                validacion = true
-            }else{
-                validacion = false
+            let medioDia = horaRegistrada.substring(6,8)
+            console.log(horaTemporal)
+            console.log(minutoTemporal)
+            console.log(medioDia)
+            if(ampm === medioDia){
+                if(horaTemporal > horaActual){
+                    validacion = true
+                }else if(horaTemporal == horaActual && minutoTemporal > minutoActual){
+                    validacion = true
+                }else{
+                    validacion = false
+                }
             }
+            
         }
 
         return validacion
@@ -98,7 +111,7 @@ const FechaFinal = (props) => {
                 item: item
             }
         }
-        props.navigation.navigate('HoraScreen',datosRecordatorio)
+        props.navigation.navigate('Establecer horas',datosRecordatorio)
     }
     
     const guardarDuracion = (duracion)=>{
@@ -113,9 +126,23 @@ const FechaFinal = (props) => {
                 duracion: duracion
             }
             const id = props.route.params.id
-            guardarEdit(id,datosRecordatorio)
 
-            props.navigation.navigate("Recordatorios")
+            let fechaActual = new Date()
+            let fecha = fechaActual.getDate() +'/'+ (fechaActual.getMonth()+1)+'/'+ fechaActual.getFullYear()
+            if(textDate === fecha){
+                if(validarHora()){
+                    console.log("SE GUARDO")
+                    guardarEdit(id,datosRecordatorio)
+                    props.navigation.navigate("Recordatorios")
+                }else{
+                    console.log("NO SE GUARDO")
+                    Alert.alert("Fecha No Registra!","Eliga una hora que no halla pasado");
+                    actualizarHoraRegistrada()
+                }
+            }else{
+                guardarEdit(id,datosRecordatorio)
+                props.navigation.navigate("Recordatorios")
+            }  
         }
         else{
             if(textDate !== ""){
