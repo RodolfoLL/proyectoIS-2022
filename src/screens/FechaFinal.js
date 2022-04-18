@@ -1,5 +1,5 @@
 import React, {useState} from 'react'
-import { View, Text, StyleSheet,TouchableOpacity} from 'react-native'
+import { View, Text, StyleSheet,TouchableOpacity,Alert} from 'react-native'
 import  DateTimePicker  from '@react-native-community/datetimepicker'
 import { doc, setDoc,collection, addDoc} from 'firebase/firestore';
 import {db} from '../../database/firebase'
@@ -12,7 +12,7 @@ const FechaFinal = (props) => {
         var [textDate, setText] = useState(duracion);
     }
     else{
-        var [textDate, setText] = useState(false);
+        var [textDate, setText] = useState("");
     }
     const [date, setDate] = useState(new Date());
     const [mode, setMode] = useState('date');
@@ -21,12 +21,27 @@ const FechaFinal = (props) => {
     const onChange = (event, selectedDate) => {
 
             const currentDate = selectedDate || date;
+            
             setShow(false);
             setDate(currentDate);
 
             let fechaTemporal = new Date(currentDate)
+            let fechaActual = new Date()
             let fecha = fechaTemporal.getDate() +'/'+ (fechaTemporal.getMonth()+1)+'/'+ fechaTemporal.getFullYear()
-            setText(fecha)
+
+            if(fechaTemporal.toDateString() === fechaActual.toDateString()){
+                if(validarHora()){
+                    console.log("validacion correcta")
+                    setText(fecha)
+                }else{
+                    Alert.alert("Fecha No Registra!","Eliga una hora que no halla pasado");
+                    setText("")
+                    actualizarHoraRegistrada()
+                }
+            }else{
+                console.log("fECHAS DIFERENTES")
+                setText(fecha)
+            }
     };
 
     const showMode = (currentMode) => {
@@ -35,6 +50,69 @@ const FechaFinal = (props) => {
     };
 
     const { nombreMed,tipoAdm,dose,quantity,item,hora } = props.route.params;
+
+    const validarHora = () =>{
+        /*let horaCompletoActual = new Date().toTimeString().substring(0,5);
+        let horaActual = parseInt(horaCompletoActual.substring(0,2)) 
+        let minutoActual = parseInt(horaCompletoActual.substring(3,5))*/
+        let fechaActual = new Date()
+        let hours = fechaActual.getHours();
+        let minutes = fechaActual.getMinutes();
+        let ampm = hours >= 12 ? 'PM' : 'AM';
+        hours = hours % 12;
+        let horaActual = hours ? hours : 12;
+        let minutoActual = minutes < 10 ? '0'+minutes : minutes;
+
+        let validacion = false
+        for(var i=0; i < hora.length ; i++){
+
+            let horaRegistrada = hora[i]
+            console.log("hora registrada: "+hora[i])
+            let horaTemporal = parseInt(horaRegistrada.substring(0,2)) 
+            let minutoTemporal = parseInt(horaRegistrada.substring(3,5))
+            let medioDia = horaRegistrada.substring(6,8)
+            console.log(horaTemporal)
+            console.log(minutoTemporal)
+            console.log(medioDia)
+            if(ampm === medioDia){
+                if(horaTemporal > horaActual){
+                    validacion = true
+                }else if(horaTemporal == horaActual && minutoTemporal > minutoActual){
+                    validacion = true
+                }else{
+                    validacion = false
+                }
+            }
+            
+        }
+
+        return validacion
+    }
+
+    const actualizarHoraRegistrada = ()=>{
+        if (editar){
+            var datosRecordatorio = { 
+               id: props.route.params.id,
+               nombreMed: nombreMed, 
+               tipoAdm: tipoAdm,
+               dose: dose,
+               quantity:quantity,
+               item: item,
+               hora: props.route.params.hora,
+               duracion: props.route.params.duracion,
+               editar:true
+            }
+        } else{
+            var datosRecordatorio = {
+                nombreMed: nombreMed, 
+                tipoAdm: tipoAdm,
+                dose: dose,
+                quantity:quantity,
+                item: item
+            }
+        }
+        props.navigation.navigate('Establecer horas',datosRecordatorio)
+    }
     
     const guardarDuracion = (duracion)=>{
         if(editar){
@@ -48,23 +126,44 @@ const FechaFinal = (props) => {
                 duracion: duracion
             }
             const id = props.route.params.id
-            guardarEdit(id,datosRecordatorio)
+
+            let fechaActual = new Date()
+            let fecha = fechaActual.getDate() +'/'+ (fechaActual.getMonth()+1)+'/'+ fechaActual.getFullYear()
+            if(textDate === fecha){
+                if(validarHora()){
+                    console.log("SE GUARDO")
+                    guardarEdit(id,datosRecordatorio)
+                    props.navigation.navigate("Recordatorios")
+                }else{
+                    console.log("NO SE GUARDO")
+                    Alert.alert("Fecha No Registra!","Eliga una hora que no halla pasado");
+                    actualizarHoraRegistrada()
+                }
+            }else{
+                guardarEdit(id,datosRecordatorio)
+                props.navigation.navigate("Recordatorios")
+            }  
         }
         else{
-            let datosRecordatorio = {
-                nombreMed: nombreMed, 
-                tipoAdm: tipoAdm,
-                dose: dose,
-                quantity:quantity,
-                item: item,
-                hora:hora,
-                duracion: duracion
+            if(textDate !== ""){
+                let datosRecordatorio = {
+                    nombreMed: nombreMed, 
+                    tipoAdm: tipoAdm,
+                    dose: dose,
+                    quantity:quantity,
+                    item: item,
+                    hora:hora,
+                    duracion: duracion
+                }
+                addDoc(collection(db, 'Recordatorios'), datosRecordatorio)
+                props.navigation.navigate("Recordatorios")
+
+            }else{
+                Alert.alert("Fecha No Escogida!","Eliga la duracion del tratamiento");
             }
-    
-            addDoc(collection(db, 'Recordatorios'), datosRecordatorio)
         }
-        props.navigation.navigate("Recordatorios")
     }
+
     const guardarEdit = async (id,datos) =>{
         
         const docref = doc(db,"Recordatorios",id)
