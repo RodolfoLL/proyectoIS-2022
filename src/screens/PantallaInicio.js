@@ -7,14 +7,14 @@ import { collection, query, where, getDocs ,doc, deleteDoc, onSnapshot} from "fi
 import { render } from "react-dom";
 import { ListItem ,Icon} from 'react-native-elements';
 
-const screenHome = ({ navigation  }) => {
+const PantallaInicio = ({ navigation  }) => {
     navigation.setOptions({
     headerRight: () => (
         <TouchableOpacity
             onPress={() => navigation.navigate("Registro de Medicamento")}
             style={{
-                width: 70,
-                height: 70,
+                width: 100,
+                height: 40,
                 borderRadius: 50,
                 backgroundColor:'#40AEC9',
                 borderColor:'#000000' ,
@@ -28,7 +28,7 @@ const screenHome = ({ navigation  }) => {
                     color: "white",
                     marginBottom:0,
                     paddingBottom:0,
-                    lineHeight:20
+                    lineHeight:24
                 }}
             >{'+'}</Text>
             <Text
@@ -56,7 +56,7 @@ const screenHome = ({ navigation  }) => {
         const docRef = doc(db,"Recordatorios",id)
         console.log(docRef)
          deleteDoc(docRef)
-        navigation.navigate("screenHome")
+        navigation.navigate("Recordatorios")
     }
     const confirmarElimniar = (id) => {
         Alert.alert("Eliminar recordatorio", "estas seguro?",[
@@ -135,5 +135,5 @@ const screenHome = ({ navigation  }) => {
 };
 
 
-export default screenHome;
+export default PantallaInicio;
 
