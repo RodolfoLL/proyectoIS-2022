@@ -6,7 +6,7 @@ import { View,Text,StyleSheet,TouchableOpacity,FlatList} from 'react-native';
 
 const FrecuenciaScreen = (props) => {
   
-  const { nombreMed,tipoAdm,dose,quantity,editar } = props.route.params;
+  const { uid,nombreMed,tipoAdm,dose,quantity,editar } = props.route.params;
     
   const [numeroFrecuencia, setnumeroFrecuencia] = useState([
     {title:"Una vez al dia",frecuencia:1,key:1},
@@ -35,6 +35,7 @@ if (editar){
   }
   else{
     var datosRecordatorio = { 
+      uid:uid,
       nombreMed: nombreMed, 
       tipoAdm: tipoAdm,
       dose: dose,

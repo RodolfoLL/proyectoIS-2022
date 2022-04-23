@@ -49,7 +49,7 @@ const FechaFinal = (props) => {
         setMode(currentMode);
     };
 
-    const { nombreMed,tipoAdm,dose,quantity,item,hora } = props.route.params;
+    const { uid,nombreMed,tipoAdm,dose,quantity,item,hora } = props.route.params;
 
     const validarHora = () =>{
         /*let horaCompletoActual = new Date().toTimeString().substring(0,5);
@@ -104,6 +104,7 @@ const FechaFinal = (props) => {
             }
         } else{
             var datosRecordatorio = {
+                uid:uid,
                 nombreMed: nombreMed, 
                 tipoAdm: tipoAdm,
                 dose: dose,
@@ -155,8 +156,8 @@ const FechaFinal = (props) => {
                     hora:hora,
                     duracion: duracion
                 }
-                addDoc(collection(db, 'Recordatorios'), datosRecordatorio)
-                props.navigation.navigate("Recordatorios")
+                addDoc(collection(db, uid), datosRecordatorio)
+                props.navigation.navigate("Recordatorios",{uid: uid})
 
             }else{
                 Alert.alert("Fecha No Escogida!","Eliga la duracion del tratamiento");

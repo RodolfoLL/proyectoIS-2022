@@ -19,11 +19,24 @@ const Login = (props) => {
         console.log('Signed in!')
         const user = userCredential.user;
         console.log(user)
-        props.navigation.navigate("Recordatorios")
+        console.log("UID:  "+ user.email)
+        console.log("UID:  "+ user.uid)
+        props.navigation.navigate("Recordatorios",{uid: user.uid})
       })
       .catch(error => {
         console.log(error)
       })
+    }
+
+    const buscar = () =>{
+      const auth = getAuth(app);
+      const user = auth.currentUser;
+      
+      if (user !== null) {
+        user.providerData.forEach((profile) => {
+          console.log("  Provider-specific UID: " + profile.uid);
+        });
+      }
     }
 
     const registrarUsuario = () => {

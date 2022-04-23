@@ -6,7 +6,7 @@ import {collection, addDoc} from 'firebase/firestore';
 
 const DuracionTratamiento = (props) => {
 
-    const { nombreMed,tipoAdm,dose,quantity,item,hora,editar } = props.route.params;
+    const { uid,nombreMed,tipoAdm,dose,quantity,item,hora,editar } = props.route.params;
     
     const guardarDuracion = (nDias)=>{
         let fechaActual = new Date()
@@ -37,10 +37,10 @@ const DuracionTratamiento = (props) => {
                 hora:hora,
                 duracion: duracion
             }
-            addDoc(collection(db, 'Recordatorios'), datosRecordatorio)
+            addDoc(collection(db, uid), datosRecordatorio)
         }
         
-        props.navigation.navigate("Recordatorios");
+        props.navigation.navigate("Recordatorios",{uid});
     }
 
     const guardarEdit = async (id,datos) =>{

@@ -5,7 +5,10 @@ import { CheckBox } from 'react-native-elements';
 var tipo = '';
 let regex = new RegExp("^[a-zA-ZÀ-ÿ ]+$");
 let letras= new RegExp("[a-zA-Z]");
-const PantallaRegistroMed = ({ navigation },{props}) => {
+const PantallaRegistroMed = ( {navigation , props, route}) => {
+  console.log("ENTRO")
+  const{uid} = route.params;
+
   const verificar = (text, tipo) => { 
     if (text != '' && tipo !== '') {
       if (!letras.test(text)) {
@@ -16,6 +19,7 @@ const PantallaRegistroMed = ({ navigation },{props}) => {
         console.log("lleno un medicamento")
         navigation.navigate("Dosis del Medicamento",
           {
+            uid: uid,
             nombreMed: text,
             tipoAdm: tipo
           })

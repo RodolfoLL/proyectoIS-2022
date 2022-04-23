@@ -7,11 +7,13 @@ import { collection, query, where, getDocs ,doc, deleteDoc, onSnapshot} from "fi
 import { render } from "react-dom";
 import { ListItem ,Icon} from 'react-native-elements';
 
-const PantallaInicio = ({ navigation  }) => {
-    navigation.setOptions({
+const PantallaInicio = ({route, navigation  }) => {
+    const {uid} = route.params
+    console.log(uid)
+    navigation.setOptions({ 
     headerRight: () => (
         <TouchableOpacity
-            onPress={() => navigation.navigate("Registro de Medicamento")}
+            onPress={() => navigation.navigate("Registro de Medicamento",{uid: uid})}
             style={{
                 width: 100,
                 height: 40,
@@ -46,7 +48,7 @@ const PantallaInicio = ({ navigation  }) => {
     const [recordatorios, setRecordatorios] = useState([]);
     console.log(recordatorios)
     useEffect( () => 
-        onSnapshot(collection(db,"Recordatorios"), (snapshot) =>
+        onSnapshot(collection(db,uid), (snapshot) =>
             setRecordatorios(snapshot.docs.map((doc) => ({...doc.data(),id: doc.id})))
         ),[]
     );

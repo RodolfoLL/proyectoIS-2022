@@ -29,7 +29,7 @@ const CantidadMedicamentos = ({ route, navigation }) => {
     let tipoDosis = ""
     const [selectDose, setselectDose] = useState("1");
     const [selectQuantity, setselectQuantity] = useState("1");
-    let { nombreMed, tipoAdm } = route.params;
+    let { uid,nombreMed, tipoAdm } = route.params;
 
     if (tipoAdm == "Via Oral") { tipoDosis = "Comprimido"; }
     if (tipoAdm == "Via Intramuscular" ||
@@ -46,6 +46,7 @@ const CantidadMedicamentos = ({ route, navigation }) => {
     const guardarCantidad = () => {
         if (selectDose != "" && selectQuantity != "") {
             navigation.navigate("Frecuencia Dosis", {
+                uid: uid,
                 nombreMed: nombreMed,
                 tipoAdm: tipoAdm,
                 dose: selectDose,
