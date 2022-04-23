@@ -70,7 +70,7 @@ const FechaFinal = (props) => {
             console.log("hora registrada: "+hora[i])
             let horaTemporal = parseInt(horaRegistrada.substring(0,2)) 
             let minutoTemporal = parseInt(horaRegistrada.substring(3,5))
-            let medioDia = horaRegistrada.substring(6,8)
+            let medioDia = horaRegistrada.substring(horaRegistrada.length-2,horaRegistrada.length)
             console.log(horaTemporal)
             console.log(minutoTemporal)
             console.log(medioDia)
@@ -91,7 +91,8 @@ const FechaFinal = (props) => {
 
     const actualizarHoraRegistrada = ()=>{
         if (editar){
-            var datosRecordatorio = { 
+            var datosRecordatorio = {
+               uid: uid,
                id: props.route.params.id,
                nombreMed: nombreMed, 
                tipoAdm: tipoAdm,
@@ -134,7 +135,7 @@ const FechaFinal = (props) => {
                 if(validarHora()){
                     console.log("SE GUARDO")
                     guardarEdit(id,datosRecordatorio)
-                    props.navigation.navigate("Recordatorios")
+                    props.navigation.navigate("Recordatorios",{uid: uid})
                 }else{
                     console.log("NO SE GUARDO")
                     Alert.alert("Fecha No Registra!","Eliga una hora que no halla pasado");
@@ -142,7 +143,7 @@ const FechaFinal = (props) => {
                 }
             }else{
                 guardarEdit(id,datosRecordatorio)
-                props.navigation.navigate("Recordatorios")
+                props.navigation.navigate("Recordatorios",{uid: uid})
             }  
         }
         else{
@@ -167,7 +168,7 @@ const FechaFinal = (props) => {
 
     const guardarEdit = async (id,datos) =>{
         
-        const docref = doc(db,"Recordatorios",id)
+        const docref = doc(db,uid,id)
         console.log(docref)
         console.log(datos);
         await setDoc(docref,datos)

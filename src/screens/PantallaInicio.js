@@ -55,10 +55,10 @@ const PantallaInicio = ({route, navigation  }) => {
 
     const elimnarRecordatorio = async (id) =>{
         console.log(id)
-        const docRef = doc(db,"Recordatorios",id)
+        const docRef = doc(db,uid,id)
         console.log(docRef)
          deleteDoc(docRef)
-        navigation.navigate("Recordatorios")
+        navigation.navigate("Recordatorios",{uid: uid})
     }
     const confirmarElimniar = (id) => {
         Alert.alert("Eliminar recordatorio", "estas seguro?",[
@@ -106,6 +106,7 @@ const PantallaInicio = ({route, navigation  }) => {
                             name={"pencil-circle"} size={50} 
                             color={"#0093B7"} 
                             onPress={() => navigation.navigate("Editar Medicamento",{
+                                uid: uid,
                                 id: item.id,
                                 nombreMed:item.nombreMed,
                                 tipoAdm: item.tipoAdm,

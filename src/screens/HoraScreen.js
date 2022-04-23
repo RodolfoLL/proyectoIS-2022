@@ -73,6 +73,7 @@ const HoraScreen=(props)=>{
 
             if(editar){
                 var datosRecordatorio = {
+                    uid:uid,
                     id: props.route.params.id,
                     nombreMed: nombreMed, 
                     tipoAdm: tipoAdm,

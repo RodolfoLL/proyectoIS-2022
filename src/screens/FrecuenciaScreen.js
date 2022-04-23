@@ -22,6 +22,7 @@ const FrecuenciaScreen = (props) => {
   const guardarFrecuencia = (item)=>{
 if (editar){
    var datosRecordatorio = { 
+      uid: uid,
       id: props.route.params.id,
       nombreMed: nombreMed, 
       tipoAdm: tipoAdm,

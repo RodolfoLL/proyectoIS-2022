@@ -27,6 +27,7 @@ const RegistroEdit =({route,navigation}) => {
           console.log("lleno un medicamento")
           navigation.navigate("Editar Dosis",
             {
+              uid: parametros.uid,
               id: parametros.id,
               nombreMed: text,
               tipoAdm: tipo,

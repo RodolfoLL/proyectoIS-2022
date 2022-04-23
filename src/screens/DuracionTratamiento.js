@@ -45,7 +45,7 @@ const DuracionTratamiento = (props) => {
 
     const guardarEdit = async (id,datos) =>{
         
-        const docref = doc(db,"Recordatorios",id)
+        const docref = doc(db,uid,id)
         console.log(docref)
         console.log(datos);
         await setDoc(docref,datos)
