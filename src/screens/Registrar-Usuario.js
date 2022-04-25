@@ -1,8 +1,10 @@
 import { useState } from "react";
-import { View,StyleSheet } from "react-native";
-import { Input,Button,Icon,Text } from "react-native-elements";
+import { View,StyleSheet,ActivityIndicator } from "react-native";
+import { Input,Button,Icon,Text,Overlay } from "react-native-elements";
 import {KeyboardAwareScrollView} from "react-native-keyboard-aware-scroll-view"
 import { size } from "lodash";
+import {getAuth,createUserWithEmailAndPassword} from "firebase/auth"
+import {app} from '../../database/firebase'
 const RegistroUsuario= ({route,navigation}) =>{
     
     const [Datos, setDatos] = useState(defaultFormValues())
@@ -12,11 +14,22 @@ const RegistroUsuario= ({route,navigation}) =>{
     const [errorConfirmar,seterrorConfirmar] = useState("")
     const [errorNombre,seterrorNombre] = useState("")
     const [errorEmail,seterrorEmail] = useState("")
+    const [loading,setLoading] = useState(false)
+    const auth = getAuth(app);
     const onChange = (e, type) => {
         setDatos({ ...Datos, [type]: e.nativeEvent.text })
         console.log(Datos)
     }
-
+    const registrarUsuario = async(email, password) => {
+        const result = { statusResponse: true, error: null}
+        try {
+            await createUserWithEmailAndPassword(auth,email,password)
+        } catch (error) {
+            result.statusResponse = false
+            result.error = "Este correo ya ha sido registrado."
+        }
+        return result
+    }
     function validarCorreo(email) {
         const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
         return re.test(email)
@@ -56,15 +69,37 @@ const RegistroUsuario= ({route,navigation}) =>{
         
         return valido
     }
-    const guardarDato=()=>{
-        if(validarDatos){
-            navigation.navigate("Recordatorios")
+    const guardarUsario= async ()=>{
+        
+        if(!validarDatos()){
+            return;
         }
+        setLoading(true)
+        const usuario = await registrarUsuario(Datos.email,Datos.contraseña)
+        if (!usuario.statusResponse) {
+            setLoading(false)
+            seterrorEmail(usuario.error)
+            return
+        }
+        
+        setLoading(false)
+        navigation.navigate("Recordatorios")
     }
     return (
+       
        <KeyboardAwareScrollView>
+           
+           
+           
             <View style={styles.container}>
             <Text style={styles.titulo}> REGISTRAR NUEVO USUARIO </Text>
+            <Icon
+                        type="material-community"
+                        name={"account-circle-outline"}
+                        iconStyle={styles.iconUser}
+                        size = {90}
+                        
+                    />
             <Text style = {styles.text} >Nombre</Text>
             <Input
                 containerStyle={styles.input}
@@ -123,9 +158,9 @@ const RegistroUsuario= ({route,navigation}) =>{
                 title="REGISTRAR"
                 containerStyle={styles.btnContainer}
                 buttonStyle={styles.btn}
-                onPress={()=> guardarDato()}
+                onPress={()=> guardarUsario()}
             />
-           
+           <Loading isVisible={loading} text="Creando cuenta..."/>
         </View>
       </KeyboardAwareScrollView>
     )
@@ -134,6 +169,26 @@ const RegistroUsuario= ({route,navigation}) =>{
 
 const defaultFormValues = () => {
     return { nombre:"",email: "", contraseña: "", confirmar: "" }
+}
+function Loading({ isVisible, text }) {
+    return (
+        <Overlay
+            isVisible={isVisible}
+            windowBackgoundColor="rgba(0,0,0,0.5)"
+            overlayBackgroundColor="transparent"
+            overlayStyle={styles.overlay}
+        >
+            <View style={styles.view}>
+                <ActivityIndicator
+                    size="large"
+                    color="#442484"
+                />
+                {
+                    text && <Text style={styles.text2}>{text}</Text>
+                }
+            </View>
+        </Overlay>
+    )
 }
 
 const styles = StyleSheet.create({
@@ -174,17 +229,36 @@ const styles = StyleSheet.create({
     icon: {
         color: "black"
     },
+    iconUser:{
+        color:"white",
+        alignSelf:"center"
+    },
     text:{
         color: "white",
         fontSize:20,
       
     },
+    text2:{color: "black",
+    fontSize:20,},
     titulo:{
         paddingTop:10,
         paddingBottom:10,
         color: "white",
         fontSize:20,
         alignSelf: "center",
-    }
+    },
+    overlay : {
+        height: 100,
+        width: 200,
+        backgroundColor: "#fff",
+        borderColor: "#442484",
+        borderWidth: 2,
+        borderRadius: 10
+    },
+    view: {
+        flex: 1,
+        alignItems: "center",
+        justifyContent: "center" 
+     },
 });
 export default RegistroUsuario
