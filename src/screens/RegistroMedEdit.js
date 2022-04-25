@@ -85,7 +85,8 @@ const RegistroEdit =({route,navigation}) => {
     else{
         var [checkedOftalmologica, setcheckedOftalmologica] = useState(false);
     }
-    if(parametros.tipoAdm =="Via Parental"){
+    if(parametros.tipoAdm =="Via Parenteral"){
+      
        var [checkedParetal, setcheckedParetal] = useState(true);
     }
     else{
@@ -118,7 +119,7 @@ const RegistroEdit =({route,navigation}) => {
         console.log(tipo);
       }
       if (n == 7) {
-        tipo = "Via Parental"
+        tipo = "Via Parenteral"
         console.log(tipo);
       }
     }
@@ -271,7 +272,7 @@ const RegistroEdit =({route,navigation}) => {
               }
             />
             <CheckBox
-              title='Via Parental'
+              title='Via Parenteral'
               checked={checkedParetal}
               onPress={() => {
                 mostrar(7)
