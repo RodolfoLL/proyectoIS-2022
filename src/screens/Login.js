@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { View, TextInput, StyleSheet, Button,ScrollView} from 'react-native'
+import { View, TextInput, StyleSheet, Button,TouchableOpacity, Image,Text} from 'react-native'
 
 
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
@@ -28,79 +28,136 @@ const Login = (props) => {
       })
     }
 
-    const buscar = () =>{
-      const auth = getAuth(app);
-      const user = auth.currentUser;
-      
-      if (user !== null) {
-        user.providerData.forEach((profile) => {
-          console.log("  Provider-specific UID: " + profile.uid);
-        });
-      }
-    }
-
     const registrarUsuario = () => {
       props.navigation.navigate("RegistroUsuario");
     }
 return (
-    <ScrollView style={styles.container}>
+    <View style={styles.container}>
+
+      <View style={styles.contenedorLogo}>
+        <Image
+          style={styles.incono}
+          source={require("../assets/icono.png")}
+        />
+        <Text style={styles.titulo}>
+          MEDICATE 
+        </Text>
+      </View>
+      
 
       <View style={styles.inputGroup}>
+
+        <Text style={styles.label}>
+          Correo Electronico 
+        </Text>
         <TextInput
-          placeholder="Email"
-          multiline={true}
-          numberOfLines={4}
+          style={styles.input}
           onChangeText={(value) => setEmail(value)}
           value={email}
         />
-      </View>
-
-      <View style={styles.inputGroup}>
+      
+        <Text style={styles.label}>
+          Contraseña
+        </Text>
         <TextInput
-          placeholder="password"
-          multiline={true}
-          numberOfLines={4}
+          style={styles.input}
           onChangeText={(value) => setPassword(value)}
           value={password}
+          secureTextEntry
         />
+        <Text style={styles.recuperarPassword} onPress={() => registrarUsuario()}>Olvidaste la contraseña?</Text>
       </View>
 
-      <View style={styles.button}>
-        <Button title="LOGIN" onPress={() => saveNewUser()} />
-      </View>
+      <View style={styles.botones}>
+        <TouchableOpacity style={styles.botonLogin}
+          onPress={() => saveNewUser()}>
+          <Text style={styles.textLogin}>INICIAR SESION</Text>
+        </TouchableOpacity>
 
-      <View style={styles.button}>
-        <Button title="Registrar" onPress={() => registrarUsuario()} />
+        <Text style={styles.botonRegister} onPress={() => registrarUsuario()}>Registrarse</Text>
       </View>
-    </ScrollView>
-)
-  
-}
+    </View>
+)}
 
 const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      padding: 35,
-    },
-    inputGroup: {
-      flex: 1,
-      padding: 0,
-      marginBottom: 15,
-      borderBottomWidth: 1,
-      borderBottomColor: "#cccccc",
-    },
-    loader: {
-      left: 0,
-      right: 0,
-      top: 0,
-      bottom: 0,
-      position: "absolute",
-      alignItems: "center",
-      justifyContent: "center",
-    },
-    button:{
-      marginVertical: 5
-    }
-  });
+  container: {
+    flex: 1,
+    backgroundColor: '#001B48',
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexDirection: 'column'
+  },
+  contenedorLogo:{
+    flex: 6,
+    width: "80%",
+    paddingTop: "5%",
+    alignItems: 'center',
+    justifyContent: 'center',
+    //backgroundColor: "red"
+  },
+  incono:{
+    resizeMode: 'center',
+    width: "80%",
+    height: "80%"
+  },
+  titulo:{ 
+    fontSize: 35, 
+    color: 'white', 
+    fontWeight: 'bold' 
+  },
+  inputGroup: {
+    flex: 8,
+    width: "80%",
+    paddingTop: "25%",
+    //backgroundColor: "green"
+  },
+  label:{
+    fontSize: 20,
+    color:"white",
+    marginTop: 10
+  },
+  input:{
+    backgroundColor: "#001B48",
+    color: "white",
+    paddingHorizontal: 15,
+    paddingVertical: 10,
+    borderRadius: 10,
+    marginTop: 5,
+    borderColor: "white",
+    borderWidth: 2
+  },
+  recuperarPassword:{
+    fontSize: 15,
+    color:"white",
+    marginTop: 5,
+    textDecorationLine:'underline'
+  },
+  botones:{
+    flex: 3,
+    width: "80%",
+    //backgroundColor:"black",
+    //paddingTop: "3%",
+    alignItems: "center"
+  },
+  botonLogin:{
+    backgroundColor: "#0093B7",
+    fontSize: 30,
+    width: "80%",
+    paddingVertical: "3%",
+    paddingHorizontal: "5%",
+    alignItems: "center",
+    borderRadius: 15
+  },
+  textLogin:{
+    color: "white",
+    fontSize: 23
+  },
+  botonRegister:{
+    fontSize: 20,
+    color:"white",
+    marginTop: 5,
+    textDecorationLine:'underline'
+  }
+});
 
 export default Login
