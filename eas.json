@@ -13,9 +13,13 @@
       "distribution": "internal",
       "android": {
         "buildType": "apk"
-      }
+      },
+      "releaseChannel": "preview-sprint-one"
     },
-    "production": {"node": "16.14.2"}
+    "production": {
+      "node": "16.14.2",
+      "releaseChannel": "production"
+    }
   },
   "submit": {
     "production": {}
