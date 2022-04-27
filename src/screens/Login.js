@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { View, TextInput, StyleSheet, Button,TouchableOpacity, Image,Text} from 'react-native'
+import { View, TextInput, StyleSheet, Button,TouchableOpacity, Image,Text, Alert} from 'react-native'
 
 
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
@@ -14,18 +14,33 @@ const Login = (props) => {
 
     const saveNewUser = () => {
       console.log(email+" "+ password)
-      signInWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        console.log('Signed in!')
-        const user = userCredential.user;
-        console.log(user)
-        console.log("UID:  "+ user.email)
-        console.log("UID:  "+ user.uid)
-        props.navigation.navigate("Recordatorios",{uid: user.uid})
-      })
-      .catch(error => {
-        console.log(error)
-      })
+      if(verificarEmail()){
+        signInWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+          console.log('Signed in!')
+          const user = userCredential.user;
+          //console.log(user)
+          console.log("UID:  "+ user.uid)
+          props.navigation.navigate("Recordatorios",{uid: user.uid})
+        })
+        .catch(error => {
+          //console.log(error)
+          Alert.alert("Correo no registrado")
+        })
+      }else{
+        Alert.alert("Formato invalido","El formato de Email ingresado es incorrecto")
+      }
+      
+    }
+
+    const verificarEmail = () => {
+      let emailTemporal = email.substring(email.length-10,email.length)
+      console.log(emailTemporal)
+      let emailCorrecto = false
+      if(emailTemporal === "@gmail.com"){
+        emailCorrecto = true
+      }
+      return emailCorrecto
     }
 
     const registrarUsuario = () => {
@@ -53,7 +68,7 @@ return (
         <TextInput
           style={styles.input}
           onChangeText={(value) => setEmail(value)}
-          value={email}
+          //value={email}
         />
       
         <Text style={styles.label}>
@@ -62,10 +77,10 @@ return (
         <TextInput
           style={styles.input}
           onChangeText={(value) => setPassword(value)}
-          value={password}
+          //value={password}
           secureTextEntry
         />
-        <Text style={styles.recuperarPassword} onPress={() => registrarUsuario()}>Olvidaste la contraseña?</Text>
+        <Text style={styles.recuperarPassword} onPress={() => alert("ir a cambiar la contraseña")}>Olvidaste la contraseña?</Text>
       </View>
 
       <View style={styles.botones}>
@@ -146,7 +161,7 @@ const styles = StyleSheet.create({
     paddingVertical: "3%",
     paddingHorizontal: "5%",
     alignItems: "center",
-    borderRadius: 15
+    borderRadius: 15,
   },
   textLogin:{
     color: "white",
