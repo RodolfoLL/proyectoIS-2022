@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { View, TextInput, StyleSheet, Button,TouchableOpacity, Image,Text, Alert} from 'react-native'
-
+import {KeyboardAwareScrollView} from "react-native-keyboard-aware-scroll-view"
 
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 import {app} from '../../database/firebase'
@@ -47,6 +47,7 @@ const Login = (props) => {
       props.navigation.navigate("RegistroUsuario");
     }
 return (
+  <KeyboardAwareScrollView>
     <View style={styles.container}>
 
       <View style={styles.contenedorLogo}>
@@ -92,6 +93,7 @@ return (
         <Text style={styles.botonRegister} onPress={() => registrarUsuario()}>Registrarse</Text>
       </View>
     </View>
+  </KeyboardAwareScrollView>
 )}
 
 const styles = StyleSheet.create({
@@ -108,7 +110,7 @@ const styles = StyleSheet.create({
     paddingTop: "5%",
     alignItems: 'center',
     justifyContent: 'center',
-    //backgroundColor: "red"
+    backgroundColor: "red"
   },
   incono:{
     resizeMode: 'center',
@@ -124,7 +126,7 @@ const styles = StyleSheet.create({
     flex: 8,
     width: "80%",
     paddingTop: "25%",
-    //backgroundColor: "green"
+    backgroundColor: "green"
   },
   label:{
     fontSize: 20,
@@ -150,7 +152,7 @@ const styles = StyleSheet.create({
   botones:{
     flex: 3,
     width: "80%",
-    //backgroundColor:"black",
+    backgroundColor:"black",
     //paddingTop: "3%",
     alignItems: "center"
   },
