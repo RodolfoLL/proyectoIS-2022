@@ -19,15 +19,14 @@ import DosisEdit from './screens/DosisEdit';
 import Login from './screens/Login';
 import RegistroUsuario from './screens/RegistroUsuario';
 const HomeStackNavigator = createNativeStackNavigator();
+const Tab = createBottomTabNavigator();
+const Stack = createNativeStackNavigator();
 
 
 
 function MyStacks(){
     return(
         <HomeStackNavigator.Navigator initialRouteName='Medicate'>
-            <HomeStackNavigator.Screen name="Login" component={Login}
-            options={{headerTintColor: 'white',
-            headerStyle:{ backgroundColor: "#0093B7"}}}/>
             <HomeStackNavigator.Screen name="RegistroUsuario" component={RegistroUsuario}
             options={{headerTintColor: 'white',
             headerStyle:{ backgroundColor: "#0093B7"}}}/>
@@ -65,7 +64,7 @@ function MyStacks(){
     );
 }
 
-const Tab = createBottomTabNavigator();
+
 
 function MyTabs(){
     return(
@@ -96,7 +95,15 @@ function MyTabs(){
 export default function Navigation(){
     return(
         <NavigationContainer>
-            <MyTabs />
+            <Stack.Navigator>
+                <Stack.Screen
+                name="Login" component={Login}
+                options={{headerTintColor: '#001B48',
+                headerStyle:{ backgroundColor: "#001B48"},
+                }}/>
+                <Stack.Screen name="Medicate" component={MyTabs}/>
+                
+            </Stack.Navigator>
         </NavigationContainer>
     );
 }

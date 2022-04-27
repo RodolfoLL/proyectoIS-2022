@@ -129,7 +129,8 @@ const styles = StyleSheet.create({
   label:{
     fontSize: 20,
     color:"white",
-    marginTop: 10
+    marginTop: 10,
+    bottom: 50
   },
   input:{
     backgroundColor: "#001B48",
@@ -139,20 +140,23 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     marginTop: 5,
     borderColor: "white",
-    borderWidth: 2
+    borderWidth: 2,
+    bottom: 50
   },
   recuperarPassword:{
     fontSize: 15,
     color:"white",
     marginTop: 5,
-    textDecorationLine:'underline'
+    textDecorationLine:'underline',
+    bottom: 50,
   },
   botones:{
     flex: 3,
     width: "80%",
     //backgroundColor:"black",
     //paddingTop: "3%",
-    alignItems: "center"
+    alignItems: "center",
+    bottom: 60
   },
   botonLogin:{
     backgroundColor: "#0093B7",
