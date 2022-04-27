@@ -47,7 +47,7 @@ const Login = (props) => {
       props.navigation.navigate("RegistroUsuario");
     }
 return (
-  <KeyboardAwareScrollView>
+  <KeyboardAwareScrollView style={styles.scroll} contentContainerStyle={{flex: 1}}>
     <View style={styles.container}>
 
       <View style={styles.contenedorLogo}>
@@ -85,7 +85,7 @@ return (
           rightIcon={
             <Icon
                 type="material-community"
-                name={ mostarContra ? "eye-off-outline" : "eye-outline"}
+                name={ mostarContra ? "eye-outline" : "eye-off-outline"}
                 iconStyle={styles.icon}
                 onPress={() => setmostarContra(!mostarContra)}
             />
@@ -107,20 +107,25 @@ return (
 )}
 
 const styles = StyleSheet.create({
+  scroll:{
+    //backgroundColor: "yellow",
+    flex: 1
+  },
   container: {
     flex: 1,
     backgroundColor: '#001B48',
     alignItems: 'center',
     justifyContent: 'center',
-    flexDirection: 'column'
+    flexDirection: 'column',
+    height: "100%"
   },
   contenedorLogo:{
-    flex: 6,
+    flex: 2,
     width: "80%",
     paddingTop: "5%",
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: "red"
+    //backgroundColor: "red"
   },
   incono:{
     resizeMode: 'center',
@@ -133,15 +138,16 @@ const styles = StyleSheet.create({
     fontWeight: 'bold' 
   },
   inputGroup: {
-    flex: 8,
+    flex: 3,
     width: "80%",
-    paddingTop: "25%",
-    backgroundColor: "green"
+    paddingTop: "15%",
+    //backgroundColor: "green"
   },
   label:{
     fontSize: 20,
     color:"white",
-    marginTop: 10
+    marginTop: "0%",
+    paddingTop: "0%",
   },
   input:{
     backgroundColor: "#001B48",
@@ -159,13 +165,14 @@ const styles = StyleSheet.create({
   recuperarPassword:{
     fontSize: 15,
     color:"white",
-    marginTop: 5,
-    textDecorationLine:'underline'
+    textDecorationLine:'underline',
+    marginTop: "0%",
+    paddingTop: "0%",
   },
   botones:{
-    flex: 3,
+    flex: 1,
     width: "80%",
-    backgroundColor:"black",
+    //backgroundColor:"black",
     //paddingTop: "3%",
     alignItems: "center"
   },
