@@ -20,13 +20,14 @@ import Login from './screens/Login';
 import RegistroUsuario from './screens/RegistroUsuario';
 const HomeStackNavigator = createNativeStackNavigator();
 
+
+
 function MyStacks(){
     return(
         <HomeStackNavigator.Navigator initialRouteName='Medicate'>
             <HomeStackNavigator.Screen name="Login" component={Login}
             options={{headerTintColor: 'white',
             headerStyle:{ backgroundColor: "#0093B7"}}}/>
-
             <HomeStackNavigator.Screen name="RegistroUsuario" component={RegistroUsuario}
             options={{headerTintColor: 'white',
             headerStyle:{ backgroundColor: "#0093B7"}}}/>
@@ -87,9 +88,8 @@ function MyTabs(){
                         <Icon type="material-community" name={"home"} size={size} color={color} />
                     ),
                     headerShown:false,
-                }}
-            />
-
+                  }}
+            />       
         </Tab.Navigator>
     );
 }
