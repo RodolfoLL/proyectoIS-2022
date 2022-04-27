@@ -51,7 +51,7 @@ const PantallaInicio = ({ navigation  }) => {
         ),[]
     );
 
-    const elimnarRecordatorio = async (id) =>{
+    const elimnarRecordatorio = async (id) =>{  
         console.log(id)
         const docRef = doc(db,"Recordatorios",id)
         console.log(docRef)
