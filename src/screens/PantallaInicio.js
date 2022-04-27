@@ -7,7 +7,7 @@ import { collection, query, where, getDocs ,doc, deleteDoc, onSnapshot} from "fi
 import { render } from "react-dom";
 import { ListItem ,Icon} from 'react-native-elements';
 
-const PantallaInicio = ({route, navigation  }) => {
+const PantallaInicio = ({route, navigation}) => {
     const {uid} = route.params
     console.log(uid)
     navigation.setOptions({ 

@@ -21,7 +21,7 @@ const Login = (props) => {
           const user = userCredential.user;
           //console.log(user)
           console.log("UID:  "+ user.uid)
-          props.navigation.navigate("Recordatorios",{uid: user.uid})
+          props.navigation.navigate("Medicate",{uid: user.uid})
         })
         .catch(error => {
           //console.log(error)
@@ -46,9 +46,11 @@ const Login = (props) => {
     const registrarUsuario = () => {
       props.navigation.navigate("RegistroUsuario");
     }
-return (
-    <View style={styles.container}>
 
+return (
+
+    <View style={styles.container}>
+      {/* <Svgtop/> */}
       <View style={styles.contenedorLogo}>
         <Image
           style={styles.incono}

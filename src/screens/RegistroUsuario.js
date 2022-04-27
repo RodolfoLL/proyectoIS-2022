@@ -22,7 +22,7 @@ const RegistroUsuario = (props) => {
         console.log("=============================")
         console.log("=============================")
         console.log(user)
-        props.navigation.navigate("Recordatorios");
+        props.navigation.navigate("Login");
 
       })
       .catch(error => {

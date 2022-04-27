@@ -27,9 +27,7 @@ const Stack = createNativeStackNavigator();
 function MyStacks(){
     return(
         <HomeStackNavigator.Navigator initialRouteName='Medicate'>
-            <HomeStackNavigator.Screen name="RegistroUsuario" component={RegistroUsuario}
-            options={{headerTintColor: 'white',
-            headerStyle:{ backgroundColor: "#0093B7"}}}/>
+            
 
             <HomeStackNavigator.Screen name="Recordatorios" component={PantallaInicio}
             options={{headerTintColor: 'white',
@@ -95,12 +93,17 @@ function MyTabs(){
 export default function Navigation(){
     return(
         <NavigationContainer>
-            <Stack.Navigator>
+            <Stack.Navigator
+                initialRouteName='Login'
+            >
                 <Stack.Screen
                 name="Login" component={Login}
                 options={{headerTintColor: '#001B48',
                 headerStyle:{ backgroundColor: "#001B48"},
                 }}/>
+                <Stack.Screen name="RegistroUsuario" component={RegistroUsuario}
+                options={{headerTintColor: 'white',
+                headerStyle:{ backgroundColor: "#0093B7"}}}/>
                 <Stack.Screen name="Medicate" component={MyTabs}/>
                 
             </Stack.Navigator>
