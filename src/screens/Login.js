@@ -21,7 +21,7 @@ const Login = (props) => {
           const user = userCredential.user;
           //console.log(user)
           console.log("UID:  "+ user.uid)
-          props.navigation.navigate("Medicate",{uid: user.uid})
+          props.navigation.navigate("Medicate",{uid: user.uid});
         })
         .catch(error => {
           //console.log(error)
