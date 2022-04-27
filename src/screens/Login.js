@@ -1,12 +1,12 @@
 import React, { useState } from 'react'
 import { View, TextInput, StyleSheet, Button,TouchableOpacity, Image,Text, Alert} from 'react-native'
 import {KeyboardAwareScrollView} from "react-native-keyboard-aware-scroll-view"
-
+import { Input,Icon } from "react-native-elements";
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 import {app} from '../../database/firebase'
 
 const Login = (props) => {
-
+    const [mostarContra, setmostarContra] = useState(false)
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
 
@@ -66,20 +66,30 @@ return (
         <Text style={styles.label}>
           Correo Electronico 
         </Text>
-        <TextInput
+        <Input
           style={styles.input}
           onChangeText={(value) => setEmail(value)}
+          keyboardType="email-address"
+
           //value={email}
         />
       
         <Text style={styles.label}>
           Contraseña
         </Text>
-        <TextInput
+        <Input
           style={styles.input}
           onChangeText={(value) => setPassword(value)}
           //value={password}
-          secureTextEntry
+          secureTextEntry={!mostarContra}
+          rightIcon={
+            <Icon
+                type="material-community"
+                name={ mostarContra ? "eye-off-outline" : "eye-outline"}
+                iconStyle={styles.icon}
+                onPress={() => setmostarContra(!mostarContra)}
+            />
+          }
         />
         <Text style={styles.recuperarPassword} onPress={() => alert("ir a cambiar la contraseña")}>Olvidaste la contraseña?</Text>
       </View>
@@ -93,7 +103,7 @@ return (
         <Text style={styles.botonRegister} onPress={() => registrarUsuario()}>Registrarse</Text>
       </View>
     </View>
-  </KeyboardAwareScrollView>
+    </KeyboardAwareScrollView>
 )}
 
 const styles = StyleSheet.create({
@@ -142,6 +152,9 @@ const styles = StyleSheet.create({
     marginTop: 5,
     borderColor: "white",
     borderWidth: 2
+  },
+  icon: {
+    color: "white"
   },
   recuperarPassword:{
     fontSize: 15,
