@@ -1,9 +1,21 @@
 
-import React, { useState } from "react"
+import Constants from 'expo-constants';
+import * as Notifications from 'expo-notifications';
+import React, { useState, useEffect, useRef } from 'react';
 import { Button, View, ScrollView, Text,TouchableOpacity } from "react-native";
 import { Picker } from '@react-native-picker/picker'
 import { StyleSheet } from "react-native";
 
+//Notificaciones 
+Notifications.setNotificationHandler({
+    handleNotification: async () => ({
+      shouldShowAlert: true,
+      shouldPlaySound: false,
+      shouldSetBadge: false,
+    }),
+  });
+
+//Visualizacion 
 function generarArregloDosis(name) {
     let arreglo = []
     for (let i = 1; i <= 10; i++) {
@@ -26,6 +38,29 @@ function generarArregloDosis(name) {
     return arreglo;
 }
 const CantidadMedicamentos = ({ route, navigation }) => {
+  //Constantes de los medicamentos 
+  const [expoPushToken, setExpoPushToken] = useState('');
+  const [notification, setNotification] = useState(false);
+  const notificationListener = useRef();
+  const responseListener = useRef();
+
+  useEffect(() => {
+    registerForPushNotificationsAsync().then(token => setExpoPushToken(token));
+
+    notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
+      setNotification(notification);
+    });
+
+    responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
+      console.log(response);
+    });
+
+    return () => {
+      Notifications.removeNotificationSubscription(notificationListener.current);
+      Notifications.removeNotificationSubscription(responseListener.current);
+    };
+  }, []);
+
     let tipoDosis = ""
     const [selectDose, setselectDose] = useState("1");
     const [selectQuantity, setselectQuantity] = useState("1");
@@ -42,6 +77,8 @@ const CantidadMedicamentos = ({ route, navigation }) => {
     let arregloItemDosis = generarArregloDosis(tipoDosis)
     let arregloCantidadMed = new Array(10)
     arregloCantidadMed.fill(2, 0, 10);
+
+
 
     const guardarCantidad = () => {
         if (selectDose != "" && selectQuantity != "") {
@@ -105,7 +142,17 @@ const CantidadMedicamentos = ({ route, navigation }) => {
                         </Picker>
                     </View>
                 </View>
-
+                if(quantity==1){
+                   async () => {
+                    await schedulePushNotification();
+                  }
+                }
+                <Button
+        title="Press to schedule a notification"
+        onPress={async () => {
+          await schedulePushNotification();
+        }}
+      />
 
             </View>
             <TouchableOpacity
@@ -118,7 +165,44 @@ const CantidadMedicamentos = ({ route, navigation }) => {
         </ScrollView>
     );
 };
+async function schedulePushNotification() {
+    await Notifications.scheduleNotificationAsync({
+      content: {
+        title: "Se Acabaron sus Medicamentos ",
+      },
+      trigger: { seconds: 2 },
+    });
+  }
+async function registerForPushNotificationsAsync() {
+  let token;
+  if (Constants.isDevice) {
+    const { status: existingStatus } = await Notifications.getPermissionsAsync();
+    let finalStatus = existingStatus;
+    if (existingStatus !== 'granted') {
+      const { status } = await Notifications.requestPermissionsAsync();
+      finalStatus = status;
+    }
+    if (finalStatus !== 'granted') {
+      alert('Failed to get push token for push notification!');
+      return;
+    }
+    token = (await Notifications.getExpoPushTokenAsync()).data;
+    console.log(token);
+  } else {
+    alert('Must use physical device for Push Notifications');
+  }
 
+  if (Platform.OS === 'android') {
+    Notifications.setNotificationChannelAsync('default', {
+      name: 'default',
+      importance: Notifications.AndroidImportance.MAX,
+      vibrationPattern: [0, 250, 250, 250],
+      lightColor: '#FF231F7C',
+    });
+  }
+
+  return token;
+}
 const STYLE_GROUP = StyleSheet.create(
     {
         containerMain:
