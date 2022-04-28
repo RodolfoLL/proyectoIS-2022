@@ -70,7 +70,7 @@ const FechaFinal = (props) => {
             console.log("hora registrada: "+hora[i])
             let horaTemporal = parseInt(horaRegistrada.substring(0,2)) 
             let minutoTemporal = parseInt(horaRegistrada.substring(3,5))
-            let medioDia = horaRegistrada.substring(6,8)
+            let medioDia = horaRegistrada.substring(horaRegistrada.length-2,horaRegistrada.length)
             console.log(horaTemporal)
             console.log(minutoTemporal)
             console.log(medioDia)
