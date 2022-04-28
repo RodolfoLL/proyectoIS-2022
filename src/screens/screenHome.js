@@ -1,7 +1,9 @@
-import { View, Text, TouchableOpacity, ScrollView, Image } from "react-native";
+import { View, Text, TouchableOpacity, ScrollView, Image} from "react-native";
+import { UserContext } from "./ScreenContext";
 
-const HomeScreen = ({navigation}) => {
-
+const HomeScreen = (navigation) => {
+    const {name} = UserContext.Consumer.props;
+    console.log(HomeScreen.context);
     return (
         <ScrollView style={{backgroundColor:'#001B48'}}>
             <View style={{
@@ -14,7 +16,8 @@ const HomeScreen = ({navigation}) => {
             </Text>
             <Text style={{textAlign:'center',fontFamily:'Arial',margin:20,color:'white'}}>
                 Aplicacion para el recordatorio de medicamentos
-                para nuestros adultos mayores porque merecen ser ayudados 
+                para nuestros adultos mayores porque merecen ser ayudados
+                {name}
             </Text>
 
             <TouchableOpacity

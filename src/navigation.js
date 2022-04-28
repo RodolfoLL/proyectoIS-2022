@@ -6,6 +6,7 @@ import HomeScreen from "./screens/screenHome";
 import Screen2 from "./screens/screen2";
 import Screen3 from "./screens/screen3";
 import Login from "./screens/Login";
+import { UserContext } from "./screens/ScreenContext";
 
 const Stack = createNativeStackNavigator();
 const Stackscreen = createNativeStackNavigator();
@@ -50,6 +51,7 @@ function Tabs(){
 
 export default function Navigation() {
   return (
+    <UserContext.Provider value={Login}>
     <NavigationContainer>
         <Stackscreen.Navigator
             initialRouteName="Login"
@@ -58,5 +60,6 @@ export default function Navigation() {
             <Stackscreen.Screen name = "HomeScreen" component = {Tabs} />
         </Stackscreen.Navigator>
     </NavigationContainer>
+    </UserContext.Provider>
   );
 }
