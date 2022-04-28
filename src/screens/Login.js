@@ -47,7 +47,7 @@ const Login = (props) => {
       props.navigation.navigate("RegistroUsuario");
     }
 return (
-  <KeyboardAwareScrollView style={styles.scroll} contentContainerStyle={{flex: 1}}>
+  <KeyboardAwareScrollView style={styles.scroll} contentContainerStyle={{flex: 1}} >
     <View style={styles.container}>
 
       <View style={styles.contenedorLogo}>
@@ -99,7 +99,7 @@ return (
           onPress={() => saveNewUser()}>
           <Text style={styles.textLogin}>INICIAR SESION</Text>
         </TouchableOpacity>
-
+      
         <Text style={styles.botonRegister} onPress={() => registrarUsuario()}>Registrarse</Text>
       </View>
     </View>
@@ -153,14 +153,14 @@ const styles = StyleSheet.create({
     backgroundColor: "#001B48",
     color: "white",
     paddingHorizontal: 15,
-    paddingVertical: 10,
     borderRadius: 10,
     marginTop: 5,
     borderColor: "white",
-    borderWidth: 2
+    borderWidth: 2,
   },
   icon: {
-    color: "white"
+    color: "white",
+    borderColor: "white"
   },
   recuperarPassword:{
     fontSize: 15,
