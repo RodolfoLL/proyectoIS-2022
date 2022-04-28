@@ -3,12 +3,81 @@ import { View, Text, StyleSheet, TouchableOpacity} from 'react-native'
 import { doc, setDoc } from 'firebase/firestore';
 import {db} from '../../database/firebase'
 import {collection, addDoc} from 'firebase/firestore';
+import * as Notifications from 'expo-notifications'
+import { async } from '@firebase/util';
+
+const parseHorasMinutos = (arregloHoras) =>{
+    let resultadoHoras =[]
+    arregloHoras.forEach(horaMinuto =>{
+        if(horaMinuto.length==7){
+            horaParse = Number(horaMinuto[0])
+            minutoParse = Number(horaMinuto[2]+horaMinuto[3])
+            sistHorario = horaMinuto[5]+horaMinuto[6]
+        }else{
+            horaParse = Number(horaMinuto[0]+horaMinuto[1])
+            minutoParse = Number(horaMinuto[3]+horaMinuto[4])
+            sistHorario = horaMinuto[6]+horaMinuto[7]
+        }
+        horaParse = sistHorario=="PM" && horaParse!=12? horaParse+12: horaParse;
+        resultadoHoras.push({hora:horaParse, minuto:minutoParse});
+    });
+    return resultadoHoras
+}
+
+const concatHorasMinutos = (horasMinutos,algunaFecha)=>{
+    var horasConcat = []
+    const horas = parseHorasMinutos(horasMinutos)
+    horas.forEach(objHora => {
+        console.log(objHora.hora)
+        algunaFecha.setHours(objHora.hora,objHora.minuto)
+        horasConcat.push(new Date(algunaFecha));
+    });
+    return horasConcat;
+};
+
+const creador_de_notifiaciones = async (fechaTemporal, datosRecordatorio)=>{
+    const fechasDeNotificacion = concatHorasMinutos(datosRecordatorio.hora,fechaTemporal)
+    console.log(fechasDeNotificacion)
+    // fechasDeNotificacion.forEach(fechaLimite => {
+    //     try{
+    //          Notifications.scheduleNotificationAsync({
+    //             content:{
+    //                 title:"Es hora de tomar su medicamento prr@",
+    //                 body:"Te toca tomar "+datosRecordatorio.nombreMed
+    //             },
+    //             fechaLimite
+    //         });
+    //         console.log("Se creó la notificación")
+    //     }catch (e) {
+    //         alert("Que Rayos Hiciste ?!!!");
+    //         console.log(e);
+    //     }
+    // });
+    
+    const trigger =new Date(2022,4,28,13,31,0)  
+    alert(trigger)
+    // fechaLimite.setHours(19)
+    try{
+        console.log("============================================*")
+        await Notifications.scheduleNotificationAsync({
+           content:{
+               title:"Es hora de tomar su medicamento prr@",
+               body:"Te toca tomar "+datosRecordatorio.nombreMed
+           },
+           trigger: { seconds: 2 },
+       });
+       console.log("Se creó la notificación")
+   }catch (e) {
+       alert("Que Rayos Hiciste ?!!!");
+       console.log(e);
+   }
+};
 
 const DuracionTratamiento = (props) => {
 
     const { nombreMed,tipoAdm,dose,quantity,item,hora,editar } = props.route.params;
     
-    const guardarDuracion = (nDias)=>{
+    const guardarDuracion = async (nDias)=>{
         let fechaActual = new Date()
         let fechaTemporal = new Date(fechaActual.getFullYear(),fechaActual.getMonth(),fechaActual.getDate()+nDias)
         let duracion = fechaTemporal.getDate() +'/'+ (fechaTemporal.getMonth()+1)+'/'+ fechaTemporal.getFullYear() 
@@ -37,7 +106,8 @@ const DuracionTratamiento = (props) => {
                 hora:hora,
                 duracion: duracion
             }
-            addDoc(collection(db, 'Recordatorios'), datosRecordatorio)
+            await creador_de_notifiaciones(fechaTemporal, datosRecordatorio)
+            // addDoc(collection(db, 'Recordatorios'), datosRecordatorio)
         }
         
         props.navigation.navigate("Recordatorios");
