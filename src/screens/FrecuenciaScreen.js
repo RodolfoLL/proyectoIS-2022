@@ -46,7 +46,7 @@ if (editar){
 
   return (
     <View style ={styles.contain}>
-        <Text style={styles.texto}>{"¿Con que frecuencia toma el\n"+"medicamento"}</Text>
+        <Text style={styles.texto}>{"¿Con que frecuencia toma el\n"+"medicamento?"}</Text>
           <FlatList data={numeroFrecuencia} renderItem={({ item }) => (
           <TouchableOpacity
               onPress={() => guardarFrecuencia(item.frecuencia)}
