@@ -1,7 +1,8 @@
 import React from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import {NavigationContainer} from '@react-navigation/native';
+import {NavigationContainer, TabRouter} from '@react-navigation/native';
+import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 import {Icon} from 'react-native-elements';
 import RegistroMedEdit from "./screens/RegistroMedEdit"
@@ -23,11 +24,19 @@ const Tab = createBottomTabNavigator();
 // const Stack = createNativeStackNavigator();
 
 
-
-function MyStacks(){
+function MyStacks({navigation,route}){
+    
+    React.useLayoutEffect(() => {
+        const tabHiddenroute = ['RegistroUsuario','Login'];
+        if(tabHiddenroute.includes(getFocusedRouteNameFromRoute(route))){
+            navigation.setOptions({tabBarStyle: {display: 'none'}});
+        } else {
+           navigation.setOptions({tabBarStyle: {display: 'flex'}});
+        }
+    }, [navigation, route]);
     return(
+        
         <HomeStackNavigator.Navigator initialRouteName='Medicate'>
-            
             <HomeStackNavigator.Screen
             name="Login" component={Login}
             options={{headerTintColor: '#001B48',
@@ -73,8 +82,15 @@ function MyStacks(){
 
 
 function MyTabs(){
+    // const getTabBarStyle = (route) => {  
+    //     const routeName = getFocusedRouteNameFromRoute(route) ?? 'Login';
+    //     let display = (routeName === 'Login') ? 'none':'flex';
+    //     return {display}
+    //   }
+    
     return(
         <Tab.Navigator
+            initialRouteName="Recordatorios"
             screenOptions={{
                 tabBarActiveTintColor:'white',
                 tabBarInactiveTintColor: 'black',
@@ -84,17 +100,18 @@ function MyTabs(){
             }}
         >
             <Tab.Screen 
-                name="Medicate" 
+                name="tabs" 
                 component={MyStacks}
-                initialRouteName= 'Recordatorios'
-                options={{
-                    tabBarLabel:'inicio',
-                    tabBarIcon:({color,size})=>(
-                        <Icon type="material-community" name={"home"} size={size} color={color} />
-                    ),
-                    headerShown:false,
-                  }}
-            />       
+                // options={({route}) =>({ tabBarStyle: getTabBarStyle(route),tabBarLabel:'inicio',
+                // tabBarIcon:({color,size})=>(
+                //     <Icon type="material-community" name={"home"} size={size} color={color} />
+                // ),
+                // headerShown:false,})}
+                options ={{tabBarLabel:'inicio',tabBarIcon:({color,size})=>(
+                    <Icon type="material-community" name={"home"} size={size} color={color} />
+                ),
+                headerShown:false,}}
+            />              
         </Tab.Navigator>
     );
 }
