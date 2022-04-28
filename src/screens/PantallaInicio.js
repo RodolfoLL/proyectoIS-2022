@@ -1,11 +1,24 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, TouchableOpacity, ScrollView, Image, SafeAreaView,Alert,FlatList} from "react-native";
+import { View, Text, TouchableOpacity, Platform, Image, SafeAreaView,Alert,FlatList} from "react-native";
 import image from '../assets/medicate.png'
 import {db} from '../../database/firebase'
 import { StatusBar } from 'expo-status-bar';
 import { collection, query, where, getDocs ,doc, deleteDoc, onSnapshot} from "firebase/firestore";
 import { render } from "react-dom";
 import { ListItem ,Icon} from 'react-native-elements';
+import * as Device from 'expo-device'
+import * as Notifications from 'expo-notifications';
+
+
+Notifications.setNotificationHandler( 
+    {
+        handleNotification: async()=>({
+            shouldShowAlert:true,
+            shouldPlaySound:true,
+            shouldSetBadge:true
+        })
+    }
+);
 
 const PantallaInicio = ({ navigation  }) => {
     navigation.setOptions({
@@ -43,18 +56,20 @@ const PantallaInicio = ({ navigation  }) => {
         
     );
 
+    const [getExpoPushToken, setExpoPushToken]= useState('')            
     const [recordatorios, setRecordatorios] = useState([]);
-    console.log(recordatorios)
-    useEffect( () => 
-        onSnapshot(collection(db,"Recordatorios"), (snapshot) =>
+    // console.log(recordatorios)
+    useEffect( () =>
+        onSnapshot(collection(db,"Recordatorios"), (snapshot) =>{
             setRecordatorios(snapshot.docs.map((doc) => ({...doc.data(),id: doc.id})))
-        ),[]
+            registerForPushNotificationsAsync().then(token => setExpoPushToken(token))
+        }),[]
     );
 
     const elimnarRecordatorio = async (id) =>{
-        console.log(id)
+        // console.log(id)
         const docRef = doc(db,"Recordatorios",id)
-        console.log(docRef)
+        // console.log(docRef)
          deleteDoc(docRef)
         navigation.navigate("Recordatorios")
     }
@@ -63,6 +78,37 @@ const PantallaInicio = ({ navigation  }) => {
        {text: "Si" ,onPress: () =>{ elimnarRecordatorio(id)} },
        {text: "No" ,onPress: () =>{ console.log("ok sin elimnar")} }
         ])
+    }
+
+    const registerForPushNotificationsAsync = async () =>{ 
+        let token;
+        if(Device.isDevice){
+            const { status: existingStatus } = await Notifications.getPermissionsAsync();
+            let finalStatus = existingStatus;
+        if (existingStatus !== 'granted') {
+            const { status } = await Notifications.requestPermissionsAsync();
+            finalStatus = status;
+        }
+        if (finalStatus !== 'granted') {
+            alert('Failed to get push token for push notification!');
+            return;
+        }
+        token = (await Notifications.getExpoPushTokenAsync()).data;
+        console.log(token);
+        } else {
+        alert('Must use physical device for Push Notifications');
+        return;
+        }
+        if (Platform.OS === 'android') {
+            Notifications.setNotificationChannelAsync('default', {
+              name: 'default',
+              importance: Notifications.AndroidImportance.MAX,
+              vibrationPattern: [0, 250, 250, 250],
+              lightColor: '#FF231F7C',
+            });
+          }
+
+        return token;
     }
 
     return (
