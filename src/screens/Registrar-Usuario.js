@@ -21,12 +21,14 @@ const RegistroUsuario= ({route,navigation}) =>{
         console.log(Datos)
     }
     const registrarUsuario = async(email, password) => {
-        const result = { statusResponse: true, error: null}
+        const result = { statusResponse: true, error: null , user: null}
         try {
-            await createUserWithEmailAndPassword(auth,email,password)
+            const user =await createUserWithEmailAndPassword(auth,email,password)
+            result.user = user
         } catch (error) {
             result.statusResponse = false
             result.error = "Este correo ya ha sido registrado."
+            
         }
         return result
     }
@@ -59,7 +61,7 @@ const RegistroUsuario= ({route,navigation}) =>{
         }
         
         if(Datos.nombre.charAt(0) == " "){
-            seterrorNombre("el nombre no debe empezar con un espacio")
+            seterrorNombre("el nombre no debe empezar con  espacios")
             valido = false
         }
         if(Datos.nombre.charAt(2) == " " ){
