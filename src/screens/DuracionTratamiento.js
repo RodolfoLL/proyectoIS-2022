@@ -62,8 +62,9 @@ const creador_de_notifiaciones = async (fechaTemporal, datosRecordatorio)=>{
         "Friday",
         "Saturday",
       ];
-    const trigger =new Date(2022,4,28,20,59,0)  
+    const trigger =new Date(2022,4,29,13,37,0)  
     alert(trigger)
+      console.log(trigger)
     // const weekday = days.indexOf(day) + 1;
     const hours = trigger.getHours();
     const minutes = trigger.getMinutes();
@@ -75,12 +76,7 @@ const creador_de_notifiaciones = async (fechaTemporal, datosRecordatorio)=>{
                title:"Es hora de tomar su medicamento",
                body:"Te toca tomar "+datosRecordatorio.nombreMed
            },
-           trigger: {
-            weekday: 5,
-            hour: hours,
-            minute: minutes,
-            repeats: true,
-        },
+           trigger,
        });
        console.log("Se creó la notificación")
        console.log(id)
@@ -89,6 +85,18 @@ const creador_de_notifiaciones = async (fechaTemporal, datosRecordatorio)=>{
        console.log(e);
    }
 };
+
+async function logNextTriggerDate() {
+    try {
+      const nextTriggerDate = await Notifications.getNextTriggerDateAsync({
+        hour: 9,
+        minute: 0,
+      });
+      console.log(nextTriggerDate === null ? 'No next trigger date' : new Date(nextTriggerDate));
+    } catch (e) {
+      console.warn(`Couldn't have calculated next trigger date: ${e}`);
+    }
+  }
 
 const DuracionTratamiento = (props) => {
 
@@ -128,7 +136,7 @@ const DuracionTratamiento = (props) => {
             // addDoc(collection(db, 'Recordatorios'), datosRecordatorio)
         }
         
-        props.navigation.navigate("Recordatorios");
+        // props.navigation.navigate("Recordatorios");
     }
 
     const guardarEdit = async (id,datos) =>{
@@ -165,6 +173,10 @@ const DuracionTratamiento = (props) => {
                 <TouchableOpacity style={styles.boton}
                     onPress={() => {props.navigation.navigate('FechaFinal', props.route.params)}}  >
                     <Text style={styles.textBoton}>Establecer la fecha final</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.boton}
+                    onPress={async () => await logNextTriggerDate()}  >
+                    <Text style={styles.textBoton}>Get notif trigger</Text>
                 </TouchableOpacity>
             </View>
         </View>

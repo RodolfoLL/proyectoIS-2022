@@ -62,7 +62,9 @@ const PantallaInicio = ({ navigation  }) => {
     useEffect( () =>{
         onSnapshot(collection(db,"Recordatorios"), (snapshot) =>{
             setRecordatorios(snapshot.docs.map((doc) => ({...doc.data(),id: doc.id})))
-            registerForPushNotificationsAsync().then(token => setExpoPushToken(token))
+            registerForPushNotificationsAsync()
+            .then(token => setExpoPushToken(token))
+            .catch(e => console.log(e))
         });
         const subscription = Notifications.addNotificationReceivedListener(notification => {
             console.log(notification);
@@ -101,7 +103,7 @@ const PantallaInicio = ({ navigation  }) => {
           token = (await Notifications.getExpoPushTokenAsync()).data;
           console.log(token);
         } else {
-            return;
+            return new Error('No estas en un dispositivo movil');
         }
         if (Platform.OS === 'android') {
           Notifications.setNotificationChannelAsync('default', {
