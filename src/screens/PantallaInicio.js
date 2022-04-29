@@ -59,7 +59,15 @@ const PantallaInicio = ({ navigation  }) => {
     const [getExpoPushToken, setExpoPushToken]= useState('')            
     const [recordatorios, setRecordatorios] = useState([]);
     console.log(recordatorios)
-         
+    recordatorios.forEach(element => {
+        console.log(element);
+        if(element.quantity==1){
+            console.log("queda un solo medicamento");
+            schedulePushNotification();
+        }else{
+            console.log ("no queda uno quedan: " +element.quantity)
+        }
+    });
 
     useEffect( () =>{
         onSnapshot(collection(db,"Recordatorios"), (snapshot) =>{
@@ -180,18 +188,12 @@ const PantallaInicio = ({ navigation  }) => {
         />
 
         <StatusBar style="auto" />    
-        <Button
-        title="Press to schedule a notification"
-        onPress={async () => {
-          await schedulePushNotification();
-        }}
-      />
     </SafeAreaView>
    
     );
                                     
 };
-async function schedulePushNotification() {
+async function schedulePushNotification(nombre) {
     await Notifications.scheduleNotificationAsync({
       content: {
         title: "You've got mail! 📬",
