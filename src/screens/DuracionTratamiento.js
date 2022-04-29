@@ -53,22 +53,39 @@ const creador_de_notifiaciones = async (fechaTemporal, datosRecordatorio)=>{
     //         console.log(e);
     //     }
     // });
-    
-    const trigger =new Date(2022,4,28,13,31,0)  
+    var days = [
+        "Sunday",
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday",
+      ];
+    const trigger =new Date(2022,4,28,20,59,0)  
     alert(trigger)
+    // const weekday = days.indexOf(day) + 1;
+    const hours = trigger.getHours();
+    const minutes = trigger.getMinutes();
     // fechaLimite.setHours(19)
     try{
         console.log("============================================*")
-        await Notifications.scheduleNotificationAsync({
+        const id = await Notifications.scheduleNotificationAsync({
            content:{
-               title:"Es hora de tomar su medicamento prr@",
+               title:"Es hora de tomar su medicamento",
                body:"Te toca tomar "+datosRecordatorio.nombreMed
            },
-           trigger: { seconds: 2 },
+           trigger: {
+            weekday: 5,
+            hour: hours,
+            minute: minutes,
+            repeats: true,
+        },
        });
        console.log("Se creó la notificación")
+       console.log(id)
    }catch (e) {
-       alert("Que Rayos Hiciste ?!!!");
+       alert("Que Rayos Hiciste!!!");
        console.log(e);
    }
 };
@@ -107,6 +124,7 @@ const DuracionTratamiento = (props) => {
                 duracion: duracion
             }
             await creador_de_notifiaciones(fechaTemporal, datosRecordatorio)
+            //Deshabilite el envío del recoradtorio a la base de datos
             // addDoc(collection(db, 'Recordatorios'), datosRecordatorio)
         }
         

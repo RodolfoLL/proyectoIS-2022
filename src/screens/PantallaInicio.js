@@ -59,11 +59,16 @@ const PantallaInicio = ({ navigation  }) => {
     const [getExpoPushToken, setExpoPushToken]= useState('')            
     const [recordatorios, setRecordatorios] = useState([]);
     // console.log(recordatorios)
-    useEffect( () =>
+    useEffect( () =>{
         onSnapshot(collection(db,"Recordatorios"), (snapshot) =>{
             setRecordatorios(snapshot.docs.map((doc) => ({...doc.data(),id: doc.id})))
             registerForPushNotificationsAsync().then(token => setExpoPushToken(token))
-        }),[]
+        });
+        const subscription = Notifications.addNotificationReceivedListener(notification => {
+            console.log(notification);
+          });
+        return () => subscription.remove();
+    },[]
     );
 
     const elimnarRecordatorio = async (id) =>{
