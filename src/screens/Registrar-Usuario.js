@@ -106,13 +106,6 @@ const RegistroUsuario= ({route,navigation}) =>{
             seterrorEmail(usuario.error)
             return
         }
-        setLoading(false)
-        const user = usuario.user
-        Alert.alert("Cuenta creada", "Ya puedes acceder",[
-            {text: "OK" ,onPress: () =>{ console.log("ok a Login")} }
-             ])
-        
-        console.log(auth)
         updateProfile(auth.currentUser, {
             displayName: Datos.nombre, 
           }).then(() => {
@@ -121,6 +114,13 @@ const RegistroUsuario= ({route,navigation}) =>{
             console.log("nombre--- ups")
           });
         navigation.navigate("Login")
+        setLoading(false)
+        Alert.alert("Cuenta creada", "Ya puedes acceder",[
+            {text: "OK" ,onPress: () =>{ console.log("ok a Login")} }
+             ])
+        
+        console.log(auth)
+        
     }
     return (
        
