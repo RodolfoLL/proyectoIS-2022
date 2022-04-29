@@ -17,7 +17,7 @@ import PantallaRegistroMed from "./screens/PantallaRegistroMed";
 import DosisEdit from './screens/DosisEdit';
 
 import Login from './screens/Login';
-import RegistroUsuario from './screens/RegistroUsuario';
+import RegistroUsuario from "./screens/Registrar-Usuario"
 const HomeStackNavigator = createNativeStackNavigator();
 
 function MyStacks(){
@@ -27,7 +27,7 @@ function MyStacks(){
             options={{headerTintColor: 'white',
             headerStyle:{ backgroundColor: "#0093B7"}}}/>
 
-            <HomeStackNavigator.Screen name="RegistroUsuario" component={RegistroUsuario}
+            <HomeStackNavigator.Screen name="Registro Usuario" component={RegistroUsuario}
             options={{headerTintColor: 'white',
             headerStyle:{ backgroundColor: "#0093B7"}}}/>
 

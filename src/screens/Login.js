@@ -44,7 +44,7 @@ const Login = (props) => {
     }
 
     const registrarUsuario = () => {
-      props.navigation.navigate("RegistroUsuario");
+      props.navigation.navigate("Registro Usuario");
     }
 
   return (
@@ -61,8 +61,9 @@ const Login = (props) => {
         <Text style={styles.text}>
           Correo Electronico 
         </Text>
-        <Input
-          style={styles.input}
+        <Input style={styles.text}
+          containerStyle={styles.input}
+          placeholder="email@address.com"
           onChangeText={(value) => setEmail(value)}
           keyboardType="email-address"
           //value={email}
@@ -71,8 +72,9 @@ const Login = (props) => {
         <Text style={styles.text}>
           Contraseña
         </Text>
-        <Input
-          style={styles.input}
+        <Input style={styles.text}
+          containerStyle={styles.input}
+          placeholder="Contraseña"
           onChangeText={(value) => setPassword(value)}
           //value={password}
           secureTextEntry={!mostarContra}
@@ -125,11 +127,12 @@ const styles = StyleSheet.create({
   input:{
     width: "100%",
     borderColor: 'white',
+    borderWidth: 4,
+    borderRadius: 5,
     marginTop: 5,
-    marginBottom: 0,
-    color: 'white',
-    marginVertical: 0,
-    textDecorationLine:'none',
+    marginBottom: 5,
+    color:"white",
+    backgroundColor:"#001B48"
   },
   icon: {
     color: "white",

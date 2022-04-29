@@ -5,6 +5,7 @@ import {KeyboardAwareScrollView} from "react-native-keyboard-aware-scroll-view"
 import { size } from "lodash";
 import {getAuth,createUserWithEmailAndPassword} from "firebase/auth"
 import {app} from '../../database/firebase'
+import {collection, addDoc} from 'firebase/firestore';
 const RegistroUsuario= ({route,navigation}) =>{
     
     const [Datos, setDatos] = useState(defaultFormValues())
@@ -21,12 +22,16 @@ const RegistroUsuario= ({route,navigation}) =>{
         console.log(Datos)
     }
     const registrarUsuario = async(email, password) => {
-        const result = { statusResponse: true, error: null}
+        const result = { statusResponse: true, error: null , user: null}
         try {
-            await createUserWithEmailAndPassword(auth,email,password)
+            const user =await createUserWithEmailAndPassword(auth,email,password)
+            const uid = user.user.uid
+            result.user = {user, uid}
+            console.log(user.user.uid)
         } catch (error) {
             result.statusResponse = false
             result.error = "Este correo ya ha sido registrado."
+            
         }
         return result
     }
@@ -34,6 +39,7 @@ const RegistroUsuario= ({route,navigation}) =>{
         const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
         return re.test(email)
     }
+    
     const validarDatos=() =>{
         let regex = new RegExp("^[a-zA-ZÀ-ÿ ]+$");
         let letras= new RegExp("[a-zA-Z]");
@@ -51,6 +57,23 @@ const RegistroUsuario= ({route,navigation}) =>{
                 seterrorNombre("Ingrese solo letras en el nombre")
                 valido = false
             }
+        }
+        if(Datos.nombre.length < 2){
+            seterrorNombre("el nombre tiene que tener mas de 1 caracter")
+            valido = false
+        }
+        
+        if(Datos.nombre.charAt(0) == " "){
+            seterrorNombre("el nombre no debe empezar con  espacios")
+            valido = false
+        }
+        if(Datos.nombre.charAt(2) == " " ){
+            seterrorNombre("el nombre no debe empezar con un espacio")
+            valido = false
+        }
+        if(Datos.nombre.length > 30){
+            seterrorNombre("El nombre no debe tener mas de 30 caracteres")
+            valido = false
         }
         if(!validarCorreo(Datos.email)){
             seterrorEmail("debes ingresar un correo válido")
@@ -81,9 +104,11 @@ const RegistroUsuario= ({route,navigation}) =>{
             seterrorEmail(usuario.error)
             return
         }
-        
         setLoading(false)
-        navigation.navigate("Recordatorios")
+        const user = usuario.user
+        const uid = user.uid
+        console.log("uid:  "+uid)
+        navigation.navigate("Registro de Medicamento",{uid: uid})
     }
     return (
        
@@ -101,8 +126,9 @@ const RegistroUsuario= ({route,navigation}) =>{
                         
                     />
             <Text style = {styles.text} >Nombre</Text>
-            <Input
+            <Input style={styles.text}
                 containerStyle={styles.input}
+                
                 placeholder="Nombre de usuario"
                 onChange={(e) => onChange(e, "nombre")}
                 keyboardType="default"
@@ -110,7 +136,7 @@ const RegistroUsuario= ({route,navigation}) =>{
                 defaultValue={Datos.nombre}
             />
         <Text style = {styles.text} >Correo Electrónico</Text>
-            <Input
+            <Input style={styles.text}
                 containerStyle={styles.input}
                 placeholder="email@address.com"
                 onChange={(e) => onChange(e, "email")}
@@ -119,7 +145,7 @@ const RegistroUsuario= ({route,navigation}) =>{
                 defaultValue={Datos.email}
             />
         <Text style = {styles.text} >Contraseña</Text>
-            <Input
+            <Input style={styles.text}
                 containerStyle={styles.input}
                 placeholder="Contraseña"
                 contraseña={true}
@@ -137,7 +163,7 @@ const RegistroUsuario= ({route,navigation}) =>{
                 }
             />
         <Text style = {styles.text} >Confirmar Contraseña</Text>
-        <Input
+        <Input style={styles.text}
                 containerStyle={styles.input}
                 placeholder="Confirma tu contraseña..."
                 contraseña={true}
@@ -202,16 +228,16 @@ const styles = StyleSheet.create({
     form: {
         marginTop: 30
     },
-    input: {
-        
+    input: {    
     width: "100%",
     borderColor: 'white',
- 
+    borderWidth: 4,
+    borderRadius: 5,
     marginTop: 5,
     marginBottom: 5,
+    color:"white",
+    backgroundColor:"#001B48",
     
-    color: 'white',
-    backgroundColor:"white"
         
 
     },  
@@ -227,7 +253,7 @@ const styles = StyleSheet.create({
         fontSize: 20
     },
     icon: {
-        color: "black"
+        color: "white"
     },
     iconUser:{
         color:"white",
