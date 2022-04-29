@@ -1,20 +1,19 @@
 import React, { useState } from 'react'
-import { View, TextInput, StyleSheet, Button,TouchableOpacity, Image,Text, Alert} from 'react-native'
-
-
-
+import { View, TextInput, StyleSheet, Button,TouchableOpacity,Text, Image, Alert} from 'react-native'
+import {KeyboardAwareScrollView} from "react-native-keyboard-aware-scroll-view"
+import { Input,Icon } from "react-native-elements";
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 import {app} from '../../database/firebase'
 export let Usuario = {};
 
 const Login = (props) => {
-
+    const [mostarContra, setmostarContra] = useState(false)
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
 
     const auth = getAuth(app);
 
-    const saveNewUser = () => {
+    const iniciarSesion = () => {
       console.log(email+" "+ password)
       if(verificarEmail()){
         signInWithEmailAndPassword(auth, email, password)
@@ -49,13 +48,12 @@ const Login = (props) => {
     }
 
     const registrarUsuario = () => {
-      props.navigation.navigate("RegistroUsuario");
+      props.navigation.navigate("Registro Usuario");
     }
 
-return (
-
-    <View style={styles.container}>
-      <View style={styles.contenedorLogo}>
+  return (
+    <KeyboardAwareScrollView>
+      <View style={styles.container}>
         <Image
           style={styles.incono}
           source={require("../assets/icono.png")}
@@ -63,106 +61,92 @@ return (
         <Text style={styles.titulo}>
           MEDICATE 
         </Text>
-      </View>
       
-
-      <View style={styles.inputGroup}>
-
-        <Text style={styles.label}>
+        <Text style={styles.text}>
           Correo Electronico 
         </Text>
-        <TextInput
-          style={styles.input}
+        <Input style={styles.text}
+          containerStyle={styles.input}
+          placeholder="email@address.com"
           onChangeText={(value) => setEmail(value)}
+          keyboardType="email-address"
           //value={email}
         />
       
-        <Text style={styles.label}>
+        <Text style={styles.text}>
           Contraseña
         </Text>
-        <TextInput
-          style={styles.input}
+        <Input style={styles.text}
+          containerStyle={styles.input}
+          placeholder="Contraseña"
           onChangeText={(value) => setPassword(value)}
           //value={password}
-          secureTextEntry
+          secureTextEntry={!mostarContra}
+          rightIcon={
+            <Icon
+                type="material-community"
+                name={ mostarContra ? "eye-outline" : "eye-off-outline"}
+                iconStyle={styles.icon}
+                onPress={() => setmostarContra(!mostarContra)}
+            />
+          }
         />
         <Text style={styles.recuperarPassword} onPress={() => alert("ir a cambiar la contraseña")}>Olvidaste la contraseña?</Text>
-      </View>
-
-      <View style={styles.botones}>
+     
         <TouchableOpacity style={styles.botonLogin}
-          onPress={() => saveNewUser()}>
-          <Text style={styles.textLogin}>INICIAR SESION</Text>
+            onPress={() => iniciarSesion()}  >
+            <Text style={styles.textLogin}>INICIAR SESION</Text>
         </TouchableOpacity>
-
-        <Text style={styles.botonRegister} onPress={() => registrarUsuario()}>Registrarse</Text>
+        
+        <Text style={styles.botonRegister} onPress={() => registrarUsuario()}>Registrarse</Text>  
       </View>
-    </View>
+    </KeyboardAwareScrollView>
 )}
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#001B48',
-    alignItems: 'center',
-    justifyContent: 'center',
-    flexDirection: 'column'
-  },
-  contenedorLogo:{
-    flex: 6,
-    width: "80%",
-    paddingTop: "5%",
-    alignItems: 'center',
-    justifyContent: 'center',
-    //backgroundColor: "red"
+    paddingLeft: 35,
+    paddingRight: 35,
+    color: 'white'
   },
   incono:{
-    resizeMode: 'center',
-    width: "80%",
-    height: "80%"
+    resizeMode: 'contain',
+    width: "90%",
+    alignSelf:"center",
+    maxHeight: "20%"
   },
-  titulo:{ 
-    fontSize: 35, 
-    color: 'white', 
-    fontWeight: 'bold' 
+  titulo:{
+    color: "white",
+    fontSize: 40,
+    alignSelf: "center",
+    marginBottom: "12%",
+    fontWeight: 'bold'
   },
-  inputGroup: {
-    flex: 8,
-    width: "80%",
-    paddingTop: "25%",
-    //backgroundColor: "green"
-  },
-  label:{
+  text:{
+    color: "white",
     fontSize: 20,
-    color:"white",
-    marginTop: 10,
-    bottom: 50
   },
   input:{
-    backgroundColor: "#001B48",
-    color: "white",
-    paddingHorizontal: 15,
-    paddingVertical: 10,
-    borderRadius: 10,
+    width: "100%",
+    borderColor: 'white',
+    borderWidth: 4,
+    borderRadius: 5,
     marginTop: 5,
-    borderColor: "white",
-    borderWidth: 2,
-    bottom: 50
+    marginBottom: 5,
+    color:"white",
+    backgroundColor:"#001B48"
+  },
+  icon: {
+    color: "white",
+    borderColor: "white"
   },
   recuperarPassword:{
     fontSize: 15,
     color:"white",
-    marginTop: 5,
     textDecorationLine:'underline',
-    bottom: 50,
-  },
-  botones:{
-    flex: 3,
-    width: "80%",
-    //backgroundColor:"black",
-    //paddingTop: "3%",
-    alignItems: "center",
-    bottom: 60
+    marginBottom: "18%"
   },
   botonLogin:{
     backgroundColor: "#0093B7",
@@ -172,6 +156,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: "5%",
     alignItems: "center",
     borderRadius: 15,
+    alignSelf: "center"
   },
   textLogin:{
     color: "white",
@@ -181,7 +166,8 @@ const styles = StyleSheet.create({
     fontSize: 20,
     color:"white",
     marginTop: 5,
-    textDecorationLine:'underline'
+    textDecorationLine:'underline',
+    alignSelf: "center"
   }
 });
 

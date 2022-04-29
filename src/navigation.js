@@ -18,7 +18,7 @@ import DosisEdit from './screens/DosisEdit';
 import Configuracion from './screens/Configaracion';
 
 import Login from './screens/Login';
-import RegistroUsuario from './screens/RegistroUsuario';
+import RegistroUsuario from './screens/Registrar-Usuario';
 const HomeStackNavigator = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
