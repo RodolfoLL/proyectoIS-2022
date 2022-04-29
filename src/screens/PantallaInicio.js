@@ -9,7 +9,6 @@ import { ListItem ,Icon} from 'react-native-elements';
 import * as Device from 'expo-device'
 import * as Notifications from 'expo-notifications';
 
-
 Notifications.setNotificationHandler( 
     {
         handleNotification: async()=>({
@@ -63,7 +62,7 @@ const PantallaInicio = ({ navigation  }) => {
         console.log(element);
         if(element.quantity==1){
             console.log("queda un solo medicamento");
-            schedulePushNotification();
+            schedulePushNotification(element.nombreMed);
         }else{
             console.log ("no queda uno quedan: " +element.quantity)
         }
@@ -196,11 +195,9 @@ const PantallaInicio = ({ navigation  }) => {
 async function schedulePushNotification(nombre) {
     await Notifications.scheduleNotificationAsync({
       content: {
-        title: "You've got mail! 📬",
-        body: 'Here is the notification body',
-        data: { data: 'goes here' },
+        title: "El medicamento "+ nombre +" se esta agotando",
       },
-      trigger: { seconds: 2 },
+      trigger: { seconds:2},
     });
   }
 
