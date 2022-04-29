@@ -24,7 +24,7 @@ const Tab = createBottomTabNavigator();
 // const Stack = createNativeStackNavigator();
 
 
-function MyStacks({navigation,route}){
+function MyStacks({navigation,route}) {
     
     React.useLayoutEffect(() => {
         const tabHiddenroute = ['RegistroUsuario','Login'];
@@ -81,13 +81,12 @@ function MyStacks({navigation,route}){
 
 
 
-function MyTabs(){
+function MyTabs() {
     // const getTabBarStyle = (route) => {  
-    //     const routeName = getFocusedRouteNameFromRoute(route) ?? 'Login';
+    //     const routeName = getFocusedRouteNameFromRoute(route) ?? 'Recordatorios';
     //     let display = (routeName === 'Login') ? 'none':'flex';
     //     return {display}
     //   }
-    
     return(
         <Tab.Navigator
             initialRouteName="Recordatorios"
@@ -96,6 +95,12 @@ function MyTabs(){
                 tabBarInactiveTintColor: 'black',
                 tabBarStyle:{
                     backgroundColor:'#0093B7',
+                    display: 'flex',
+                    tabBarLabel:'inicio',
+                    tabBarIcon:({color,size})=>(
+                    <Icon type="material-community" name={"home"} size={size} color={color} />
+                ),
+
                 }
             }}
         >
