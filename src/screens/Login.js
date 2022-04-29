@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { View, TextInput, StyleSheet, Button,TouchableOpacity, Image,Text, Alert} from 'react-native'
+import { View, TextInput, StyleSheet, Button,TouchableOpacity,Text, Image, Alert} from 'react-native'
 import {KeyboardAwareScrollView} from "react-native-keyboard-aware-scroll-view"
 import { Input,Icon } from "react-native-elements";
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
@@ -12,7 +12,7 @@ const Login = (props) => {
 
     const auth = getAuth(app);
 
-    const saveNewUser = () => {
+    const iniciarSesion = () => {
       console.log(email+" "+ password)
       if(verificarEmail()){
         signInWithEmailAndPassword(auth, email, password)
@@ -46,11 +46,10 @@ const Login = (props) => {
     const registrarUsuario = () => {
       props.navigation.navigate("RegistroUsuario");
     }
-return (
-  <KeyboardAwareScrollView style={styles.scroll} contentContainerStyle={{flex: 1}} >
-    <View style={styles.container}>
 
-      <View style={styles.contenedorLogo}>
+  return (
+    <KeyboardAwareScrollView>
+      <View style={styles.container}>
         <Image
           style={styles.incono}
           source={require("../assets/icono.png")}
@@ -58,23 +57,18 @@ return (
         <Text style={styles.titulo}>
           MEDICATE 
         </Text>
-      </View>
       
-
-      <View style={styles.inputGroup}>
-
-        <Text style={styles.label}>
+        <Text style={styles.text}>
           Correo Electronico 
         </Text>
         <Input
           style={styles.input}
           onChangeText={(value) => setEmail(value)}
           keyboardType="email-address"
-
           //value={email}
         />
       
-        <Text style={styles.label}>
+        <Text style={styles.text}>
           Contraseña
         </Text>
         <Input
@@ -92,71 +86,50 @@ return (
           }
         />
         <Text style={styles.recuperarPassword} onPress={() => alert("ir a cambiar la contraseña")}>Olvidaste la contraseña?</Text>
-      </View>
-
-      <View style={styles.botones}>
+     
         <TouchableOpacity style={styles.botonLogin}
-          onPress={() => saveNewUser()}>
-          <Text style={styles.textLogin}>INICIAR SESION</Text>
+            onPress={() => iniciarSesion()}  >
+            <Text style={styles.textLogin}>INICIAR SESION</Text>
         </TouchableOpacity>
-      
-        <Text style={styles.botonRegister} onPress={() => registrarUsuario()}>Registrarse</Text>
+        
+        <Text style={styles.botonRegister} onPress={() => registrarUsuario()}>Registrarse</Text>  
       </View>
-    </View>
     </KeyboardAwareScrollView>
 )}
 
 const styles = StyleSheet.create({
-  scroll:{
-    //backgroundColor: "yellow",
-    flex: 1
-  },
   container: {
     flex: 1,
     backgroundColor: '#001B48',
-    alignItems: 'center',
-    justifyContent: 'center',
-    flexDirection: 'column',
-    height: "100%"
-  },
-  contenedorLogo:{
-    flex: 2,
-    width: "80%",
-    paddingTop: "5%",
-    alignItems: 'center',
-    justifyContent: 'center',
-    //backgroundColor: "red"
+    paddingLeft: 35,
+    paddingRight: 35,
+    color: 'white'
   },
   incono:{
-    resizeMode: 'center',
-    width: "80%",
-    height: "80%"
+    resizeMode: 'contain',
+    width: "90%",
+    alignSelf:"center",
+    maxHeight: "20%"
   },
-  titulo:{ 
-    fontSize: 35, 
-    color: 'white', 
-    fontWeight: 'bold' 
+  titulo:{
+    color: "white",
+    fontSize: 40,
+    alignSelf: "center",
+    marginBottom: "12%",
+    fontWeight: 'bold'
   },
-  inputGroup: {
-    flex: 3,
-    width: "80%",
-    paddingTop: "15%",
-    //backgroundColor: "green"
-  },
-  label:{
+  text:{
+    color: "white",
     fontSize: 20,
-    color:"white",
-    marginTop: "0%",
-    paddingTop: "0%",
   },
   input:{
-    backgroundColor: "#001B48",
-    color: "white",
-    paddingHorizontal: 15,
-    borderRadius: 10,
+    width: "100%",
+    borderColor: 'white',
     marginTop: 5,
-    borderColor: "white",
-    borderWidth: 2,
+    marginBottom: 0,
+    color: 'white',
+    marginVertical: 0,
+    textDecorationLine:'none',
   },
   icon: {
     color: "white",
@@ -166,15 +139,7 @@ const styles = StyleSheet.create({
     fontSize: 15,
     color:"white",
     textDecorationLine:'underline',
-    marginTop: "0%",
-    paddingTop: "0%",
-  },
-  botones:{
-    flex: 1,
-    width: "80%",
-    //backgroundColor:"black",
-    //paddingTop: "3%",
-    alignItems: "center"
+    marginBottom: "18%"
   },
   botonLogin:{
     backgroundColor: "#0093B7",
@@ -184,6 +149,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: "5%",
     alignItems: "center",
     borderRadius: 15,
+    alignSelf: "center"
   },
   textLogin:{
     color: "white",
@@ -193,7 +159,8 @@ const styles = StyleSheet.create({
     fontSize: 20,
     color:"white",
     marginTop: 5,
-    textDecorationLine:'underline'
+    textDecorationLine:'underline',
+    alignSelf: "center"
   }
 });
 
