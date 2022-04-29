@@ -20,6 +20,7 @@ const Login = (props) => {
           console.log('Signed in!')
           const user = userCredential.user;
           //console.log(user)
+          console.log(user)
           console.log("UID:  "+ user.uid)
           props.navigation.navigate("Recordatorios",{uid: user.uid})
         })
