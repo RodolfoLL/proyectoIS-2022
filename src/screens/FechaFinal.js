@@ -69,19 +69,21 @@ const FechaFinal = (props) => {
             let horaRegistrada = hora[i]
             console.log("hora registrada: "+hora[i])
             let horaTemporal = parseInt(horaRegistrada.substring(0,2)) 
-            let minutoTemporal = parseInt(horaRegistrada.substring(3,5))
+            let minutoTemporal = parseInt(horaRegistrada.substring(horaRegistrada.length-5,horaRegistrada.length-3))
             let medioDia = horaRegistrada.substring(horaRegistrada.length-2,horaRegistrada.length)
             console.log(horaTemporal)
             console.log(minutoTemporal)
             console.log(medioDia)
             if(ampm === medioDia){
-                if(horaTemporal > horaActual){
+                if(horaTemporal !== 12 && horaTemporal > horaActual){
                     validacion = true
                 }else if(horaTemporal == horaActual && minutoTemporal > minutoActual){
                     validacion = true
                 }else{
                     validacion = false
                 }
+            }else if(ampm === 'AM' || medioDia === 'PM'){
+                validacion = true
             }
             
         }
