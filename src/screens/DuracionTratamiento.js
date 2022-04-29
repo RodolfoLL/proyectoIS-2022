@@ -8,6 +8,9 @@ import { async } from '@firebase/util';
 
 const parseHorasMinutos = (arregloHoras) =>{
     let resultadoHoras =[]
+    let horaParse = 0;
+    let minutoParse = 0;
+    let sistHorario = "";
     arregloHoras.forEach(horaMinuto =>{
         if(horaMinuto.length==7){
             horaParse = Number(horaMinuto[0])
@@ -24,13 +27,13 @@ const parseHorasMinutos = (arregloHoras) =>{
     return resultadoHoras
 }
 
-const concatHorasMinutos = (horasMinutos,algunaFecha)=>{
+const concatHorasMinutos = (horasMinutos,fechaTermino)=>{
     var horasConcat = []
-    const horas = parseHorasMinutos(horasMinutos)
+    const horas = parseHorasMinutos(horasMinutos)// arreglo de horas en formato de 24hrs
     horas.forEach(objHora => {
         console.log(objHora.hora)
-        algunaFecha.setHours(objHora.hora,objHora.minuto)
-        horasConcat.push(new Date(algunaFecha));
+        fechaTermino.setHours(objHora.hora,objHora.minuto)
+        horasConcat.push(new Date(fechaTermino));
     });
     return horasConcat;
 };
@@ -62,9 +65,9 @@ const creador_de_notifiaciones = async (fechaTemporal, datosRecordatorio)=>{
         "Friday",
         "Saturday",
       ];
-    const trigger =new Date(2022,4,29,13,37,0)  
+    const trigger =new Date(2022,3,30,15,18,0)  
     alert(trigger)
-      console.log(trigger)
+      console.log(trigger.getMonth())
     // const weekday = days.indexOf(day) + 1;
     const hours = trigger.getHours();
     const minutes = trigger.getMinutes();
@@ -88,11 +91,8 @@ const creador_de_notifiaciones = async (fechaTemporal, datosRecordatorio)=>{
 
 async function logNextTriggerDate() {
     try {
-      const nextTriggerDate = await Notifications.getNextTriggerDateAsync({
-        hour: 9,
-        minute: 0,
-      });
-      console.log(nextTriggerDate === null ? 'No next trigger date' : new Date(nextTriggerDate));
+        const a =await Notifications.cancelScheduledNotificationAsync("f7435bd2-b188-4e36-827a-9f95355fc270");
+        console.log(a)
     } catch (e) {
       console.warn(`Couldn't have calculated next trigger date: ${e}`);
     }
