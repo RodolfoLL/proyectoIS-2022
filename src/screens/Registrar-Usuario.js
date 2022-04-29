@@ -1,13 +1,13 @@
 import { useState } from "react";
-import { View,StyleSheet,ActivityIndicator } from "react-native";
+import { View,StyleSheet,ActivityIndicator,Dimensions,Platform,Alert } from "react-native";
 import { Input,Button,Icon,Text,Overlay } from "react-native-elements";
 import {KeyboardAwareScrollView} from "react-native-keyboard-aware-scroll-view"
+import{useHeaderHeight } from "@react-navigation/elements"
 import { size } from "lodash";
 import {getAuth,createUserWithEmailAndPassword} from "firebase/auth"
 import {app} from '../../database/firebase'
-import {collection, addDoc} from 'firebase/firestore';
 const RegistroUsuario= ({route,navigation}) =>{
-    
+     let {height, width} = Dimensions.get('window');
     const [Datos, setDatos] = useState(defaultFormValues())
     const [mostarContra, setmostarContra] = useState(false)
     const [mostrarConfirmar,setmostarConfirmar] = useState(false)
@@ -17,6 +17,7 @@ const RegistroUsuario= ({route,navigation}) =>{
     const [errorEmail,seterrorEmail] = useState("")
     const [loading,setLoading] = useState(false)
     const auth = getAuth(app);
+    const headerHeight = useHeaderHeight();
     const onChange = (e, type) => {
         setDatos({ ...Datos, [type]: e.nativeEvent.text })
         console.log(Datos)
@@ -106,17 +107,23 @@ const RegistroUsuario= ({route,navigation}) =>{
         }
         setLoading(false)
         const user = usuario.user
-        const uid = user.uid
-        console.log("uid:  "+uid)
-        navigation.navigate("Registro de Medicamento",{uid: uid})
+        Alert.alert("Cuenta creada", "Ya puedes acceder",[
+            {text: "OK" ,onPress: () =>{ console.log("ok a Login")} }
+             ])
+
+        navigation.navigate("Login")
     }
     return (
        
-       <KeyboardAwareScrollView>
+       <KeyboardAwareScrollView
+        keyboardVerticalOffset={headerHeight}
+        style={styles.container}
+        behavior={Platform.OS === "ios" ? "padding" : null}
+       >
            
            
            
-            <View style={styles.container}>
+            <View style={styles.container2}>
             <Text style={styles.titulo}> REGISTRAR NUEVO USUARIO </Text>
             <Icon
                         type="material-community"
@@ -221,10 +228,14 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#001B48',
+      },
+    container2:{
+        flex: 1,
+        backgroundColor: '#001B48',
         paddingLeft: 35,
         paddingRight: 35,
         color: 'white'
-      },
+    },
     form: {
         marginTop: 30
     },
