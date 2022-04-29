@@ -8,7 +8,6 @@ var tipo = '';
 let regex = new RegExp("^[a-zA-ZÀ-ÿ ]+$");
 let letras= new RegExp("[a-zA-Z]");
 const RegistroEdit =({route,navigation}) => {
-    
     const parametros  = route.params
     
     

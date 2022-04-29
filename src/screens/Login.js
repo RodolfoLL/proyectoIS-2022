@@ -2,8 +2,10 @@ import React, { useState } from 'react'
 import { View, TextInput, StyleSheet, Button,TouchableOpacity, Image,Text, Alert} from 'react-native'
 
 
+
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 import {app} from '../../database/firebase'
+export let Usuario = {};
 
 const Login = (props) => {
 
@@ -19,9 +21,12 @@ const Login = (props) => {
         .then((userCredential) => {
           console.log('Signed in!')
           const user = userCredential.user;
+          Usuario = {
+            uid:user.uid
+          }
           //console.log(user)
           console.log("UID:  "+ user.uid)
-          props.navigation.navigate("Recordatorios",{uid: user.uid});
+          props.navigation.navigate("Medicate",{uid:Usuario.uid});
         })
         .catch(error => {
           //console.log(error)
