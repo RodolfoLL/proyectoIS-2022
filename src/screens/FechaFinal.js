@@ -82,7 +82,7 @@ const FechaFinal = (props) => {
                 }else{
                     validacion = false
                 }
-            }else if(ampm === 'AM' || medioDia === 'PM'){
+            }else if(ampm === 'AM' && medioDia === 'PM'){
                 validacion = true
             }
             
