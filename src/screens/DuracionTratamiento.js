@@ -23,7 +23,7 @@ const parseHorasMinutos = (arregloHoras) =>{
             sistHorario = horaMinuto[6]+horaMinuto[7]
         }
         horaParse = sistHorario=="PM" && horaParse!=12? horaParse+12: horaParse;
-        resultadoHoras.push({hora:horaParse, minuto:minutoParse});
+        resultadoHoras.push({hora:horaParse, minuto:minutoParse-5});//agrego la hora restando 5 minutos a la hora de notificar
     });
     return resultadoHoras
 }
@@ -36,7 +36,7 @@ const crearFechasNotificación = (horasMinutos,fechaTermino)=>{
     horas.forEach(objHora => {
         let fechaContenedora = new Date(Date.now());//iniciara como la fecha actual
         console.log(objHora)
-        fechaContenedora.setHours(objHora.hora,objHora.minuto);
+        fechaContenedora.setHours(objHora.hora,objHora.minuto,0);
         // fechaContenedora.setMonth(fechaContenedora.getMonth()-1);// esto lo hago por que por alguna razon la notificacion se crea un mes despues del indicado, asi que lo resto aca ese mes y asi se desplegará en la fecha correcta deseada
         fechaTermino.setHours(objHora.hora,objHora.minuto)
 
@@ -45,9 +45,6 @@ const crearFechasNotificación = (horasMinutos,fechaTermino)=>{
             fechasNotificacion.push(new Date(fechaContenedora));
             fechaContenedora.setTime(fechaContenedora.getTime() + 60 * 60 * 24 *1000)
         }
-
-        // fechaTermino.setHours(objHora.hora,objHora.minuto)
-        // fechasNotificacion.push(new Date(fechaTermino));
     });
     return fechasNotificacion;
 };
@@ -55,58 +52,30 @@ const crearFechasNotificación = (horasMinutos,fechaTermino)=>{
 const creador_de_notifiaciones = async(fechaTemporal, datosRecordatorio)=>{
     const fechasDeNotificacion = crearFechasNotificación(datosRecordatorio.hora,fechaTemporal)
     console.log(fechasDeNotificacion)
-    // fechasDeNotificacion.forEach(async fechaLimite => {
-        const trigger =new Date(fechasDeNotificacion[0])
-        alert(trigger)
+    fechasDeNotificacion.forEach(fechaLimite => {
+        new Date().getMinutes
         try{
-            console.log("====================")
-            console.log(trigger)
-             const id = await Notifications.scheduleNotificationAsync({
-                content:{
-                    title:"Es hora de tomar su medicamento ",
-                    body:"Te toca tomar "+datosRecordatorio.nombreMed
-                },
-                trigger
-            });
-            console.log("Se creó la notificación => "+id)
+            const id = schedulePushNotification(fechaLimite,datosRecordatorio)
+            console.log("Se creó la notificación")
         }catch (e) {
-            alert("Que Rayos Hiciste ?!!!");
+            alert("Hubo un error inesperado al crear la notificación");
             console.log(e);
         }
-    // });
-//     var days = [
-//         "Sunday",
-//         "Monday",
-//         "Tuesday",
-//         "Wednesday",
-//         "Thursday",
-//         "Friday",
-//         "Saturday",
-//       ];
-//     const trigger =new Date(2022,3,30,15,18,0)  
-//     alert(trigger)
-//       console.log(trigger.getMonth())
-//     // const weekday = days.indexOf(day) + 1;
-//     const hours = trigger.getHours();
-//     const minutes = trigger.getMinutes();
-//     // fechaLimite.setHours(19)
-//     try{
-//         console.log("============================================*")
-//         const id = await Notifications.scheduleNotificationAsync({
-//            content:{
-//                title:"Es hora de tomar su medicamento",
-//                body:"Te toca tomar "+datosRecordatorio.nombreMed
-//            },
-//            trigger,
-//        });
-//        console.log("Se creó la notificación")
-//     //    console.log(id)
-//    }catch (e) {
-//        alert("Que Rayos Hiciste!!!");
-//        console.log(e);
-//    }
-};
+    });
 
+};
+async function schedulePushNotification(trigger,datosRecordatorio) {
+    console.log(trigger)
+    let minuto = trigger.getMinutes()<10?"0"+trigger.getMinutes()+5:""+trigger.getMinutes()+5
+    let hora = trigger.getHours()<10?"0"+trigger.getHours():""+trigger.getHours()
+    return await Notifications.scheduleNotificationAsync({
+      content: {
+        title: "Es hora de tomar tu "+datosRecordatorio.nombreMed+" ⏰",
+        body: 'Debes tomar '+datosRecordatorio.dose+' dosis a las '+ hora+':'+minuto
+      },
+      trigger,
+    });
+  }
 async function logNextTriggerDate() {
     try {
         const a =await Notifications.cancelScheduledNotificationAsync("f7435bd2-b188-4e36-827a-9f95355fc270");
@@ -150,11 +119,10 @@ const DuracionTratamiento = (props) => {
                 duracion: duracion
             }
             await creador_de_notifiaciones(fechaTemporal, datosRecordatorio)
-            //Deshabilite el envío del recoradtorio a la base de datos
-            // addDoc(collection(db, 'Recordatorios'), datosRecordatorio)
+            addDoc(collection(db, 'Recordatorios'), datosRecordatorio)
         }
         
-        // props.navigation.navigate("Recordatorios");
+        props.navigation.navigate("Recordatorios");
     }
 
     const guardarEdit = async (id,datos) =>{
