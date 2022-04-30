@@ -32,12 +32,12 @@ const crearFechasNotificación = (horasMinutos,fechaTermino)=>{
     var fechasNotificacion = []
     const horas = parseHorasMinutos(horasMinutos)// arreglo de horas en formato de 24hrs
     console.log(horas)
-    fechaTermino.setMonth(fechaTermino.getMonth()-1);
+    // fechaTermino.setMonth(fechaTermino.getMonth()-1);
     horas.forEach(objHora => {
         let fechaContenedora = new Date(Date.now());//iniciara como la fecha actual
         console.log(objHora)
         fechaContenedora.setHours(objHora.hora,objHora.minuto);
-        fechaContenedora.setMonth(fechaContenedora.getMonth()-1);// esto lo hago por que por alguna razon la notificacion se crea un mes despues del indicado, asi que lo resto aca ese mes y asi se desplegará en la fecha correcta deseada
+        // fechaContenedora.setMonth(fechaContenedora.getMonth()-1);// esto lo hago por que por alguna razon la notificacion se crea un mes despues del indicado, asi que lo resto aca ese mes y asi se desplegará en la fecha correcta deseada
         fechaTermino.setHours(objHora.hora,objHora.minuto)
 
         console.log(fechaContenedora.getTime())
@@ -52,27 +52,28 @@ const crearFechasNotificación = (horasMinutos,fechaTermino)=>{
     return fechasNotificacion;
 };
 
-const creador_de_notifiaciones = (fechaTemporal, datosRecordatorio)=>{
+const creador_de_notifiaciones = async(fechaTemporal, datosRecordatorio)=>{
     const fechasDeNotificacion = crearFechasNotificación(datosRecordatorio.hora,fechaTemporal)
     console.log(fechasDeNotificacion)
-    fechasDeNotificacion.forEach(async fechaLimite => {
-        
+    // fechasDeNotificacion.forEach(async fechaLimite => {
+        const trigger =new Date(fechasDeNotificacion[0])
+        alert(trigger)
         try{
             console.log("====================")
-            console.log(fechaLimite)
+            console.log(trigger)
              const id = await Notifications.scheduleNotificationAsync({
                 content:{
                     title:"Es hora de tomar su medicamento ",
                     body:"Te toca tomar "+datosRecordatorio.nombreMed
                 },
-                fechaLimite
+                trigger
             });
             console.log("Se creó la notificación => "+id)
         }catch (e) {
             alert("Que Rayos Hiciste ?!!!");
             console.log(e);
         }
-    });
+    // });
 //     var days = [
 //         "Sunday",
 //         "Monday",
