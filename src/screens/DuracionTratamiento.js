@@ -3,83 +3,30 @@ import { View, Text, StyleSheet, TouchableOpacity} from 'react-native'
 import { doc, setDoc } from 'firebase/firestore';
 import {db} from '../../database/firebase'
 import {collection, addDoc} from 'firebase/firestore';
-import * as Notifications from 'expo-notifications'
-import { async } from '@firebase/util';
+import { crearFechasNotificación } from "../functions/notificacionFunciones";
+import schedulePushNotification from './NotificacionRecordatorio';
 
-const parseHorasMinutos = (arregloHoras) =>{
-    let resultadoHoras =[]
-    let horaParse = 0;
-    let minutoParse = 0;
-    let sistHorario = "";
-    console.log(arregloHoras)
-    arregloHoras.forEach(horaMinuto =>{
-        if(horaMinuto.length==7){
-            horaParse = Number(horaMinuto[0])
-            minutoParse = Number(horaMinuto[2]+horaMinuto[3])
-            sistHorario = horaMinuto[5]+horaMinuto[6]
-        }else{
-            horaParse = Number(horaMinuto[0]+horaMinuto[1])
-            minutoParse = Number(horaMinuto[3]+horaMinuto[4])
-            sistHorario = horaMinuto[6]+horaMinuto[7]
-        }
-        horaParse = sistHorario=="PM" && horaParse!=12? horaParse+12: horaParse;
-        resultadoHoras.push({hora:horaParse, minuto:minutoParse});
-    });
-    return resultadoHoras
-}
 
-const crearFechasNotificación = (horasMinutos,fechaTermino)=>{
-    var fechasNotificacion = []
-    const horas = parseHorasMinutos(horasMinutos)// arreglo de horas en formato de 24hrs
-    console.log(horas)
-    horas.forEach(objHora => {
-        let fechaContenedora = new Date(Date.now());//iniciara como la fecha actual
-        console.log(objHora)
-        fechaContenedora.setHours(objHora.hora,objHora.minuto,0);
-        fechaTermino.setHours(objHora.hora,objHora.minuto,0)
-
-        console.log(fechaContenedora.getTime())
-        while(fechaContenedora.getTime() <= fechaTermino.getTime()){
-            fechasNotificacion.push(new Date(fechaContenedora));
-            fechaContenedora.setTime(fechaContenedora.getTime() + 60 * 60 * 24 *1000)
-        }
-    });
-    return fechasNotificacion;
-};
-
-const creador_de_notifiaciones = async(fechaTemporal, datosRecordatorio)=>{
+const creador_de_notifiaciones = (fechaTemporal, datosRecordatorio)=>{
     const fechasDeNotificacion = crearFechasNotificación(datosRecordatorio.hora,fechaTemporal)
-    console.log(fechasDeNotificacion)
     fechasDeNotificacion.forEach( fechaLimite => {
         try{
-            const id = schedulePushNotification(fechaLimite,datosRecordatorio)
+            let minuto = fechaLimite.getMinutes()<10?"0"+fechaLimite.getMinutes():""+fechaLimite.getMinutes()
+            let hora = fechaLimite.getHours()<10?"0"+fechaLimite.getHours():""+fechaLimite.getHours()
+            let content= {
+                title: "Es hora de tomar tu "+datosRecordatorio.nombreMed+" ⏰",
+                body: 'Debes tomar '+datosRecordatorio.dose+' dosis a las '+ hora+':'+minuto
+              }
+            const id = schedulePushNotification(fechaLimite,content)
+            console.log(id)
         }catch (e) {
-            alert("Hubo un error inesperado al crear la notificación");
+            alert("Hubo un error inesperado al crear el recordatorio de medicamentos.");
             console.log(e);
         }
     });
 
 };
-async function schedulePushNotification(trigger,datosRecordatorio) {
-    console.log(trigger)
-    let minuto = trigger.getMinutes()<10?"0"+trigger.getMinutes()+5:""+trigger.getMinutes()
-    let hora = trigger.getHours()<10?"0"+trigger.getHours():""+trigger.getHours()
-    return await Notifications.scheduleNotificationAsync({
-      content: {
-        title: "Es hora de tomar tu "+datosRecordatorio.nombreMed+" ⏰",
-        body: 'Debes tomar '+datosRecordatorio.dose+' dosis a las '+ hora+':'+minuto
-      },
-      trigger,
-    });
-  }
-async function logNextTriggerDate() {
-    try {
-        const a =await Notifications.cancelScheduledNotificationAsync("f7435bd2-b188-4e36-827a-9f95355fc270");
-        console.log(a)
-    } catch (e) {
-      console.warn(`Couldn't have calculated next trigger date: ${e}`);
-    }
-  }
+
 
 const DuracionTratamiento = (props) => {
 
@@ -155,10 +102,6 @@ const DuracionTratamiento = (props) => {
                 <TouchableOpacity style={styles.boton}
                     onPress={() => {props.navigation.navigate('FechaFinal', props.route.params)}}  >
                     <Text style={styles.textBoton}>Establecer la fecha final</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.boton}
-                    onPress={async () => await logNextTriggerDate()}  >
-                    <Text style={styles.textBoton}>Get notif trigger</Text>
                 </TouchableOpacity>
             </View>
         </View>

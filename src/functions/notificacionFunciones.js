@@ -16,7 +16,7 @@ const parseHorasMinutos = (arregloHoras) =>{
             sistHorario = horaMinuto[6]+horaMinuto[7]
         }
         horaParse = sistHorario=="PM" && horaParse!=12? horaParse+12: horaParse;
-        resultadoHoras.push({hora:horaParse, minuto:minutoParse-5});//agrego la hora restando 5 minutos a la hora de notificar
+        resultadoHoras.push({hora:horaParse, minuto:minutoParse});
     });
     return resultadoHoras
 }
@@ -29,7 +29,8 @@ const crearFechasNotificación = (horasMinutos,fechaTermino)=>{
         let fechaContenedora = new Date(Date.now());//iniciara como la fecha actual
         console.log(objHora)
         fechaContenedora.setHours(objHora.hora,objHora.minuto,0);
-        fechaTermino.setHours(objHora.hora,objHora.minuto)
+        fechaTermino.setHours(objHora.hora,objHora.minuto,0)
+
         console.log(fechaContenedora.getTime())
         while(fechaContenedora.getTime() <= fechaTermino.getTime()){
             fechasNotificacion.push(new Date(fechaContenedora));
