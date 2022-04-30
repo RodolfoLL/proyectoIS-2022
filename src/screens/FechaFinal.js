@@ -49,7 +49,7 @@ const FechaFinal = (props) => {
         setMode(currentMode);
     };
 
-    const { nombreMed,tipoAdm,dose,quantity,item,hora } = props.route.params;
+    const { uid,nombreMed,tipoAdm,dose,quantity,item,hora } = props.route.params;
 
     const validarHora = () =>{
         /*let horaCompletoActual = new Date().toTimeString().substring(0,5);
@@ -93,7 +93,8 @@ const FechaFinal = (props) => {
 
     const actualizarHoraRegistrada = ()=>{
         if (editar){
-            var datosRecordatorio = { 
+            var datosRecordatorio = {
+               uid: uid,
                id: props.route.params.id,
                nombreMed: nombreMed, 
                tipoAdm: tipoAdm,
@@ -106,6 +107,7 @@ const FechaFinal = (props) => {
             }
         } else{
             var datosRecordatorio = {
+                uid:uid,
                 nombreMed: nombreMed, 
                 tipoAdm: tipoAdm,
                 dose: dose,
@@ -135,7 +137,7 @@ const FechaFinal = (props) => {
                 if(validarHora()){
                     console.log("SE GUARDO")
                     guardarEdit(id,datosRecordatorio)
-                    props.navigation.navigate("Recordatorios")
+                    props.navigation.navigate("Recordatorios",{uid: uid})
                 }else{
                     console.log("NO SE GUARDO")
                     Alert.alert("Fecha No Registra!","Eliga una hora que no halla pasado");
@@ -143,7 +145,7 @@ const FechaFinal = (props) => {
                 }
             }else{
                 guardarEdit(id,datosRecordatorio)
-                props.navigation.navigate("Recordatorios")
+                props.navigation.navigate("Recordatorios",{uid: uid})
             }  
         }
         else{
@@ -157,8 +159,8 @@ const FechaFinal = (props) => {
                     hora:hora,
                     duracion: duracion
                 }
-                addDoc(collection(db, 'Recordatorios'), datosRecordatorio)
-                props.navigation.navigate("Recordatorios")
+                addDoc(collection(db, uid), datosRecordatorio)
+                props.navigation.navigate("Recordatorios",{uid: uid})
 
             }else{
                 Alert.alert("Fecha No Escogida!","Eliga la duracion del tratamiento");
@@ -168,7 +170,7 @@ const FechaFinal = (props) => {
 
     const guardarEdit = async (id,datos) =>{
         
-        const docref = doc(db,"Recordatorios",id)
+        const docref = doc(db,uid,id)
         console.log(docref)
         console.log(datos);
         await setDoc(docref,datos)

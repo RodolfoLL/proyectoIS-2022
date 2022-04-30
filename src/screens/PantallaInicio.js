@@ -6,12 +6,14 @@ import { StatusBar } from 'expo-status-bar';
 import { collection, query, where, getDocs ,doc, deleteDoc, onSnapshot} from "firebase/firestore";
 import { render } from "react-dom";
 import { ListItem ,Icon} from 'react-native-elements';
-
-const PantallaInicio = ({ navigation  }) => {
-    navigation.setOptions({
+import { Usuario } from "./Login";
+const PantallaInicio = ({navigation}) => {
+    const {uid} = Usuario;
+    console.log(uid);
+    navigation.setOptions({ 
     headerRight: () => (
         <TouchableOpacity
-            onPress={() => navigation.navigate("Registro de Medicamento")}
+            onPress={() => navigation.navigate("Registro de Medicamento",{uid:uid})}
             style={{
                 width: 100,
                 height: 40,
@@ -46,17 +48,17 @@ const PantallaInicio = ({ navigation  }) => {
     const [recordatorios, setRecordatorios] = useState([]);
     console.log(recordatorios)
     useEffect( () => 
-        onSnapshot(collection(db,"Recordatorios"), (snapshot) =>
+        onSnapshot(collection(db,uid), (snapshot) =>
             setRecordatorios(snapshot.docs.map((doc) => ({...doc.data(),id: doc.id})))
         ),[]
     );
 
     const elimnarRecordatorio = async (id) =>{
         console.log(id)
-        const docRef = doc(db,"Recordatorios",id)
+        const docRef = doc(db,uid,id)
         console.log(docRef)
          deleteDoc(docRef)
-        navigation.navigate("Recordatorios")
+        navigation.navigate("Recordatorios",{uid: uid})
     }
     const confirmarElimniar = (id) => {
         Alert.alert("Eliminar recordatorio", "estas seguro?",[
@@ -104,6 +106,7 @@ const PantallaInicio = ({ navigation  }) => {
                             name={"pencil-circle"} size={50} 
                             color={"#0093B7"} 
                             onPress={() => navigation.navigate("Editar Medicamento",{
+                                uid: uid,
                                 id: item.id,
                                 nombreMed:item.nombreMed,
                                 tipoAdm: item.tipoAdm,

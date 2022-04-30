@@ -6,7 +6,7 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 
 
 const HoraScreen=(props)=>{
-    const { nombreMed,tipoAdm,dose,quantity,item,editar } = props.route.params;
+    const { uid,nombreMed,tipoAdm,dose,quantity,item,editar } = props.route.params;
     console.log(props.route.params)
     if (editar){
         let hora = props.route.params.hora
@@ -59,6 +59,7 @@ const HoraScreen=(props)=>{
 
             if(editar){
                 var datosRecordatorio = {
+                    uid:uid,
                     id: props.route.params.id,
                     nombreMed: nombreMed, 
                     tipoAdm: tipoAdm,
@@ -73,6 +74,7 @@ const HoraScreen=(props)=>{
         }
             else{
                     var datosRecordatorio = {
+                        uid: uid,
                         nombreMed: nombreMed, 
                         tipoAdm: tipoAdm,
                         dose: dose,
