@@ -6,14 +6,14 @@ import { StatusBar } from 'expo-status-bar';
 import { collection, query, where, getDocs ,doc, deleteDoc, onSnapshot} from "firebase/firestore";
 import { render } from "react-dom";
 import { ListItem ,Icon} from 'react-native-elements';
-
-const PantallaInicio = ({route, navigation  }) => {
-    const {uid} = route.params
-    console.log(uid)
+import { Usuario } from "./Login";
+const PantallaInicio = ({navigation}) => {
+    const {uid} = Usuario;
+    console.log(uid);
     navigation.setOptions({ 
     headerRight: () => (
         <TouchableOpacity
-            onPress={() => navigation.navigate("Registro de Medicamento",{uid: uid})}
+            onPress={() => navigation.navigate("Registro de Medicamento",{uid:uid})}
             style={{
                 width: 100,
                 height: 40,
