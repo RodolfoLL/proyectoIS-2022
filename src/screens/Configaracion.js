@@ -6,7 +6,7 @@ const Configuracion =({navigation})=>{
         <View style = {style.container}>
             <Button
             title="Cerrar Sesion"
-            onPress={() => navigation.navigate('Login')}
+            onPress={navigation.navigate('Login')}
             />
         </View>
     );

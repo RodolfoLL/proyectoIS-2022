@@ -7,12 +7,13 @@ import { collection, query, where, getDocs ,doc, deleteDoc, onSnapshot} from "fi
 import { render } from "react-dom";
 import { ListItem ,Icon} from 'react-native-elements';
 import { Usuario } from "./Login";
-const PantallaInicio = ({navigation,props}) => {
+const PantallaInicio = ({navigation}) => {
     const {uid} = Usuario;
+    console.log(uid);
     navigation.setOptions({ 
     headerRight: () => (
         <TouchableOpacity
-            onPress={() => props.navigation.navigate("Registro de Medicamento",{uid:uid})}
+            onPress={() => navigation.navigate("Registro de Medicamento",{uid:uid})}
             style={{
                 width: 100,
                 height: 40,

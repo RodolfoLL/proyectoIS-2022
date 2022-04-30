@@ -66,9 +66,7 @@ function MyStacks() {
             <HomeStackNavigator.Screen name="Editar Dosis" component={DosisEdit}
             options={{headerTintColor: 'white',
             headerStyle:{ backgroundColor: "#0093B7"}}}/>
-            <HomeStackNavigator.Screen name="Configuaracion" component={Configuracion}
-            options={{headerTintColor: 'white',
-            headerStyle:{ backgroundColor: "#0093B7"}}}/>
+            
         </HomeStackNavigator.Navigator>
     );
 }
@@ -122,7 +120,7 @@ function MyTabs() {
                 options ={{tabBarLabel:'Cerrar',tabBarIcon:({color,size})=>(
                     <FontAwesome name="sign-out" size={size} color={color} />
                 ),
-                headerShown:false,}}
+                headerStyle:{ backgroundColor: "#0093B7" },}}
             /> 
                          
         </Tab.Navigator>
@@ -137,7 +135,7 @@ export default function Navigation(){
                 options={{headerTintColor: '#001B48',
                 headerStyle:{ backgroundColor: "#001B48"},
             }}/>
-            <Stack.Screen name="RegistroUsuario" component={RegistroUsuario}
+            <Stack.Screen name="Registro Usuario" component={RegistroUsuario}
                 options={{headerTintColor: 'white',
                 headerStyle:{ backgroundColor: "#0093B7"}}}/>
             <Stack.Screen name="Medicate" component={MyTabs}
