@@ -24,6 +24,7 @@ const Login = (props) => {
             uid:user.uid
           }
           //console.log(user)
+          console.log(user)
           console.log("UID:  "+ user.uid)
           props.navigation.navigate("Medicate",{uid:Usuario.uid});
         })

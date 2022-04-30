@@ -4,7 +4,7 @@ import { Input,Button,Icon,Text,Overlay } from "react-native-elements";
 import {KeyboardAwareScrollView} from "react-native-keyboard-aware-scroll-view"
 import{useHeaderHeight } from "@react-navigation/elements"
 import { size } from "lodash";
-import {getAuth,createUserWithEmailAndPassword} from "firebase/auth"
+import {getAuth,createUserWithEmailAndPassword,updateProfile} from "firebase/auth"
 import {app} from '../../database/firebase'
 const RegistroUsuario= ({route,navigation}) =>{
      let {height, width} = Dimensions.get('window');
@@ -17,6 +17,7 @@ const RegistroUsuario= ({route,navigation}) =>{
     const [errorEmail,seterrorEmail] = useState("")
     const [loading,setLoading] = useState(false)
     const auth = getAuth(app);
+    
     const headerHeight = useHeaderHeight();
     const onChange = (e, type) => {
         setDatos({ ...Datos, [type]: e.nativeEvent.text })
@@ -105,13 +106,21 @@ const RegistroUsuario= ({route,navigation}) =>{
             seterrorEmail(usuario.error)
             return
         }
+        updateProfile(auth.currentUser, {
+            displayName: Datos.nombre, 
+          }).then(() => {
+            console.log("nombre cambiado")
+          }).catch((error) => {
+            console.log("nombre--- ups")
+          });
+        navigation.navigate("Login")
         setLoading(false)
-        const user = usuario.user
         Alert.alert("Cuenta creada", "Ya puedes acceder",[
             {text: "OK" ,onPress: () =>{ console.log("ok a Login")} }
              ])
-
-        navigation.navigate("Login")
+        
+        console.log(auth)
+        
     }
     return (
        
