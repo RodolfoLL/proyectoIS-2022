@@ -6,19 +6,10 @@ import { StatusBar } from 'expo-status-bar';
 import { collection, query, where, getDocs ,doc, deleteDoc, onSnapshot} from "firebase/firestore";
 import { render } from "react-dom";
 import { ListItem ,Icon} from 'react-native-elements';
-import * as Device from 'expo-device'
-import * as Notifications from 'expo-notifications';
+import {registerForPushNotificationsAsync} from './NotificacionRecordatorio';
 
 
-Notifications.setNotificationHandler( 
-    {
-        handleNotification: async()=>({
-            shouldShowAlert:true,
-            shouldPlaySound:true,
-            shouldSetBadge:true
-        })
-    }
-);
+
 
 const PantallaInicio = ({ navigation  }) => {
     navigation.setOptions({
@@ -66,9 +57,7 @@ const PantallaInicio = ({ navigation  }) => {
             .then(token => setExpoPushToken(token))
             .catch(e => console.log(e))
         });
-        const subscription = Notifications.addNotificationReceivedListener(notification => {
-            console.log(notification);
-          });
+
         return () => subscription.remove();
     },[]
     );
@@ -85,35 +74,6 @@ const PantallaInicio = ({ navigation  }) => {
        {text: "Si" ,onPress: () =>{ elimnarRecordatorio(id)} },
        {text: "No" ,onPress: () =>{ console.log("ok sin elimnar")} }
         ])
-    }
-
-    const registerForPushNotificationsAsync = async () => {
-        let token;
-        if (Device.isDevice) {
-          const { status: existingStatus } = await Notifications.getPermissionsAsync();
-          let finalStatus = existingStatus;
-          if (existingStatus !== 'granted') {
-            const { status } = await Notifications.requestPermissionsAsync();
-            finalStatus = status;
-          }
-          if (finalStatus !== 'granted') {
-            alert('Failed to get push token for push notification!');
-            return;
-          }
-          token = (await Notifications.getExpoPushTokenAsync()).data;
-          console.log(token);
-        } else {
-            return new Error('No estas en un dispositivo movil');
-        }
-        if (Platform.OS === 'android') {
-          Notifications.setNotificationChannelAsync('default', {
-            name: 'default',
-            importance: Notifications.AndroidImportance.MAX,
-            vibrationPattern: [0, 250, 250, 250],
-            lightColor: '#FF231F7C',
-          });
-        }
-        return token;
     }
 
     return (
