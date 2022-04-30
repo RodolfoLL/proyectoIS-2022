@@ -8,16 +8,19 @@ import {schedulePushNotification} from './NotificacionRecordatorio';
 
 
 const creador_de_notifiaciones = (fechaTemporal, datosRecordatorio) => {
+    const minutosAnticipacion = 5
     const fechasDeNotificacion =
-        crearFechasNotificación(datosRecordatorio.hora, fechaTemporal)
+        crearFechasNotificación(datosRecordatorio.hora, fechaTemporal, minutosAnticipacion)
     fechasDeNotificacion.forEach(fechaLimite => {
         try {
+            
             let minuto = fechaLimite.getMinutes() < 10 ?
-                "0" + fechaLimite.getMinutes() :
-                "" + fechaLimite.getMinutes()
+                "0" + (fechaLimite.getMinutes() + minutosAnticipacion) :
+                "" + (fechaLimite.getMinutes() + minutosAnticipacion)
             let hora = fechaLimite.getHours() < 10 ?
                 "0" + fechaLimite.getHours() :
                 "" + fechaLimite.getHours()
+
             let content = {
                 title: "Es hora de tomar tu " + datosRecordatorio.nombreMed + " ⏰",
                 body: 'Debes tomar ' + datosRecordatorio.dose + ' dosis a las ' + hora + ':' + minuto

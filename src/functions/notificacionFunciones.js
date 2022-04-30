@@ -21,7 +21,7 @@ const parseHorasMinutos = (arregloHoras) =>{
     return resultadoHoras
 }
 
-const crearFechasNotificación = (horasMinutos,fechaTermino)=>{
+const crearFechasNotificación = (horasMinutos,fechaTermino, minutosAnticipación=0)=>{
     var fechasNotificacion = []
     const horas = parseHorasMinutos(horasMinutos)// arreglo de horas en formato de 24hrs
     console.log(horas)
@@ -33,7 +33,7 @@ const crearFechasNotificación = (horasMinutos,fechaTermino)=>{
 
         console.log(fechaContenedora.getTime())
         while(fechaContenedora.getTime() <= fechaTermino.getTime()){
-            fechasNotificacion.push(new Date(fechaContenedora));
+            fechasNotificacion.push(new Date(fechaContenedora.getTime()- 60 * minutosAnticipación * 1000));
             fechaContenedora.setTime(fechaContenedora.getTime() + 60 * 60 * 24 *1000)
         }
     });
