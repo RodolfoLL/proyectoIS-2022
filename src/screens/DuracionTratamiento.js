@@ -23,7 +23,7 @@ const parseHorasMinutos = (arregloHoras) =>{
             sistHorario = horaMinuto[6]+horaMinuto[7]
         }
         horaParse = sistHorario=="PM" && horaParse!=12? horaParse+12: horaParse;
-        resultadoHoras.push({hora:horaParse, minuto:minutoParse-5});//agrego la hora restando 5 minutos a la hora de notificar
+        resultadoHoras.push({hora:horaParse, minuto:minutoParse});
     });
     return resultadoHoras
 }
@@ -32,13 +32,11 @@ const crearFechasNotificación = (horasMinutos,fechaTermino)=>{
     var fechasNotificacion = []
     const horas = parseHorasMinutos(horasMinutos)// arreglo de horas en formato de 24hrs
     console.log(horas)
-    // fechaTermino.setMonth(fechaTermino.getMonth()-1);
     horas.forEach(objHora => {
         let fechaContenedora = new Date(Date.now());//iniciara como la fecha actual
         console.log(objHora)
         fechaContenedora.setHours(objHora.hora,objHora.minuto,0);
-        // fechaContenedora.setMonth(fechaContenedora.getMonth()-1);// esto lo hago por que por alguna razon la notificacion se crea un mes despues del indicado, asi que lo resto aca ese mes y asi se desplegará en la fecha correcta deseada
-        fechaTermino.setHours(objHora.hora,objHora.minuto)
+        fechaTermino.setHours(objHora.hora,objHora.minuto,0)
 
         console.log(fechaContenedora.getTime())
         while(fechaContenedora.getTime() <= fechaTermino.getTime()){
@@ -52,11 +50,9 @@ const crearFechasNotificación = (horasMinutos,fechaTermino)=>{
 const creador_de_notifiaciones = async(fechaTemporal, datosRecordatorio)=>{
     const fechasDeNotificacion = crearFechasNotificación(datosRecordatorio.hora,fechaTemporal)
     console.log(fechasDeNotificacion)
-    fechasDeNotificacion.forEach(fechaLimite => {
-        new Date().getMinutes
+    fechasDeNotificacion.forEach( fechaLimite => {
         try{
             const id = schedulePushNotification(fechaLimite,datosRecordatorio)
-            console.log("Se creó la notificación")
         }catch (e) {
             alert("Hubo un error inesperado al crear la notificación");
             console.log(e);
@@ -66,7 +62,7 @@ const creador_de_notifiaciones = async(fechaTemporal, datosRecordatorio)=>{
 };
 async function schedulePushNotification(trigger,datosRecordatorio) {
     console.log(trigger)
-    let minuto = trigger.getMinutes()<10?"0"+trigger.getMinutes()+5:""+trigger.getMinutes()+5
+    let minuto = trigger.getMinutes()<10?"0"+trigger.getMinutes()+5:""+trigger.getMinutes()
     let hora = trigger.getHours()<10?"0"+trigger.getHours():""+trigger.getHours()
     return await Notifications.scheduleNotificationAsync({
       content: {
