@@ -15,17 +15,28 @@ const verificarCantidadMed = (recordatorios) =>{
     console.log("*******")
     recordatorios.forEach(element => {
         if(element.quantity==1){
-            let trigger = new Date(Date.now()+ 4*1000)
-            let content= {
-                title: "El medicamento "+ element.nombreMed +" se esta agotando",
+            let duracionMed = element.duracion;
+            let fechFinal=(new Date(duracionMed).getTime());
+            let hoy=new Date(Date.now())
+            hoy.setHours(0,0,0,0)
+            let fechHoy=(hoy.getTime());
+            if(fechFinal>fechHoy){
+                let trigger = new Date(Date.now()+ 4*1000)
+                let content= {
+                    title: "El medicamento "+ element.nombreMed +" se esta agotando",
+                }
+                console.log("queda un solo medicamento");
+                schedulePushNotification(trigger,content);
+             }else{
+                console.log ("no queda uno quedan: " +element.quantity)
+             }
+            }else{
+                console.log("aun no es la fecha final")
             }
-            console.log("queda un solo medicamento");
-            schedulePushNotification(trigger,content);
-        }else{
-            console.log ("no queda uno quedan: " +element.quantity)
-        }
     });
 }
+
+
 const PantallaInicio = ({navigation}) => {
     const {uid} = Usuario;
     console.log(uid);
