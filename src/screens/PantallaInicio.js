@@ -7,6 +7,9 @@ import { collection, query, where, getDocs ,doc, deleteDoc, onSnapshot} from "fi
 import { render } from "react-dom";
 import { ListItem ,Icon} from 'react-native-elements';
 import { Usuario } from "./Login";
+import {registerForPushNotificationsAsync} from './NotificacionRecordatorio';
+
+
 const PantallaInicio = ({navigation}) => {
     const {uid} = Usuario;
     console.log(uid);
@@ -44,13 +47,17 @@ const PantallaInicio = ({navigation}) => {
         </TouchableOpacity>)}
         
     );
-
+    
+    const [getExpoPushToken, setExpoPushToken]= useState('')
     const [recordatorios, setRecordatorios] = useState([]);
     console.log(recordatorios)
     useEffect( () => 
-        onSnapshot(collection(db,uid), (snapshot) =>
+        onSnapshot(collection(db,uid), (snapshot) =>{
             setRecordatorios(snapshot.docs.map((doc) => ({...doc.data(),id: doc.id})))
-        ),[]
+            registerForPushNotificationsAsync()
+            .then(token => setExpoPushToken(token))
+            .catch(e => console.log(e))
+        }),[]
     );
 
     const elimnarRecordatorio = async (id) =>{
@@ -139,4 +146,3 @@ const PantallaInicio = ({navigation}) => {
 
 
 export default PantallaInicio;
-

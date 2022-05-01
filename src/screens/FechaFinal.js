@@ -3,6 +3,7 @@ import { View, Text, StyleSheet,TouchableOpacity,Alert} from 'react-native'
 import  DateTimePicker  from '@react-native-community/datetimepicker'
 import { doc, setDoc,collection, addDoc} from 'firebase/firestore';
 import {db} from '../../database/firebase'
+import {creadorDeNotificaciones} from './NotificacionRecordatorio';
 
 const FechaFinal = (props) => {
     const {editar} = props.route.params;
@@ -27,7 +28,7 @@ const FechaFinal = (props) => {
 
             let fechaTemporal = new Date(currentDate)
             let fechaActual = new Date()
-            let fecha = fechaTemporal.getDate() +'/'+ (fechaTemporal.getMonth()+1)+'/'+ fechaTemporal.getFullYear()
+            let fecha = (fechaTemporal.getMonth()+1)+'/'+fechaTemporal.getDate() +'/'+ fechaTemporal.getFullYear()
 
             if(fechaTemporal.toDateString() === fechaActual.toDateString()){
                 if(validarHora()){
@@ -160,6 +161,7 @@ const FechaFinal = (props) => {
                     duracion: duracion
                 }
                 addDoc(collection(db, uid), datosRecordatorio)
+                creadorDeNotificaciones(new Date(duracion),datosRecordatorio)
                 props.navigation.navigate("Recordatorios",{uid: uid})
 
             }else{
