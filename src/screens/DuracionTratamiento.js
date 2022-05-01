@@ -1,8 +1,8 @@
 import React from 'react'
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity} from 'react-native'
 import { doc, setDoc } from 'firebase/firestore';
-import { db } from '../../database/firebase'
-import { collection, addDoc } from 'firebase/firestore';
+import {db} from '../../database/firebase'
+import {collection, addDoc} from 'firebase/firestore';
 import { crearFechasNotificación } from "../functions/notificacionFunciones";
 import {schedulePushNotification} from './NotificacionRecordatorio';
 
@@ -10,7 +10,8 @@ import {schedulePushNotification} from './NotificacionRecordatorio';
 const creador_de_notifiaciones = (fechaTemporal, datosRecordatorio) => {
     const minutosAnticipacion = 5
     const fechasDeNotificacion =
-        crearFechasNotificación(datosRecordatorio.hora, fechaTemporal, minutosAnticipacion)
+        crearFechasNotificación(datosRecordatorio.hora, fechaTemporal, minutosAnticipacion);
+    console.log(fechasDeNotificacion);
     fechasDeNotificacion.forEach(fechaLimite => {
         try {
             
@@ -20,14 +21,21 @@ const creador_de_notifiaciones = (fechaTemporal, datosRecordatorio) => {
             let hora = fechaLimite.getHours() < 10 ?
                 "0" + fechaLimite.getHours() :
                 "" + fechaLimite.getHours()
-
+            let tipoAdm = datosRecordatorio.tipoAdm
+            let mensaje = ""
+            if (tipoAdm == "Via Oral") { mensaje = "tomar 💊 tu "; }
+            if (tipoAdm == "Via Intramuscular" ||
+                tipoAdm == "Via Parenteral") { mensaje = "aplicarte 💉 el "; }
+            if (tipoAdm == "Via Inalatoria") { mensaje = "inhalar 😮‍💨"; }
+            if (tipoAdm == "Via Nasal") { mensaje = "aplicarte 👃😤 el "; }
+            if (tipoAdm == "Via Topica") { mensaje = "administrarte 🧴 el "; }
+            if (tipoAdm == "Via Oftalmogica") { mensaje = "colocarte las gotas 💦👀 "; }
             let content = {
-                title: "Es hora de tomar tu " + datosRecordatorio.nombreMed + " ⏰",
-                body: 'Debes tomar ' + datosRecordatorio.dose + ' dosis a las ' + hora + ':' + minuto
+                title: "Debes "+mensaje+ datosRecordatorio.nombreMed,
+                body: datosRecordatorio.dose + " dosis a las ⏰ " + hora + ':' + minuto
             }
             const id =
                 schedulePushNotification(fechaLimite, content)
-            console.log(id)
         } catch (e) {
             alert("Hubo un error inesperado al crear el recordatorio de medicamentos.");
             console.log(e);
@@ -39,53 +47,52 @@ const creador_de_notifiaciones = (fechaTemporal, datosRecordatorio) => {
 
 const DuracionTratamiento = (props) => {
 
-    const { nombreMed, tipoAdm, dose, quantity, item, hora, editar } = props.route.params;
-
-    const guardarDuracion = async (nDias) => {
-        let fechaContenedora = new Date()
-        let fechaTemporal = new Date(fechaContenedora.getFullYear(), fechaContenedora.getMonth(), fechaContenedora.getDate() + nDias)
-        let duracion = fechaTemporal.getDate() + '/' + (fechaTemporal.getMonth() + 1) + '/' + fechaTemporal.getFullYear()
-
-        if (editar) {
-
-            let datosRecordatorio = {
-                nombreMed: nombreMed,
+    const { uid,nombreMed,tipoAdm,dose,quantity,item,hora,editar } = props.route.params;
+    
+    const guardarDuracion = (nDias)=>{
+        let fechaActual = new Date()
+        let fechaTemporal = new Date(fechaActual.getFullYear(),fechaActual.getMonth(),fechaActual.getDate()+nDias)
+        let duracion = fechaTemporal.getDate() +'/'+ (fechaTemporal.getMonth()+1)+'/'+ fechaTemporal.getFullYear() 
+        let datosRecordatorio = {}
+        if (editar){
+            
+            datosRecordatorio = {
+                nombreMed: nombreMed, 
                 tipoAdm: tipoAdm,
                 dose: dose,
-                quantity: quantity,
+                quantity:quantity,
                 item: item,
-                hora: hora,
+                hora:hora,
                 duracion: duracion
-            }
+            } 
             const id = props.route.params.id
-            guardarEdit(id, datosRecordatorio)
+            guardarEdit(id,datosRecordatorio)
         }
-        else {
-            let datosRecordatorio = {
-                nombreMed: nombreMed,
+        else{
+            datosRecordatorio = {
+                nombreMed: nombreMed, 
                 tipoAdm: tipoAdm,
                 dose: dose,
-                quantity: quantity,
+                quantity:quantity,
                 item: item,
-                hora: hora,
+                hora:hora,
                 duracion: duracion
             }
-            await creador_de_notifiaciones(fechaTemporal, datosRecordatorio)
-            addDoc(collection(db, 'Recordatorios'), datosRecordatorio)
+            addDoc(collection(db, uid), datosRecordatorio)
         }
-
-        props.navigation.navigate("Recordatorios");
+        creador_de_notifiaciones(fechaTemporal, datosRecordatorio);
+        props.navigation.navigate("Recordatorios",{uid});
     }
 
-    const guardarEdit = async (id, datos) => {
-
-        const docref = doc(db, "Recordatorios", id)
+    const guardarEdit = async (id,datos) =>{
+        
+        const docref = doc(db,uid,id)
         console.log(docref)
         console.log(datos);
-        await setDoc(docref, datos)
+        await setDoc(docref,datos)
     }
 
-    return (
+    return(
         <View style={styles.container}>
             <View style={[styles.box, styles.box1]}>
                 <Text style={styles.title}>¿Cuanto dura el tratamiento?</Text>
@@ -109,22 +116,22 @@ const DuracionTratamiento = (props) => {
                     <Text style={styles.textBoton}>30 dias</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.boton}
-                    onPress={() => { props.navigation.navigate('FechaFinal', props.route.params) }}  >
+                    onPress={() => {props.navigation.navigate('FechaFinal', props.route.params)}}  >
                     <Text style={styles.textBoton}>Establecer la fecha final</Text>
                 </TouchableOpacity>
             </View>
         </View>
-
+        
     )
 }
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
-        backgroundColor: '#001B48',
-        alignItems: 'center',
-        justifyContent: 'center',
-        flexDirection: 'column'
+      flex: 1,
+      backgroundColor: '#001B48',
+      alignItems: 'center',
+      justifyContent: 'center',
+      flexDirection: 'column'
     },
     box1: {
         flex: 1,
@@ -133,18 +140,18 @@ const styles = StyleSheet.create({
     box2: {
         flex: 6
     },
-    title: {
+    title:{
         fontSize: 25,
         color: '#fff'
     },
-    boton: {
+    boton:{
         backgroundColor: "#0093B7",
-        borderRadius: 25,
+        borderRadius:25,
         marginBottom: 20,
         padding: 10,
-        alignItems: 'center'
+		alignItems: 'center'
     },
-    textBoton: {
+    textBoton:{
         fontSize: 20,
         color: "#fff"
     }

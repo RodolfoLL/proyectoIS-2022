@@ -1,21 +1,22 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, TouchableOpacity, Platform, Image, SafeAreaView,Alert,FlatList} from "react-native";
+import { View, Text, TouchableOpacity, ScrollView, Image, SafeAreaView,Alert,FlatList} from "react-native";
 import image from '../assets/medicate.png'
 import {db} from '../../database/firebase'
 import { StatusBar } from 'expo-status-bar';
 import { collection, query, where, getDocs ,doc, deleteDoc, onSnapshot} from "firebase/firestore";
 import { render } from "react-dom";
 import { ListItem ,Icon} from 'react-native-elements';
+import { Usuario } from "./Login";
 import {registerForPushNotificationsAsync} from './NotificacionRecordatorio';
 
 
-
-
-const PantallaInicio = ({ navigation  }) => {
-    navigation.setOptions({
+const PantallaInicio = ({navigation}) => {
+    const {uid} = Usuario;
+    console.log(uid);
+    navigation.setOptions({ 
     headerRight: () => (
         <TouchableOpacity
-            onPress={() => navigation.navigate("Registro de Medicamento")}
+            onPress={() => navigation.navigate("Registro de Medicamento",{uid:uid})}
             style={{
                 width: 100,
                 height: 40,
@@ -46,28 +47,25 @@ const PantallaInicio = ({ navigation  }) => {
         </TouchableOpacity>)}
         
     );
-
-    const [getExpoPushToken, setExpoPushToken]= useState('')            
+    
+    const [getExpoPushToken, setExpoPushToken]= useState('')
     const [recordatorios, setRecordatorios] = useState([]);
-    // console.log(recordatorios)
-    useEffect( () =>{
-        onSnapshot(collection(db,"Recordatorios"), (snapshot) =>{
+    console.log(recordatorios)
+    useEffect( () => 
+        onSnapshot(collection(db,uid), (snapshot) =>{
             setRecordatorios(snapshot.docs.map((doc) => ({...doc.data(),id: doc.id})))
             registerForPushNotificationsAsync()
             .then(token => setExpoPushToken(token))
             .catch(e => console.log(e))
-        });
-
-        return () => subscription.remove();
-    },[]
+        }),[]
     );
 
     const elimnarRecordatorio = async (id) =>{
-        // console.log(id)
-        const docRef = doc(db,"Recordatorios",id)
-        // console.log(docRef)
+        console.log(id)
+        const docRef = doc(db,uid,id)
+        console.log(docRef)
          deleteDoc(docRef)
-        navigation.navigate("Recordatorios")
+        navigation.navigate("Recordatorios",{uid: uid})
     }
     const confirmarElimniar = (id) => {
         Alert.alert("Eliminar recordatorio", "estas seguro?",[
@@ -115,6 +113,7 @@ const PantallaInicio = ({ navigation  }) => {
                             name={"pencil-circle"} size={50} 
                             color={"#0093B7"} 
                             onPress={() => navigation.navigate("Editar Medicamento",{
+                                uid: uid,
                                 id: item.id,
                                 nombreMed:item.nombreMed,
                                 tipoAdm: item.tipoAdm,
@@ -147,4 +146,3 @@ const PantallaInicio = ({ navigation  }) => {
 
 
 export default PantallaInicio;
-

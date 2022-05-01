@@ -13,10 +13,13 @@ Notifications.setNotificationHandler(
 );
 
 async function schedulePushNotification(trigger,contentNoti) {
-  return await Notifications.scheduleNotificationAsync({
+  const id = await Notifications.scheduleNotificationAsync({
     content: contentNoti,
     trigger,
   });
+  console.log("===============Notificacion Creada============<")
+  console.log("Id de notificacion"+id)
+  return id
 }
 
 const registerForPushNotificationsAsync = async () => {
