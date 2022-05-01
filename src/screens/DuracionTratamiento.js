@@ -3,6 +3,8 @@ import { View, Text, StyleSheet, TouchableOpacity} from 'react-native'
 import { doc, setDoc } from 'firebase/firestore';
 import {db} from '../../database/firebase'
 import {collection, addDoc} from 'firebase/firestore';
+import {creadorDeNotificaciones} from './NotificacionRecordatorio';
+
 
 const DuracionTratamiento = (props) => {
 
@@ -12,10 +14,10 @@ const DuracionTratamiento = (props) => {
         let fechaActual = new Date()
         let fechaTemporal = new Date(fechaActual.getFullYear(),fechaActual.getMonth(),fechaActual.getDate()+nDias)
         let duracion = fechaTemporal.getDate() +'/'+ (fechaTemporal.getMonth()+1)+'/'+ fechaTemporal.getFullYear() 
-
+        let datosRecordatorio = {}
         if (editar){
             
-            let datosRecordatorio = {
+            datosRecordatorio = {
                 nombreMed: nombreMed, 
                 tipoAdm: tipoAdm,
                 dose: dose,
@@ -28,7 +30,7 @@ const DuracionTratamiento = (props) => {
             guardarEdit(id,datosRecordatorio)
         }
         else{
-            let datosRecordatorio = {
+            datosRecordatorio = {
                 nombreMed: nombreMed, 
                 tipoAdm: tipoAdm,
                 dose: dose,
@@ -39,7 +41,7 @@ const DuracionTratamiento = (props) => {
             }
             addDoc(collection(db, uid), datosRecordatorio)
         }
-        
+        creadorDeNotificaciones(fechaTemporal, datosRecordatorio);
         props.navigation.navigate("Recordatorios",{uid});
     }
 
