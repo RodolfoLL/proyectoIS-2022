@@ -1,6 +1,6 @@
 import * as Notifications from 'expo-notifications'
 import * as Device from 'expo-device'
-import {crearFechasNotificación} from '../functions/notificacionFunciones'
+import {crearFechasNotificación, guardarNotificaciones} from '../functions/notificacionFunciones'
 
 
 Notifications.setNotificationHandler(
@@ -13,12 +13,13 @@ Notifications.setNotificationHandler(
   }
 );
 
-async function schedulePushNotification(trigger, contentNoti) {
+async function schedulePushNotification(trigger, contentNoti, uid, recordatorioId) {
   Notifications.scheduleNotificationAsync({
     content: contentNoti,
     trigger,
   })
   .then(id => { 
+    guardarNotificaciones(uid,recordatorioId,id)
     console.log("===============Notificacion Creada============<")
     console.log("Id de notificacion" + id)
     return id });
@@ -90,8 +91,8 @@ const creadorDeNotificaciones = async (fechaTemporal, datosRecordatorio, uid, re
         title: "Debes " + mensaje + datosRecordatorio.nombreMed,
         body: datosRecordatorio.dose + " dosis a las ⏰ " + hora + ':' + minuto
       }
-      await schedulePushNotification(fechaLimite, content)
-      .then(id => {notificacionesIds.push(id )})
+      await schedulePushNotification(fechaLimite, content, ui, recordatorioId)
+      // .then(id => {notificacionesIds.push(id )})
       
     } catch (e) {
       alert("Hubo un error inesperado al crear el recordatorio de medicamentos.");
