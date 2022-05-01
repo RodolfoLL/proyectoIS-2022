@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState } from "react"
 import { Button, View, ScrollView, Text,TouchableOpacity } from "react-native";
 import { Picker } from '@react-native-picker/picker'
 import { StyleSheet } from "react-native";
@@ -25,7 +25,6 @@ function generarArregloDosis(name) {
     return arreglo;
 }
 const CantidadMedicamentos = ({ route, navigation }) => {
-
     let tipoDosis = ""
     const [selectDose, setselectDose] = useState("1");
     const [selectQuantity, setselectQuantity] = useState("1");
@@ -42,8 +41,6 @@ const CantidadMedicamentos = ({ route, navigation }) => {
     let arregloItemDosis = generarArregloDosis(tipoDosis)
     let arregloCantidadMed = new Array(10)
     arregloCantidadMed.fill(2, 0, 10);
-
-
 
     const guardarCantidad = () => {
         if (selectDose != "" && selectQuantity != "") {
@@ -108,17 +105,7 @@ const CantidadMedicamentos = ({ route, navigation }) => {
                         </Picker>
                     </View>
                 </View>
-                if(quantity==1){
-                   async () => {
-                    await schedulePushNotification();
-                  }
-                }
-                <Button
-        title="Press to schedule a notification"
-        onPress={async () => {
-          await schedulePushNotification();
-        }}
-      />
+
 
             </View>
             <TouchableOpacity
@@ -131,14 +118,7 @@ const CantidadMedicamentos = ({ route, navigation }) => {
         </ScrollView>
     );
 };
-async function schedulePushNotification() {
-    await Notifications.scheduleNotificationAsync({
-      content: {
-        title: "Se Acabaron sus Medicamentos ",
-      },
-      trigger: { seconds: 2 },
-    });
-  }
+
 const STYLE_GROUP = StyleSheet.create(
     {
         containerMain:

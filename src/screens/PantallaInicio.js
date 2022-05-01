@@ -7,11 +7,25 @@ import { collection, query, where, getDocs ,doc, deleteDoc, onSnapshot} from "fi
 import { render } from "react-dom";
 import { ListItem ,Icon} from 'react-native-elements';
 import { Usuario } from "./Login";
-import {registerForPushNotificationsAsync} from './NotificacionRecordatorio';
+import {registerForPushNotificationsAsync, schedulePushNotification} from './NotificacionRecordatorio';
 import * as Device from 'expo-device'
 import * as Notifications from 'expo-notifications';
 
-
+const verificarCantidadMed = (recordatorios) =>{
+    console.log("*******")
+    recordatorios.forEach(element => {
+        if(element.quantity==1){
+            let trigger = new Date(Date.now()+ 4*1000)
+            let content= {
+                title: "El medicamento "+ element.nombreMed +" se esta agotando",
+            }
+            console.log("queda un solo medicamento");
+            schedulePushNotification(trigger,content);
+        }else{
+            console.log ("no queda uno quedan: " +element.quantity)
+        }
+    });
+}
 const PantallaInicio = ({navigation}) => {
     const {uid} = Usuario;
     console.log(uid);
@@ -53,19 +67,11 @@ const PantallaInicio = ({navigation}) => {
     const [getExpoPushToken, setExpoPushToken]= useState('')
     const [recordatorios, setRecordatorios] = useState([]);
     console.log(recordatorios)
-    recordatorios.forEach(element => {
-        console.log(element);
-        if(element.quantity==1){
-            console.log("queda un solo medicamento");
-            schedulePushNotification(element.nombreMed);
-        }else{
-            console.log ("no queda uno quedan: " +element.quantity)
-        }
-    });
 
     useEffect( () => 
         onSnapshot(collection(db,uid), (snapshot) =>{
             setRecordatorios(snapshot.docs.map((doc) => ({...doc.data(),id: doc.id})))
+            verificarCantidadMed(recordatorios);
             registerForPushNotificationsAsync()
             .then(token => setExpoPushToken(token))
             .catch(e => console.log(e))
@@ -156,13 +162,6 @@ const PantallaInicio = ({navigation}) => {
                                     
 };
 
-async function schedulePushNotification(nombre) {
-    await Notifications.scheduleNotificationAsync({
-      content: {
-        title: "El medicamento "+ nombre +" se esta agotando",
-      },
-      trigger: { seconds:2},
-    });
-  }
+
 
 export default PantallaInicio;
