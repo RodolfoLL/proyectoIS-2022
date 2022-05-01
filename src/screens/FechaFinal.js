@@ -160,6 +160,7 @@ const FechaFinal = (props) => {
                     hora:hora,
                     duracion: duracion
                 }
+                addDoc(collection(db, uid), datosRecordatorio)
                 creadorDeNotificaciones(new Date(duracion),datosRecordatorio)
                 props.navigation.navigate("Recordatorios",{uid: uid})
 
