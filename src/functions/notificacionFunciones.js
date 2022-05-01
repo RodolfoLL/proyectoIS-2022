@@ -27,11 +27,8 @@ const crearFechasNotificación = (horasMinutos,fechaTermino, minutosAnticipació
     console.log(horas)
     horas.forEach(objHora => {
         let fechaContenedora = new Date(Date.now());//iniciara como la fecha actual
-        console.log(objHora)
-        fechaContenedora.setHours(objHora.hora,objHora.minuto,0);
-        fechaTermino.setHours(objHora.hora,objHora.minuto,0)
-
-        console.log(fechaContenedora.getTime())
+        fechaContenedora.setHours(objHora.hora,objHora.minuto,0,0);
+        fechaTermino.setHours(objHora.hora,objHora.minuto,0,0)
         while(fechaContenedora.getTime() <= fechaTermino.getTime()){
             fechasNotificacion.push(new Date(fechaContenedora.getTime()- 60 * minutosAnticipación * 1000));
             fechaContenedora.setTime(fechaContenedora.getTime() + 60 * 60 * 24 *1000)

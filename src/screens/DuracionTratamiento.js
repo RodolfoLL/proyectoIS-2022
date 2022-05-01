@@ -3,46 +3,7 @@ import { View, Text, StyleSheet, TouchableOpacity} from 'react-native'
 import { doc, setDoc } from 'firebase/firestore';
 import {db} from '../../database/firebase'
 import {collection, addDoc} from 'firebase/firestore';
-import { crearFechasNotificación } from "../functions/notificacionFunciones";
-import {schedulePushNotification} from './NotificacionRecordatorio';
-
-
-const creador_de_notifiaciones = (fechaTemporal, datosRecordatorio) => {
-    const minutosAnticipacion = 5
-    const fechasDeNotificacion =
-        crearFechasNotificación(datosRecordatorio.hora, fechaTemporal, minutosAnticipacion);
-    console.log(fechasDeNotificacion);
-    fechasDeNotificacion.forEach(fechaLimite => {
-        try {
-            
-            let minuto = fechaLimite.getMinutes() < 10 ?
-                "0" + (fechaLimite.getMinutes() + minutosAnticipacion) :
-                "" + (fechaLimite.getMinutes() + minutosAnticipacion)
-            let hora = fechaLimite.getHours() < 10 ?
-                "0" + fechaLimite.getHours() :
-                "" + fechaLimite.getHours()
-            let tipoAdm = datosRecordatorio.tipoAdm
-            let mensaje = ""
-            if (tipoAdm == "Via Oral") { mensaje = "tomar 💊 tu "; }
-            if (tipoAdm == "Via Intramuscular" ||
-                tipoAdm == "Via Parenteral") { mensaje = "aplicarte 💉 el "; }
-            if (tipoAdm == "Via Inalatoria") { mensaje = "inhalar 😮‍💨"; }
-            if (tipoAdm == "Via Nasal") { mensaje = "aplicarte 👃😤 el "; }
-            if (tipoAdm == "Via Topica") { mensaje = "administrarte 🧴 el "; }
-            if (tipoAdm == "Via Oftalmogica") { mensaje = "colocarte las gotas 💦👀 "; }
-            let content = {
-                title: "Debes "+mensaje+ datosRecordatorio.nombreMed,
-                body: datosRecordatorio.dose + " dosis a las ⏰ " + hora + ':' + minuto
-            }
-            const id =
-                schedulePushNotification(fechaLimite, content)
-        } catch (e) {
-            alert("Hubo un error inesperado al crear el recordatorio de medicamentos.");
-            console.log(e);
-        }
-    });
-
-};
+import {creadorDeNotificaciones} from './NotificacionRecordatorio';
 
 
 const DuracionTratamiento = (props) => {
@@ -80,7 +41,7 @@ const DuracionTratamiento = (props) => {
             }
             addDoc(collection(db, uid), datosRecordatorio)
         }
-        creador_de_notifiaciones(fechaTemporal, datosRecordatorio);
+        creadorDeNotificaciones(fechaTemporal, datosRecordatorio);
         props.navigation.navigate("Recordatorios",{uid});
     }
 
