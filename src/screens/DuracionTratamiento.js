@@ -4,13 +4,14 @@ import { doc, setDoc } from 'firebase/firestore';
 import {db} from '../../database/firebase'
 import {collection, addDoc} from 'firebase/firestore';
 import {creadorDeNotificaciones} from './NotificacionRecordatorio';
+import { guardarNotificaciones } from "../functions/notificacionFunciones";
 
 
 const DuracionTratamiento = (props) => {
 
     const { uid,nombreMed,tipoAdm,dose,quantity,item,hora,editar } = props.route.params;
     
-    const guardarDuracion = (nDias)=>{
+    const guardarDuracion = async (nDias)=>{
         let fechaActual = new Date()
         let fechaTemporal = new Date(fechaActual.getFullYear(),fechaActual.getMonth(),fechaActual.getDate()+nDias)
         let duracion = fechaTemporal.getDate() +'/'+ (fechaTemporal.getMonth()+1)+'/'+ fechaTemporal.getFullYear() 
@@ -39,9 +40,36 @@ const DuracionTratamiento = (props) => {
                 hora:hora,
                 duracion: duracion
             }
-            addDoc(collection(db, uid), datosRecordatorio)
+            let docDb = await addDoc(collection(db, uid), datosRecordatorio)
+                        .then(async function(docRef) {
+                            let idRecordatorio = docRef.id+""
+                            console.log("Document written with ID: ", docRef.id);
+                            // let datosUsuario = AsyncStorage.getItem(uid)
+                            // console.log(datosUsuario);
+                            // let recordatorios = datosUsuario!==null?JSON.parse(datosUsuario):{};
+                            // console.log(JSON.stringify(recordatorios))
+                            creadorDeNotificaciones(fechaTemporal, datosRecordatorio)
+                            .then(notifId => guardarNotificaciones(uid,idRecordatorio,notifId))
+                            // console.log(idNotificaciones)
+                            // recordatorios[idRecordatorio]= idNotificaciones;//[i1,id2,id3]
+                            try {
+                                // const jsonValue = JSON.stringify(recordatorios);
+                                // await AsyncStorage.setItem(uid, jsonValue);
+                                console.log("Agragado al local storage")
+                                // console.log(JSON.stringify(AsyncStorage.getItem(uid)))
+                            } catch (e) {
+                                console.log("============ERROR Storage==========")
+                                console.log(e)
+                                // saving error
+                                }
+                        })
+                        .catch(function(error) {
+                            console.error("Error adding document: ", error);
+                        });
+            // console.log(docDb)
+            console.log("/////////////////////////////////////////////")
         }
-        creadorDeNotificaciones(fechaTemporal, datosRecordatorio);
+        
         props.navigation.navigate("Recordatorios",{uid});
     }
 

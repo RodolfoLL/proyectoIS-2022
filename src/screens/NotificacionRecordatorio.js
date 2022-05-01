@@ -14,13 +14,16 @@ Notifications.setNotificationHandler(
 );
 
 async function schedulePushNotification(trigger, contentNoti) {
-  const id = await Notifications.scheduleNotificationAsync({
+  Notifications.scheduleNotificationAsync({
     content: contentNoti,
     trigger,
-  });
-  console.log("===============Notificacion Creada============<")
-  console.log("Id de notificacion" + id)
-  return id
+  })
+  .then(id => { 
+    console.log("===============Notificacion Creada============<")
+    console.log("Id de notificacion" + id)
+    return id });
+
+  
 }
 
 const registerForPushNotificationsAsync = async () => {
@@ -52,11 +55,12 @@ const registerForPushNotificationsAsync = async () => {
   return token;
 }
 
-const creadorDeNotificaciones = async (fechaTemporal, datosRecordatorio) => {
+const creadorDeNotificaciones = async (fechaTemporal, datosRecordatorio, uid, recordatorioId) => {
   const minutosAnticipacion = 5
   const fechasDeNotificacion =
     crearFechasNotificación(datosRecordatorio.hora, fechaTemporal, minutosAnticipacion);
-  fechasDeNotificacion.forEach(fechaLimite => {
+  let notificacionesIds = [];
+  fechasDeNotificacion.forEach(async fechaLimite => {
     try {
 
       let minuto = fechaLimite.getMinutes() < 10 ?
@@ -86,14 +90,15 @@ const creadorDeNotificaciones = async (fechaTemporal, datosRecordatorio) => {
         title: "Debes " + mensaje + datosRecordatorio.nombreMed,
         body: datosRecordatorio.dose + " dosis a las ⏰ " + hora + ':' + minuto
       }
-      const id =
-        schedulePushNotification(fechaLimite, content)
+      await schedulePushNotification(fechaLimite, content)
+      .then(id => {notificacionesIds.push(id )})
+      
     } catch (e) {
       alert("Hubo un error inesperado al crear el recordatorio de medicamentos.");
       console.log(e);
     }
   });
-
+  return notificacionesIds;
 };
 
 export { schedulePushNotification, registerForPushNotificationsAsync, creadorDeNotificaciones };

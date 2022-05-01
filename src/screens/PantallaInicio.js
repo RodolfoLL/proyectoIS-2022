@@ -8,6 +8,7 @@ import { render } from "react-dom";
 import { ListItem ,Icon} from 'react-native-elements';
 import { Usuario } from "./Login";
 import {registerForPushNotificationsAsync} from './NotificacionRecordatorio';
+import {obetnerNotificaciones} from '../functions/notificacionFunciones'
 
 
 const PantallaInicio = ({navigation}) => {
@@ -70,7 +71,9 @@ const PantallaInicio = ({navigation}) => {
     const confirmarElimniar = (id) => {
         Alert.alert("Eliminar recordatorio", "estas seguro?",[
        {text: "Si" ,onPress: () =>{ elimnarRecordatorio(id)} },
-       {text: "No" ,onPress: () =>{ console.log("ok sin elimnar")} }
+       {text: "No" ,onPress: async () =>{ 
+           await obetnerNotificaciones(uid)
+           console.log("ok sin elimnar")} }
         ])
     }
 
