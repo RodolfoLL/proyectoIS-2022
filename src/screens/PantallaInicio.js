@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, TouchableOpacity, ScrollView, Image, SafeAreaView,Alert,FlatList} from "react-native";
+import { View, Text, TouchableOpacity, ScrollView, Image, SafeAreaView,Alert,FlatList,Button} from "react-native";
 import image from '../assets/medicate.png'
 import {db} from '../../database/firebase'
 import { StatusBar } from 'expo-status-bar';
@@ -66,7 +66,21 @@ const PantallaInicio = ({navigation}) => {
        {text: "No" ,onPress: () =>{ console.log("ok sin elimnar")} }
         ])
     }
-
+    const ordenar = () =>{
+        let newList = [...recordatorios];
+            newList.sort((a,b) => {
+            if(a.nombreMed > b.nombreMed){
+                return 1;
+            }else{
+                if(b.nombreMed > a.nombreMed){
+                    return -1;
+                }else{
+                    return 0;
+                }
+            }
+            });
+        setRecordatorios(newList);
+    }
     return (
       
         <SafeAreaView style={{ backgroundColor: '#001B48', height: "100%"}}>  
@@ -79,6 +93,16 @@ const PantallaInicio = ({navigation}) => {
                 <Text style={{ fontSize: 50, color: 'white', fontWeight: 'bold' }}>
                     MEDICATE 
                 </Text>
+                <View style={{bottom:5}}>
+                
+                <Button
+                
+                title="ORDENAR"
+                color= "#0093B7"
+              
+                onPress={() => ordenar()} />
+        
+                 </View>  
             </View>
             
         <FlatList
