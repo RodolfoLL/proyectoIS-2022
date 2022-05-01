@@ -1,8 +1,8 @@
 import React from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import {NavigationContainer} from '@react-navigation/native';
-import { Ionicons } from '@expo/vector-icons';
+import {getFocusedRouteNameFromRoute, NavigationContainer, TabRouter} from '@react-navigation/native';
+import { FontAwesome } from '@expo/vector-icons'; 
 import {Icon} from 'react-native-elements';
 import RegistroMedEdit from "./screens/RegistroMedEdit"
 import DuracionTratamiento from './screens/DuracionTratamiento'
@@ -15,11 +15,21 @@ import PantallaInicio from "./screens/PantallaInicio";
 import CantidadMedicamentos from "./screens/CantidadMedicamentos"
 import PantallaRegistroMed from "./screens/PantallaRegistroMed";
 import DosisEdit from './screens/DosisEdit';
-const HomeStackNavigator = createNativeStackNavigator();
+import Configuracion from './screens/Configaracion';
 
-function MyStacks(){
+import Login from './screens/Login';
+import RegistroUsuario from './screens/Registrar-Usuario';
+const HomeStackNavigator = createNativeStackNavigator();
+const Tab = createBottomTabNavigator();
+const Stack = createNativeStackNavigator();
+
+
+function MyStacks() {
+    
     return(
-        <HomeStackNavigator.Navigator initialRouteName='Medicate'>
+        
+        <HomeStackNavigator.Navigator initialRouteName='Medicate'
+            >
             <HomeStackNavigator.Screen name="Recordatorios" component={PantallaInicio}
             options={{headerTintColor: 'white',
             headerStyle:{ backgroundColor: "#0093B7"}}}/>
@@ -48,44 +58,68 @@ function MyStacks(){
             <HomeStackNavigator.Screen name="Editar Dosis" component={DosisEdit}
             options={{headerTintColor: 'white',
             headerStyle:{ backgroundColor: "#0093B7"}}}/>
-        
+            
         </HomeStackNavigator.Navigator>
     );
 }
 
-const Tab = createBottomTabNavigator();
 
-function MyTabs(){
+
+function MyTabs() {
     return(
         <Tab.Navigator
-            initialRouteName='Medicate'
+            initialRouteName="Recordatorios"
             screenOptions={{
                 tabBarActiveTintColor:'white',
                 tabBarInactiveTintColor: 'black',
                 tabBarStyle:{
                     backgroundColor:'#0093B7',
+                    display: 'flex',
+                    tabBarLabel:'inicio',
+                    tabBarIcon:({color,size})=>(
+                    <Icon type="material-community" name={"home"} size={size} color={color} />
+                ),
+
                 }
             }}
         >
             <Tab.Screen 
-                name="Medicate" 
+                name="tabs" 
                 component={MyStacks}
-                options={{
-                    tabBarLabel:'inicio',
-                    tabBarIcon:({color,size})=>(
-                        <Icon type="material-community" name={"home"} size={size} color={color} />
-                    ),
-                    headerShown:false,
-                }}
+                options ={{tabBarLabel:'Inicio',tabBarIcon:({color,size})=>(
+                    <Icon type="material-community" name={"home"} size={size} color={color} />
+                ),
+                headerShown:false,}}
             />
-
+            <Tab.Screen 
+                name="Cerrar" 
+                component={Configuracion}
+                options ={{tabBarLabel:'Cerrar',tabBarIcon:({color,size})=>(
+                    <FontAwesome name="sign-out" size={size} color={color} />
+                ),
+                headerStyle:{ backgroundColor: "#0093B7" },}}
+            /> 
+                         
         </Tab.Navigator>
     );
 }
 export default function Navigation(){
     return(
         <NavigationContainer>
-            <MyTabs />
+            <Stack.Navigator>
+            <Stack.Screen
+                name="Login" component={Login}
+                options={{headerTintColor: '#001B48',
+                headerStyle:{ backgroundColor: "#001B48"},
+            }}/>
+            <Stack.Screen name="Registro Usuario" component={RegistroUsuario}
+                options={{headerTintColor: 'white',
+                headerStyle:{ backgroundColor: "#0093B7"}}}/>
+            <Stack.Screen name="Medicate" component={MyTabs}
+                options={{headerShown:false}}
+            />
+            
+            </Stack.Navigator>
         </NavigationContainer>
     );
 }

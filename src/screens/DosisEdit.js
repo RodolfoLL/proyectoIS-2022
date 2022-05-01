@@ -51,6 +51,7 @@ const DosisEdit = ({route, navigation }) => {
                     { dose: selectDose, quantity: selectQuantity }
             };
             navigation.navigate("Frecuencia Dosis", {
+            uid: parametros.uid,
             id: parametros.id,
             nombreMed:parametros.nombreMed,
             tipoAdm: parametros.tipoAdm,

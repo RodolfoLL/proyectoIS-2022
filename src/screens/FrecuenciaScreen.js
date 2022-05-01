@@ -6,7 +6,7 @@ import { View,Text,StyleSheet,TouchableOpacity,FlatList} from 'react-native';
 
 const FrecuenciaScreen = (props) => {
   
-  const { nombreMed,tipoAdm,dose,quantity,editar } = props.route.params;
+  const { uid,nombreMed,tipoAdm,dose,quantity,editar } = props.route.params;
     
   const [numeroFrecuencia, setnumeroFrecuencia] = useState([
     {title:"Una vez al dia",frecuencia:1,key:1},
@@ -22,6 +22,7 @@ const FrecuenciaScreen = (props) => {
   const guardarFrecuencia = (item)=>{
 if (editar){
    var datosRecordatorio = { 
+      uid: uid,
       id: props.route.params.id,
       nombreMed: nombreMed, 
       tipoAdm: tipoAdm,
@@ -35,6 +36,7 @@ if (editar){
   }
   else{
     var datosRecordatorio = { 
+      uid:uid,
       nombreMed: nombreMed, 
       tipoAdm: tipoAdm,
       dose: dose,
@@ -46,7 +48,7 @@ if (editar){
 
   return (
     <View style ={styles.contain}>
-        <Text style={styles.texto}>{"¿Con que frecuencia toma el\n"+"medicamento"}</Text>
+        <Text style={styles.texto}>{"¿Con que frecuencia toma el\n"+"medicamento?"}</Text>
           <FlatList data={numeroFrecuencia} renderItem={({ item }) => (
           <TouchableOpacity
               onPress={() => guardarFrecuencia(item.frecuencia)}

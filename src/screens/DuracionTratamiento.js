@@ -3,19 +3,21 @@ import { View, Text, StyleSheet, TouchableOpacity} from 'react-native'
 import { doc, setDoc } from 'firebase/firestore';
 import {db} from '../../database/firebase'
 import {collection, addDoc} from 'firebase/firestore';
+import {creadorDeNotificaciones} from './NotificacionRecordatorio';
+
 
 const DuracionTratamiento = (props) => {
 
-    const { nombreMed,tipoAdm,dose,quantity,item,hora,editar } = props.route.params;
+    const { uid,nombreMed,tipoAdm,dose,quantity,item,hora,editar } = props.route.params;
     
     const guardarDuracion = (nDias)=>{
         let fechaActual = new Date()
         let fechaTemporal = new Date(fechaActual.getFullYear(),fechaActual.getMonth(),fechaActual.getDate()+nDias)
         let duracion = fechaTemporal.getDate() +'/'+ (fechaTemporal.getMonth()+1)+'/'+ fechaTemporal.getFullYear() 
-
+        let datosRecordatorio = {}
         if (editar){
             
-            let datosRecordatorio = {
+            datosRecordatorio = {
                 nombreMed: nombreMed, 
                 tipoAdm: tipoAdm,
                 dose: dose,
@@ -28,7 +30,7 @@ const DuracionTratamiento = (props) => {
             guardarEdit(id,datosRecordatorio)
         }
         else{
-            let datosRecordatorio = {
+            datosRecordatorio = {
                 nombreMed: nombreMed, 
                 tipoAdm: tipoAdm,
                 dose: dose,
@@ -37,15 +39,15 @@ const DuracionTratamiento = (props) => {
                 hora:hora,
                 duracion: duracion
             }
-            addDoc(collection(db, 'Recordatorios'), datosRecordatorio)
+            addDoc(collection(db, uid), datosRecordatorio)
         }
-        
-        props.navigation.navigate("Recordatorios");
+        creadorDeNotificaciones(fechaTemporal, datosRecordatorio);
+        props.navigation.navigate("Recordatorios",{uid});
     }
 
     const guardarEdit = async (id,datos) =>{
         
-        const docref = doc(db,"Recordatorios",id)
+        const docref = doc(db,uid,id)
         console.log(docref)
         console.log(datos);
         await setDoc(docref,datos)

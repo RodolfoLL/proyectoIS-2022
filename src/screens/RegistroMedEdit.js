@@ -8,7 +8,6 @@ var tipo = '';
 let regex = new RegExp("^[a-zA-ZÀ-ÿ ]+$");
 let letras= new RegExp("[a-zA-Z]");
 const RegistroEdit =({route,navigation}) => {
-    
     const parametros  = route.params
     
     
@@ -27,6 +26,7 @@ const RegistroEdit =({route,navigation}) => {
           console.log("lleno un medicamento")
           navigation.navigate("Editar Dosis",
             {
+              uid: parametros.uid,
               id: parametros.id,
               nombreMed: text,
               tipoAdm: tipo,
