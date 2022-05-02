@@ -10,33 +10,29 @@ import { Usuario } from "./Login";
 import {registerForPushNotificationsAsync, schedulePushNotification} from './NotificacionRecordatorio';
 import * as Device from 'expo-device'
 import * as Notifications from 'expo-notifications';
-
+let listaAgotados=[];
+let fechFinal,fechHoy;
+let hoy;
 const verificarCantidadMed = (recordatorios) =>{
-    console.log("*******")
+    console.log("---------------------------------")
     recordatorios.forEach(element => {
         if(element.quantity==1){
-            let duracionMed = element.duracion;
-            let fechFinal=(new Date(duracionMed).getTime());
-            let hoy=new Date(Date.now())
-            hoy.setHours(0,0,0,0)
-            let fechHoy=(hoy.getTime());
-            if(fechFinal>fechHoy){
-                let trigger = new Date(Date.now()+ 4*1000)
-                let content= {
-                    title: "El medicamento "+ element.nombreMed +" se esta agotando",
-                }
-                console.log("queda un solo medicamento");
-                schedulePushNotification(trigger,content);
-             }else{
-                console.log ("no queda uno quedan: " +element.quantity)
-             }
-            }else{
-                console.log("aun no es la fecha final")
-            }
+            listaAgotados.push(element.nombreMed);
+            console.log(listaAgotados)
+          }
+
+        else{
+            console.log("Este no es agotado");
+        }
     });
+    
 }
-
-
+const verificarFechas=(a)=>{
+    fechFinal=(new Date(a).getTime());
+    hoy=new Date(Date.now())
+    hoy.setHours(0,0,0,0)
+    fechHoy=(hoy.getTime())
+}
 const PantallaInicio = ({navigation}) => {
     const {uid} = Usuario;
     console.log(uid);
@@ -78,14 +74,13 @@ const PantallaInicio = ({navigation}) => {
     const [getExpoPushToken, setExpoPushToken]= useState('')
     const [recordatorios, setRecordatorios] = useState([]);
     console.log(recordatorios)
-
     useEffect( () => 
         onSnapshot(collection(db,uid), (snapshot) =>{
             setRecordatorios(snapshot.docs.map((doc) => ({...doc.data(),id: doc.id})))
-            verificarCantidadMed(recordatorios);
             registerForPushNotificationsAsync()
             .then(token => setExpoPushToken(token))
             .catch(e => console.log(e))
+            verificarCantidadMed(recordatorios);
         }),[]
     );
 
@@ -101,10 +96,12 @@ const PantallaInicio = ({navigation}) => {
        {text: "Si" ,onPress: () =>{ elimnarRecordatorio(id)} },
        {text: "No" ,onPress: () =>{ console.log("ok sin elimnar")} }
         ])
+        listaAgotados=[];
+        verificarCantidadMed(recordatorios);
     }
 
     return (
-      
+         
         <SafeAreaView style={{ backgroundColor: '#001B48', height: "100%"}}>  
             <View style={{
                 fontSize: 30,
@@ -172,7 +169,5 @@ const PantallaInicio = ({navigation}) => {
     );
                                     
 };
-
-
 
 export default PantallaInicio;
