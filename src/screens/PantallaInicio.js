@@ -72,7 +72,7 @@ const PantallaInicio = ({navigation}) => {
         Alert.alert("Eliminar recordatorio", "estas seguro?",[
        {text: "Si" ,onPress: () =>{ elimnarRecordatorio(id)} },
        {text: "No" ,onPress: async () =>{ 
-           await obetnerNotificaciones(uid)
+        //    await obetnerNotificaciones(uid)
            console.log("ok sin elimnar")} }
         ])
     }

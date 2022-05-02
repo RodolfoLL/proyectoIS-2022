@@ -19,7 +19,7 @@ async function schedulePushNotification(trigger, contentNoti, uid, recordatorioI
     trigger,
   })
   .then(id => { 
-    guardarNotificaciones(uid,recordatorioId,id)
+    // guardarNotificaciones(uid,recordatorioId,id)
     console.log("===============Notificacion Creada============<")
     console.log("Id de notificacion" + id)
     return id });
@@ -56,8 +56,8 @@ const registerForPushNotificationsAsync = async () => {
   return token;
 }
 
-const creadorDeNotificaciones = async (fechaTemporal, datosRecordatorio, uid, recordatorioId) => {
-  const minutosAnticipacion = 5
+const creadorDeNotificaciones = async (fechaTemporal, datosRecordatorio, uid, recordatorioId,minAnticipacion) => {
+  const minutosAnticipacion = minAnticipacion
   const fechasDeNotificacion =
     crearFechasNotificación(datosRecordatorio.hora, fechaTemporal, minutosAnticipacion);
   let notificacionesIds = [];
@@ -91,7 +91,7 @@ const creadorDeNotificaciones = async (fechaTemporal, datosRecordatorio, uid, re
         title: "Debes " + mensaje + datosRecordatorio.nombreMed,
         body: datosRecordatorio.dose + " dosis a las ⏰ " + hora + ':' + minuto
       }
-      await schedulePushNotification(fechaLimite, content, ui, recordatorioId)
+      await schedulePushNotification(fechaLimite, content, uid, recordatorioId)
       // .then(id => {notificacionesIds.push(id )})
       
     } catch (e) {
