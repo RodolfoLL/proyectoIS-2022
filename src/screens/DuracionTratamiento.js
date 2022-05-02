@@ -75,7 +75,15 @@ const DuracionTratamiento = (props) => {
                     <Text style={styles.textBoton}>30 dias</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.boton}
-                    onPress={() => {props.navigation.navigate('FechaFinal', props.route.params)}}  >
+                    onPress={() => {props.navigation.navigate('FechaFinal',  {
+                        uid:uid,
+                        nombreMed: nombreMed, 
+                        tipoAdm: tipoAdm,
+                        dose: dose,
+                        quantity:quantity,
+                        item: item,
+                        hora:hora,
+                        editar:false})}}  >
                     <Text style={styles.textBoton}>Establecer la fecha final</Text>
                 </TouchableOpacity>
             </View>

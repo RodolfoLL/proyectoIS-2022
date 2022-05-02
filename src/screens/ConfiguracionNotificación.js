@@ -4,7 +4,6 @@ import { StyleSheet , ScrollView, View,Text, TextInput, TouchableOpacity} from "
 import {db} from '../../database/firebase'
 import {collection, addDoc} from 'firebase/firestore';
 import {creadorDeNotificaciones} from './NotificacionRecordatorio';
-import { guardarNotificaciones } from "../functions/notificacionFunciones";
 
 let expRegSoloNumeros =  new RegExp("^[0-9]*$")
 
@@ -12,7 +11,6 @@ const ConfiguraciónNotificación = (props) => {
     let minAnticipación = "5";
     const [anticipación, setMinAnticipacion] = useState(minAnticipación);
     const { uid,nombreMed,tipoAdm,dose,quantity,item,hora,duracion,editar } = props.route.params;
-
     const guardarRecordatorio = () => {
         let datosRecordatorio = {}
         datosRecordatorio = {
@@ -28,14 +26,12 @@ const ConfiguraciónNotificación = (props) => {
             .then(async function(docRef) {
                 let idRecordatorio = docRef.id+""
                 minAnticipación= anticipación == ""?"0":anticipación;
-                console.log("Document written with ID: ", docRef.id);
+                console.log("Doc ID: ", docRef.id);
                 await creadorDeNotificaciones(new Date(duracion), datosRecordatorio,uid,idRecordatorio, parseInt(minAnticipación))
             })
             .catch(function(error) {
                 console.error("Error adding document: ", error);
             });
-        // console.log(docDb)
-        console.log("/////////////////////////////////////////////")
         props.navigation.navigate("Recordatorios",{uid});
     };
 

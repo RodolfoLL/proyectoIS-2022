@@ -1,3 +1,4 @@
+import React, { useState, useEffect } from "react";
 import * as Notifications from 'expo-notifications'
 import * as Device from 'expo-device'
 import {crearFechasNotificación, guardarNotificaciones} from '../functions/notificacionFunciones'
@@ -13,7 +14,7 @@ Notifications.setNotificationHandler(
   }
 );
 
-async function schedulePushNotification(trigger, contentNoti, uid, recordatorioId) {
+async function schedulePushNotification(trigger, contentNoti) {
   Notifications.scheduleNotificationAsync({
     content: contentNoti,
     trigger,
@@ -89,9 +90,13 @@ const creadorDeNotificaciones = async (fechaTemporal, datosRecordatorio, uid, re
 
       let content = {
         title: "Debes " + mensaje + datosRecordatorio.nombreMed,
-        body: datosRecordatorio.dose + " dosis a las ⏰ " + hora + ':' + minuto
+        body: datosRecordatorio.dose + " dosis a las ⏰ " + hora + ':' + minuto,
+        data:{ 
+          uid: uid+'',
+          recordatorioId: recordatorioId+'',
+          cantMedicamento:datosRecordatorio.quantity+'',}
       }
-      await schedulePushNotification(fechaLimite, content, uid, recordatorioId)
+      await schedulePushNotification(fechaLimite, content)
       // .then(id => {notificacionesIds.push(id )})
       
     } catch (e) {
