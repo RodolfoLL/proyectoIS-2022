@@ -79,11 +79,13 @@ const PantallaInicio = ({navigation}) => {
             FrecuenciaHoras--;
             let cant=(dosisMed*FrecuenciaHoras);
             let sig=cantidadMed-cant;
-            let maniana=(new Date(Date.now().setHours(0,0,0,0))).getTime()+(60*60*24*1000);
+            let maniana=new Date(Date.now());
+            maniana.setHours(0,0,0,0);
+            maniana=maniana.getTime()+(60*60*24*1000);
             console.log(maniana)
             let fechaFin=(new Date(Duracion)).getTime();
             console.log(fechaFin);
-            if(maniana==fechaFin){
+            if(maniana=fechaFin){
                 let cantidadMan=dosisMed*(FrecuenciaHoras+1);
                 if(cantidadMan>sig){
                     schedulePushNotification(nombreMed,cantidadMed);
