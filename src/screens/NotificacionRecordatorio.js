@@ -94,7 +94,12 @@ const creadorDeNotificaciones = async (fechaTemporal, datosRecordatorio, uid, re
         data:{ 
           uid: uid+'',
           recordatorioId: recordatorioId+'',
-          cantMedicamento:datosRecordatorio.quantity+'',}
+          cantMedicamento:datosRecordatorio.quantity+'',
+          nombreMed:datosRecordatorio.nombreMed+'',
+          DosisMed:datosRecordatorio.dose+'',
+          Duracion:datosRecordatorio.duracion+'',
+          FrecuenciaHoras:(datosRecordatorio.hora).length+''
+        }
       }
       await schedulePushNotification(fechaLimite, content)
       // .then(id => {notificacionesIds.push(id )})

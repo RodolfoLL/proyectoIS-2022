@@ -9,8 +9,14 @@ import { ListItem ,Icon} from 'react-native-elements';
 import { Usuario } from "./Login";
 import {registerForPushNotificationsAsync} from './NotificacionRecordatorio';
 import * as Notifications from 'expo-notifications'
+let c=0;
 
-
+const verificarFechas=(a)=>{
+    fechFinal=(new Date(a).getTime());
+    hoy=new Date(Date.now())
+    hoy.setHours(0,0,0,0)
+    fechHoy=(hoy.getTime())
+}
 const PantallaInicio = ({navigation}) => {
     const {uid} = Usuario;
     console.log(uid);
@@ -62,11 +68,29 @@ const PantallaInicio = ({navigation}) => {
         Notifications.addNotificationReceivedListener(async notification => {
             await Notifications.cancelScheduledNotificationAsync(notification["request"]["identifier"]);
             let notifData = notification["request"]["content"]["data"];
-            let recordatorioId = notifData["recordatorioId"]
+            let recordatorioId = notifData["recordatorioId"];
+            let nombreMed=notifData["nombreMed"];
+            let dosisMed=parseInt(notifData["DosisMed"]);
             let cantidadMed = parseInt(notifData["cantMedicamento"]);
-            cantidadMed -=1;
-            cantidadMed< 0 ? cantidadMed = 0: null;
-            console.log(cantidadMed)
+            let Duracion=notifData["Duracion"];
+            let FrecuenciaHoras=(notifData["FrecuenciaHoras"]);
+            cantidadMed=descontar(dosisMed,cantidadMed);
+            console.log(dosisMed);
+            FrecuenciaHoras--;
+            let cant=(dosisMed*FrecuenciaHoras);
+            let sig=cantidadMed-cant;
+            let maniana=new Date(Date.now());
+            maniana.setHours(0,0,0,0);
+            maniana=maniana.getTime()+(60*60*24*1000);
+            console.log(maniana)
+            let fechaFin=(new Date(Duracion)).getTime();
+            console.log(fechaFin);
+            if(maniana=fechaFin){
+                let cantidadMan=dosisMed*(FrecuenciaHoras+1);
+                if(cantidadMan>sig){
+                    schedulePushNotification(nombreMed,cantidadMed);
+                }
+            }
             const docrefRecordatorio = doc(db,uid,recordatorioId)
             const datos = { quantity: cantidadMed}
             await updateDoc(docrefRecordatorio,datos)
@@ -75,6 +99,22 @@ const PantallaInicio = ({navigation}) => {
           });
     },[]
     );
+     
+    const descontar=(n,cantidadMed)=>{
+        cantidadMed -=n;
+        cantidadMed< 0 ? cantidadMed = 0: null;
+        console.log(cantidadMed)
+        return cantidadMed;
+    }
+     async function schedulePushNotification(nombre,cantidad) {
+        await Notifications.scheduleNotificationAsync({
+          content: {
+           title: "Solo le queda "+cantidad+" "+nombre+" de medicamento",
+           body: "Debes comprar mas medicamentos para mañana 💊",
+        },
+        trigger: { seconds:60*5},
+     });
+      }
 
     const elimnarRecordatorio = async (id) =>{
         console.log(id)
@@ -90,6 +130,8 @@ const PantallaInicio = ({navigation}) => {
         //    await obetnerNotificaciones(uid)
            console.log("ok sin elimnar")} }
         ])
+        listaAgotados=[];
+        verificarCantidadMed(recordatorios);
     }
     const ordenar = () =>{
         let newList = [...recordatorios];
@@ -107,7 +149,7 @@ const PantallaInicio = ({navigation}) => {
         setRecordatorios(newList);
     }
     return (
-      
+         
         <SafeAreaView style={{ backgroundColor: '#001B48', height: "100%"}}>  
             <View style={{
                 fontSize: 30,
@@ -185,6 +227,5 @@ const PantallaInicio = ({navigation}) => {
     );
                                     
 };
-
 
 export default PantallaInicio;

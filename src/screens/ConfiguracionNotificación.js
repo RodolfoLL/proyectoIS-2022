@@ -1,8 +1,7 @@
-
 import React, { useState } from "react"
 import { StyleSheet , ScrollView, View,Text, TextInput, TouchableOpacity} from "react-native";
 import {db} from '../../database/firebase'
-import {collection, addDoc} from 'firebase/firestore';
+import {collection, addDoc,doc,setDoc} from 'firebase/firestore';
 import {creadorDeNotificaciones} from './NotificacionRecordatorio';
 
 let expRegSoloNumeros =  new RegExp("^[0-9]*$")
@@ -22,7 +21,27 @@ const ConfiguraciónNotificación = (props) => {
             hora:hora,
             duracion: duracion
         }
-        addDoc(collection(db, uid), datosRecordatorio)
+        if(editar){
+            const id = props.route.params.id
+            datosRecordatorio = {
+                nombreMed: nombreMed, 
+                tipoAdm: tipoAdm,
+                dose: dose,
+                quantity:quantity,
+                item: item,
+                hora:hora,
+                duracion: duracion
+            }
+            const docref = doc(db,uid,id)
+            console.log(docref)
+            //console.log(datos);
+            setDoc(docref,datosRecordatorio)
+            .then(async function(docRef) {
+                minAnticipación= anticipación == ""?"0":anticipación;
+                await creadorDeNotificaciones(new Date(duracion), datosRecordatorio,uid,id, parseInt(minAnticipación))
+            })
+        }else{
+            addDoc(collection(db, uid), datosRecordatorio)
             .then(async function(docRef) {
                 let idRecordatorio = docRef.id+""
                 minAnticipación= anticipación == ""?"0":anticipación;
@@ -32,6 +51,9 @@ const ConfiguraciónNotificación = (props) => {
             .catch(function(error) {
                 console.error("Error adding document: ", error);
             });
+        }
+        
+        
         props.navigation.navigate("Recordatorios",{uid});
     };
 
@@ -70,7 +92,6 @@ const ConfiguraciónNotificación = (props) => {
         </ScrollView>
     );
 };
-
 const STYLE_GROUP = StyleSheet.create(
     {
         containerMain:
@@ -131,4 +152,4 @@ const STYLE_GROUP = StyleSheet.create(
 
     }
 );
-export default ConfiguraciónNotificación
+export default ConfiguraciónNotificación;
