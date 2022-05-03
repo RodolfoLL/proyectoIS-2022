@@ -65,10 +65,10 @@ const RegistroUsuario= ({route,navigation}) =>{
                 valido = false
             }
         }
-        if(Datos.nombre.length < 2){
-            seterrorNombre("el nombre tiene que tener mas de 1 caracter")
-            valido = false
-        }
+        //if(Datos.nombre.length < 2){
+          //  seterrorNombre("el nombre tiene que tener mas de 1 caracter")
+           // valido = false
+       // }
         
         if(Datos.nombre.charAt(0) == " "){
             seterrorNombre("el nombre no debe empezar con  espacios")
@@ -101,6 +101,13 @@ const RegistroUsuario= ({route,navigation}) =>{
                 valido = false
             
         }
+      //  else
+       // {
+         //   if(!validarContra(Datos.confirmar)){
+           //     seterrorConfirmar("la contraseña no debe tener caracteres especiales o espacios")
+             //   valido = false
+            //} 
+        //}
         
         return valido
     }
