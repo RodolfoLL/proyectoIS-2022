@@ -9,7 +9,7 @@ import { ListItem ,Icon} from 'react-native-elements';
 import { Usuario } from "./Login";
 import {registerForPushNotificationsAsync} from './NotificacionRecordatorio';
 import * as Notifications from 'expo-notifications'
-
+let c=0;
 
 const verificarFechas=(a)=>{
     fechFinal=(new Date(a).getTime());
@@ -73,11 +73,21 @@ const PantallaInicio = ({navigation}) => {
             let dosisMed=parseInt(notifData["DosisMed"]);
             let cantidadMed = parseInt(notifData["cantMedicamento"]);
             let Duracion=notifData["Duracion"];
-            descontar(dosisMed,cantidadMed);
+            let FrecuenciaHoras=(notifData["FrecuenciaHoras"]);
+            cantidadMed=descontar(dosisMed,cantidadMed);
             console.log(dosisMed);
-            if(dosisMed<=cantidadMed){
-                console.log("esta entrando al if")
-               schedulePushNotification(nombreMed,cantidadMed);
+            FrecuenciaHoras--;
+            let cant=(dosisMed*FrecuenciaHoras);
+            let sig=cantidadMed-cant;
+            let maniana=(new Date(Date.now().setHours(0,0,0,0))).getTime()+(60*60*24*1000);
+            console.log(maniana)
+            let fechaFin=(new Date(Duracion)).getTime();
+            console.log(fechaFin);
+            if(maniana==fechaFin){
+                let cantidadMan=dosisMed*(FrecuenciaHoras+1);
+                if(cantidadMan>sig){
+                    schedulePushNotification(nombreMed,cantidadMed);
+                }
             }
             const docrefRecordatorio = doc(db,uid,recordatorioId)
             const datos = { quantity: cantidadMed}
@@ -92,13 +102,15 @@ const PantallaInicio = ({navigation}) => {
         cantidadMed -=n;
         cantidadMed< 0 ? cantidadMed = 0: null;
         console.log(cantidadMed)
+        return cantidadMed;
     }
      async function schedulePushNotification(nombre,cantidad) {
         await Notifications.scheduleNotificationAsync({
           content: {
            title: "Solo le queda "+cantidad+" "+nombre+" de medicamento",
+           body: "Debes comprar mas medicamentos para mañana 💊",
         },
-        trigger: { seconds: 3 },
+        trigger: { seconds:2},
      });
       }
 
