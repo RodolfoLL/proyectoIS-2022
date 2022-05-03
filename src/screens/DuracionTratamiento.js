@@ -26,7 +26,8 @@ const DuracionTratamiento = (props) => {
                 hora:hora,
                 duracion: duracion,
                 editar:true
-            } 
+            }
+
             
             // guardarEdit(id,datosRecordatorio)
         }
@@ -42,9 +43,8 @@ const DuracionTratamiento = (props) => {
                 duracion: duracion,
                 editar:false
             }
-            props.navigation.navigate("Configurar Notificacion",datosRecordatorio);
         }
-        
+        props.navigation.navigate("Configurar Notificacion",datosRecordatorio);
     }
 
     const guardarEdit = async (id,datos) =>{
