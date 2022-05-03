@@ -68,14 +68,16 @@ const PantallaInicio = ({navigation}) => {
         Notifications.addNotificationReceivedListener(async notification => {
             await Notifications.cancelScheduledNotificationAsync(notification["request"]["identifier"]);
             let notifData = notification["request"]["content"]["data"];
-            let recordatorioId = notifData["recordatorioId"]
-            let nombreMed=notifData["nombreMed"]
+            let recordatorioId = notifData["recordatorioId"];
+            let nombreMed=notifData["nombreMed"];
+            let dosisMed=parseInt(notifData["DosisMed"]);
             let cantidadMed = parseInt(notifData["cantMedicamento"]);
-            cantidadMed -=1;
-            cantidadMed< 0 ? cantidadMed = 0: null;
-            console.log(cantidadMed)
-            if(cantidadMed<=1){
-               schedulePushNotification(nombreMed);
+            let Duracion=notifData["Duracion"];
+            descontar(dosisMed,cantidadMed);
+            console.log(dosisMed);
+            if(dosisMed<=cantidadMed){
+                console.log("esta entrando al if")
+               schedulePushNotification(nombreMed,cantidadMed);
             }
             const docrefRecordatorio = doc(db,uid,recordatorioId)
             const datos = { quantity: cantidadMed}
@@ -85,23 +87,18 @@ const PantallaInicio = ({navigation}) => {
           });
     },[]
     );
- 
-    // const MandarNotificacionCant = () =>{
-    //     // console.log("Esta entrando para verificar");
-    //     // let trigger = new Date(Date.now()+ 4*1000)
-    //     //         let content= {
-    //     //             title: "El medicamento se esta agotando"}
-    //             schedulePushNotification();
-    // }
-
-     async function schedulePushNotification(nombre) {
+     
+    const descontar=(n,cantidadMed)=>{
+        cantidadMed -=n;
+        cantidadMed< 0 ? cantidadMed = 0: null;
+        console.log(cantidadMed)
+    }
+     async function schedulePushNotification(nombre,cantidad) {
         await Notifications.scheduleNotificationAsync({
           content: {
-           title: "El medicamento " +nombre+" se esta agotando",
-    //         body: 'Here is the notification body',
-    //         data: { data: 'goes here' },
+           title: "Solo le queda "+cantidad+" "+nombre+" de medicamento",
         },
-        trigger: { seconds: 2 },
+        trigger: { seconds: 3 },
      });
       }
 
