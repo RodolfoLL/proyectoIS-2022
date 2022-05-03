@@ -112,7 +112,7 @@ const PantallaInicio = ({navigation}) => {
            title: "Solo le queda "+cantidad+" "+nombre+" de medicamento",
            body: "Debes comprar mas medicamentos para mañana 💊",
         },
-        trigger: { seconds:2},
+        trigger: { seconds:60*5},
      });
       }
 
