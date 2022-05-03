@@ -38,10 +38,15 @@ const RegistroUsuario= ({route,navigation}) =>{
         return result
     }
     function validarCorreo(email) {
-        const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-        return re.test(email)
+        
+        const re = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i
+        return re.test(email) 
     }
-    
+    function validarContra(contra){
+        const regex = /^[0-9a-zA-Z\_]+$/
+        return regex.test(contra) 
+
+    }
     const validarDatos=() =>{
         let regex = new RegExp("^[a-zA-ZÀ-ÿ ]+$");
         let letras= new RegExp("[a-zA-Z]");
@@ -85,7 +90,12 @@ const RegistroUsuario= ({route,navigation}) =>{
             seterrorContra("La contraseña debe tener 8 o más caracteres")
             valido = false
         }
-        
+        else{
+            if(!validarContra(Datos.contraseña)){
+                seterrorContra("la contraseña no debe tener caracteres especiales o espacios")
+                valido = false
+            }
+        }
          if(Datos.contraseña != Datos.confirmar){
                 seterrorConfirmar("Las contraseñas no coinciden")
                 valido = false
