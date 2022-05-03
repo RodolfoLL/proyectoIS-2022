@@ -3,11 +3,12 @@ import { View, Text, TouchableOpacity, ScrollView, Image, SafeAreaView,Alert,Fla
 import image from '../assets/medicate.png'
 import {db} from '../../database/firebase'
 import { StatusBar } from 'expo-status-bar';
-import { collection, query, where, getDocs ,doc, deleteDoc, onSnapshot} from "firebase/firestore";
+import { collection, query, where, getDocs ,doc, deleteDoc,updateDoc, onSnapshot} from "firebase/firestore";
 import { render } from "react-dom";
 import { ListItem ,Icon} from 'react-native-elements';
 import { Usuario } from "./Login";
 import {registerForPushNotificationsAsync} from './NotificacionRecordatorio';
+import * as Notifications from 'expo-notifications'
 
 
 const PantallaInicio = ({navigation}) => {
@@ -51,13 +52,28 @@ const PantallaInicio = ({navigation}) => {
     const [getExpoPushToken, setExpoPushToken]= useState('')
     const [recordatorios, setRecordatorios] = useState([]);
     console.log(recordatorios)
-    useEffect( () => 
+    useEffect( () =>{
         onSnapshot(collection(db,uid), (snapshot) =>{
             setRecordatorios(snapshot.docs.map((doc) => ({...doc.data(),id: doc.id})))
             registerForPushNotificationsAsync()
             .then(token => setExpoPushToken(token))
             .catch(e => console.log(e))
-        }),[]
+        });
+        Notifications.addNotificationReceivedListener(async notification => {
+            await Notifications.cancelScheduledNotificationAsync(notification["request"]["identifier"]);
+            let notifData = notification["request"]["content"]["data"];
+            let recordatorioId = notifData["recordatorioId"]
+            let cantidadMed = parseInt(notifData["cantMedicamento"]);
+            cantidadMed -=1;
+            cantidadMed< 0 ? cantidadMed = 0: null;
+            console.log(cantidadMed)
+            const docrefRecordatorio = doc(db,uid,recordatorioId)
+            const datos = { quantity: cantidadMed}
+            await updateDoc(docrefRecordatorio,datos)
+            console.log("=======Notificacion recibida=======")
+            console.log(notification);
+          });
+    },[]
     );
 
     const elimnarRecordatorio = async (id) =>{
@@ -70,7 +86,9 @@ const PantallaInicio = ({navigation}) => {
     const confirmarElimniar = (id) => {
         Alert.alert("Eliminar recordatorio", "estas seguro?",[
        {text: "Si" ,onPress: () =>{ elimnarRecordatorio(id)} },
-       {text: "No" ,onPress: () =>{ console.log("ok sin elimnar")} }
+       {text: "No" ,onPress: async () =>{ 
+        //    await obetnerNotificaciones(uid)
+           console.log("ok sin elimnar")} }
         ])
     }
     const ordenar = () =>{
