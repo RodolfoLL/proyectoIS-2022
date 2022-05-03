@@ -23,7 +23,6 @@
     "expo-device": "^4.1.1",
     "expo-notifications": "^0.14.1",
     "expo-status-bar": "~1.2.0",
-    "expo-updates": "~0.11.7",
     "firebase": "^9.6.10",
     "lodash": "^4.17.21",
     "react": "17.0.1",
@@ -33,7 +32,9 @@
     "react-native-keyboard-aware-scroll-view": "^0.9.5",
     "react-native-safe-area-context": "3.3.2",
     "react-native-screens": "~3.10.1",
-    "react-native-web": "0.17.1"
+    "react-native-web": "0.17.1",
+    "expo-updates": "~0.11.7",
+    "expo-dev-client": "~0.8.5"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9"

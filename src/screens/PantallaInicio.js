@@ -131,7 +131,6 @@ const PantallaInicio = ({navigation}) => {
            console.log("ok sin elimnar")} }
         ])
         listaAgotados=[];
-        verificarCantidadMed(recordatorios);
     }
     const ordenar = () =>{
         let newList = [...recordatorios];
