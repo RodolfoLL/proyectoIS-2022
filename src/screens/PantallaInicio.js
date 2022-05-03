@@ -63,10 +63,14 @@ const PantallaInicio = ({navigation}) => {
             await Notifications.cancelScheduledNotificationAsync(notification["request"]["identifier"]);
             let notifData = notification["request"]["content"]["data"];
             let recordatorioId = notifData["recordatorioId"]
+            let nombreMed=notifData["nombreMed"]
             let cantidadMed = parseInt(notifData["cantMedicamento"]);
             cantidadMed -=1;
             cantidadMed< 0 ? cantidadMed = 0: null;
             console.log(cantidadMed)
+            if(cantidadMed<=1){
+               schedulePushNotification(nombreMed);
+            }
             const docrefRecordatorio = doc(db,uid,recordatorioId)
             const datos = { quantity: cantidadMed}
             await updateDoc(docrefRecordatorio,datos)
@@ -75,6 +79,25 @@ const PantallaInicio = ({navigation}) => {
           });
     },[]
     );
+ 
+    // const MandarNotificacionCant = () =>{
+    //     // console.log("Esta entrando para verificar");
+    //     // let trigger = new Date(Date.now()+ 4*1000)
+    //     //         let content= {
+    //     //             title: "El medicamento se esta agotando"}
+    //             schedulePushNotification();
+    // }
+
+     async function schedulePushNotification(nombre) {
+        await Notifications.scheduleNotificationAsync({
+          content: {
+           title: "El medicamento " +nombre+" se esta agotando",
+    //         body: 'Here is the notification body',
+    //         data: { data: 'goes here' },
+        },
+        trigger: { seconds: 2 },
+     });
+      }
 
     const elimnarRecordatorio = async (id) =>{
         console.log(id)
