@@ -16,6 +16,7 @@ import CantidadMedicamentos from "./screens/CantidadMedicamentos"
 import PantallaRegistroMed from "./screens/PantallaRegistroMed";
 import DosisEdit from './screens/DosisEdit';
 import Configuracion from './screens/Configaracion';
+import ConfiguraciónNotificación from './screens/ConfiguracionNotificación'
 
 import Login from './screens/Login';
 import RegistroUsuario from './screens/Registrar-Usuario';
@@ -58,7 +59,9 @@ function MyStacks() {
             <HomeStackNavigator.Screen name="Editar Dosis" component={DosisEdit}
             options={{headerTintColor: 'white',
             headerStyle:{ backgroundColor: "#0093B7"}}}/>
-            
+            <HomeStackNavigator.Screen name="Configurar Notificacion" component={ConfiguraciónNotificación}
+            options={{headerTintColor: 'white',
+            headerStyle:{ backgroundColor: "#0093B7"}}}/>
         </HomeStackNavigator.Navigator>
     );
 }

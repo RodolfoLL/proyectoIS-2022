@@ -2,45 +2,49 @@ import React from 'react'
 import { View, Text, StyleSheet, TouchableOpacity} from 'react-native'
 import { doc, setDoc } from 'firebase/firestore';
 import {db} from '../../database/firebase'
-import {collection, addDoc} from 'firebase/firestore';
+
 
 const DuracionTratamiento = (props) => {
 
     const { uid,nombreMed,tipoAdm,dose,quantity,item,hora,editar } = props.route.params;
     
-    const guardarDuracion = (nDias)=>{
+    const guardarDuracion = async (nDias)=>{
         let fechaActual = new Date()
         let fechaTemporal = new Date(fechaActual.getFullYear(),fechaActual.getMonth(),fechaActual.getDate()+nDias)
-        let duracion = fechaTemporal.getDate() +'/'+ (fechaTemporal.getMonth()+1)+'/'+ fechaTemporal.getFullYear() 
-
+        let duracion = (fechaTemporal.getMonth()+1) + '/'+fechaTemporal.getDate() + '/'+ fechaTemporal.getFullYear() 
+        let datosRecordatorio = {}
         if (editar){
-            
-            let datosRecordatorio = {
+            const id = props.route.params.id
+            datosRecordatorio = {
+                id:id,
+                uid:uid,
                 nombreMed: nombreMed, 
                 tipoAdm: tipoAdm,
                 dose: dose,
                 quantity:quantity,
                 item: item,
                 hora:hora,
-                duracion: duracion
-            } 
-            const id = props.route.params.id
-            guardarEdit(id,datosRecordatorio)
+                duracion: duracion,
+                editar:true
+            }
+
+            
+            // guardarEdit(id,datosRecordatorio)
         }
         else{
-            let datosRecordatorio = {
+            datosRecordatorio = {
+                uid:uid,
                 nombreMed: nombreMed, 
                 tipoAdm: tipoAdm,
                 dose: dose,
                 quantity:quantity,
                 item: item,
                 hora:hora,
-                duracion: duracion
+                duracion: duracion,
+                editar:false
             }
-            addDoc(collection(db, uid), datosRecordatorio)
         }
-        
-        props.navigation.navigate("Recordatorios",{uid});
+        props.navigation.navigate("Configurar Notificacion",datosRecordatorio);
     }
 
     const guardarEdit = async (id,datos) =>{
@@ -75,7 +79,15 @@ const DuracionTratamiento = (props) => {
                     <Text style={styles.textBoton}>30 dias</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.boton}
-                    onPress={() => {props.navigation.navigate('FechaFinal', props.route.params)}}  >
+                    onPress={() => {props.navigation.navigate('FechaFinal',  {
+                        uid:uid,
+                        nombreMed: nombreMed, 
+                        tipoAdm: tipoAdm,
+                        dose: dose,
+                        quantity:quantity,
+                        item: item,
+                        hora:hora,
+                        editar:false})}}  >
                     <Text style={styles.textBoton}>Establecer la fecha final</Text>
                 </TouchableOpacity>
             </View>
@@ -108,7 +120,7 @@ const styles = StyleSheet.create({
         borderRadius:25,
         marginBottom: 20,
         padding: 10,
-		alignItems: 'center'
+  alignItems: 'center'
     },
     textBoton:{
         fontSize: 20,

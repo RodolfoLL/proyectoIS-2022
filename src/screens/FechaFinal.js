@@ -3,6 +3,7 @@ import { View, Text, StyleSheet,TouchableOpacity,Alert} from 'react-native'
 import  DateTimePicker  from '@react-native-community/datetimepicker'
 import { doc, setDoc,collection, addDoc} from 'firebase/firestore';
 import {db} from '../../database/firebase'
+import {creadorDeNotificaciones} from './NotificacionRecordatorio';
 
 const FechaFinal = (props) => {
     const {editar} = props.route.params;
@@ -27,7 +28,7 @@ const FechaFinal = (props) => {
 
             let fechaTemporal = new Date(currentDate)
             let fechaActual = new Date()
-            let fecha = fechaTemporal.getDate() +'/'+ (fechaTemporal.getMonth()+1)+'/'+ fechaTemporal.getFullYear()
+            let fecha = (fechaTemporal.getMonth()+1)+'/'+fechaTemporal.getDate() +'/'+ fechaTemporal.getFullYear()
 
             if(fechaTemporal.toDateString() === fechaActual.toDateString()){
                 if(validarHora()){
@@ -121,6 +122,7 @@ const FechaFinal = (props) => {
     const guardarDuracion = (duracion)=>{
         if(editar){
             let datosRecordatorio = {
+                uid:uid,
                 nombreMed: nombreMed, 
                 tipoAdm: tipoAdm,
                 dose: dose,
@@ -144,23 +146,23 @@ const FechaFinal = (props) => {
                     actualizarHoraRegistrada()
                 }
             }else{
-                guardarEdit(id,datosRecordatorio)
                 props.navigation.navigate("Recordatorios",{uid: uid})
             }  
         }
         else{
             if(textDate !== ""){
                 let datosRecordatorio = {
+                    uid:uid,
                     nombreMed: nombreMed, 
                     tipoAdm: tipoAdm,
                     dose: dose,
                     quantity:quantity,
                     item: item,
                     hora:hora,
-                    duracion: duracion
+                    duracion: duracion,
+                    editar:false
                 }
-                addDoc(collection(db, uid), datosRecordatorio)
-                props.navigation.navigate("Recordatorios",{uid: uid})
+                props.navigation.navigate("Configurar Notificacion",datosRecordatorio);
 
             }else{
                 Alert.alert("Fecha No Escogida!","Eliga la duracion del tratamiento");
