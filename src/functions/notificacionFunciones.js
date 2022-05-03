@@ -1,3 +1,5 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 //Este metodo convierte un arreglo de horas como por ejemplo: ["5:06 PM", "10:20 AM"] a [{hora:17,minuto:6},{hora:10,minuto:20}]
 const parseHorasMinutos = (arregloHoras) =>{
     let resultadoHoras =[]
@@ -37,4 +39,33 @@ const crearFechasNotificación = (horasMinutos,fechaTermino, minutosAnticipació
     return fechasNotificacion;
 };
 
-export { parseHorasMinutos, crearFechasNotificación};
+const guardarNotificaciones = async (userId,recordatorioId,notificacionId) => {
+    try {
+      userId = userId + "";
+      recordatorioId = recordatorioId + ""
+      notificacionId = notificacionId + ""
+      const itemStorage = await AsyncStorage.getItem(userId)           
+      const recordatorio = itemStorage != null ? alert(JSON.parse(jsonValue)) : {};
+      recordatorio[recordatorioId] = notificacionId
+      const jsonValue = JSON.stringify(recordatorio)
+      console.log("**********************")
+      console.log(jsonValue)
+      await AsyncStorage.setItem(userId, jsonValue)
+    } catch (e) {
+      // saving error
+    }
+  }
+//recordatorio = {item.id, notificaciones}
+const obetnerNotificaciones = async (userId) => {
+try {
+    userId = userId + "";
+    const jsonValue = await AsyncStorage.getItem(userId)
+    var res = jsonValue != null ? JSON.parse(jsonValue) : {};
+    alert(JSON.stringify(res));
+} catch(e) {
+    console.log(e)
+    // error reading value
+}
+}
+
+export { parseHorasMinutos, crearFechasNotificación, obetnerNotificaciones, guardarNotificaciones};

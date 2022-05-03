@@ -1,32 +1,16 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, TouchableOpacity, ScrollView, Image, SafeAreaView,Alert,FlatList} from "react-native";
+import { View, Text, TouchableOpacity, ScrollView, Image, SafeAreaView,Alert,FlatList,Button} from "react-native";
 import image from '../assets/medicate.png'
 import {db} from '../../database/firebase'
 import { StatusBar } from 'expo-status-bar';
-import { collection, query, where, getDocs ,doc, deleteDoc, onSnapshot} from "firebase/firestore";
+import { collection, query, where, getDocs ,doc, deleteDoc,updateDoc, onSnapshot} from "firebase/firestore";
 import { render } from "react-dom";
 import { ListItem ,Icon} from 'react-native-elements';
 import { Usuario } from "./Login";
-import {registerForPushNotificationsAsync, schedulePushNotification} from './NotificacionRecordatorio';
-import * as Device from 'expo-device'
-import * as Notifications from 'expo-notifications';
-let listaAgotados=[];
-let fechFinal,fechHoy;
-let hoy;
-const verificarCantidadMed = (recordatorios) =>{
-    console.log("---------------------------------")
-    recordatorios.forEach(element => {
-        if(element.quantity==1){
-            listaAgotados.push(element.nombreMed);
-            console.log(listaAgotados)
-          }
+import {registerForPushNotificationsAsync} from './NotificacionRecordatorio';
+import * as Notifications from 'expo-notifications'
 
-        else{
-            console.log("Este no es agotado");
-        }
-    });
-    
-}
+
 const verificarFechas=(a)=>{
     fechFinal=(new Date(a).getTime());
     hoy=new Date(Date.now())
@@ -74,15 +58,52 @@ const PantallaInicio = ({navigation}) => {
     const [getExpoPushToken, setExpoPushToken]= useState('')
     const [recordatorios, setRecordatorios] = useState([]);
     console.log(recordatorios)
-    useEffect( () => 
+    useEffect( () =>{
         onSnapshot(collection(db,uid), (snapshot) =>{
             setRecordatorios(snapshot.docs.map((doc) => ({...doc.data(),id: doc.id})))
             registerForPushNotificationsAsync()
             .then(token => setExpoPushToken(token))
             .catch(e => console.log(e))
-            verificarCantidadMed(recordatorios);
-        }),[]
+        });
+        Notifications.addNotificationReceivedListener(async notification => {
+            await Notifications.cancelScheduledNotificationAsync(notification["request"]["identifier"]);
+            let notifData = notification["request"]["content"]["data"];
+            let recordatorioId = notifData["recordatorioId"]
+            let nombreMed=notifData["nombreMed"]
+            let cantidadMed = parseInt(notifData["cantMedicamento"]);
+            cantidadMed -=1;
+            cantidadMed< 0 ? cantidadMed = 0: null;
+            console.log(cantidadMed)
+            if(cantidadMed<=1){
+               schedulePushNotification(nombreMed);
+            }
+            const docrefRecordatorio = doc(db,uid,recordatorioId)
+            const datos = { quantity: cantidadMed}
+            await updateDoc(docrefRecordatorio,datos)
+            console.log("=======Notificacion recibida=======")
+            console.log(notification);
+          });
+    },[]
     );
+ 
+    // const MandarNotificacionCant = () =>{
+    //     // console.log("Esta entrando para verificar");
+    //     // let trigger = new Date(Date.now()+ 4*1000)
+    //     //         let content= {
+    //     //             title: "El medicamento se esta agotando"}
+    //             schedulePushNotification();
+    // }
+
+     async function schedulePushNotification(nombre) {
+        await Notifications.scheduleNotificationAsync({
+          content: {
+           title: "El medicamento " +nombre+" se esta agotando",
+    //         body: 'Here is the notification body',
+    //         data: { data: 'goes here' },
+        },
+        trigger: { seconds: 2 },
+     });
+      }
 
     const elimnarRecordatorio = async (id) =>{
         console.log(id)
@@ -94,12 +115,28 @@ const PantallaInicio = ({navigation}) => {
     const confirmarElimniar = (id) => {
         Alert.alert("Eliminar recordatorio", "estas seguro?",[
        {text: "Si" ,onPress: () =>{ elimnarRecordatorio(id)} },
-       {text: "No" ,onPress: () =>{ console.log("ok sin elimnar")} }
+       {text: "No" ,onPress: async () =>{ 
+        //    await obetnerNotificaciones(uid)
+           console.log("ok sin elimnar")} }
         ])
         listaAgotados=[];
         verificarCantidadMed(recordatorios);
     }
-
+    const ordenar = () =>{
+        let newList = [...recordatorios];
+            newList.sort((a,b) => {
+            if(a.nombreMed > b.nombreMed){
+                return 1;
+            }else{
+                if(b.nombreMed > a.nombreMed){
+                    return -1;
+                }else{
+                    return 0;
+                }
+            }
+            });
+        setRecordatorios(newList);
+    }
     return (
          
         <SafeAreaView style={{ backgroundColor: '#001B48', height: "100%"}}>  
@@ -112,6 +149,16 @@ const PantallaInicio = ({navigation}) => {
                 <Text style={{ fontSize: 50, color: 'white', fontWeight: 'bold' }}>
                     MEDICATE 
                 </Text>
+                <View style={{bottom:5}}>
+                
+                <Button
+                
+                title="ORDENAR"
+                color= "#0093B7"
+              
+                onPress={() => ordenar()} />
+        
+                 </View>  
             </View>
             
         <FlatList

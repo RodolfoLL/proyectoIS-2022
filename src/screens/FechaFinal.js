@@ -122,6 +122,7 @@ const FechaFinal = (props) => {
     const guardarDuracion = (duracion)=>{
         if(editar){
             let datosRecordatorio = {
+                uid:uid,
                 nombreMed: nombreMed, 
                 tipoAdm: tipoAdm,
                 dose: dose,
@@ -145,24 +146,23 @@ const FechaFinal = (props) => {
                     actualizarHoraRegistrada()
                 }
             }else{
-                guardarEdit(id,datosRecordatorio)
                 props.navigation.navigate("Recordatorios",{uid: uid})
             }  
         }
         else{
             if(textDate !== ""){
                 let datosRecordatorio = {
+                    uid:uid,
                     nombreMed: nombreMed, 
                     tipoAdm: tipoAdm,
                     dose: dose,
                     quantity:quantity,
                     item: item,
                     hora:hora,
-                    duracion: duracion
+                    duracion: duracion,
+                    editar:false
                 }
-                addDoc(collection(db, uid), datosRecordatorio)
-                creadorDeNotificaciones(new Date(duracion),datosRecordatorio)
-                props.navigation.navigate("Recordatorios",{uid: uid})
+                props.navigation.navigate("Configurar Notificacion",datosRecordatorio);
 
             }else{
                 Alert.alert("Fecha No Escogida!","Eliga la duracion del tratamiento");
