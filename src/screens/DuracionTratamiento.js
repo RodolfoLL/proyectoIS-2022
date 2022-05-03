@@ -14,18 +14,21 @@ const DuracionTratamiento = (props) => {
         let duracion = (fechaTemporal.getMonth()+1) + '/'+fechaTemporal.getDate() + '/'+ fechaTemporal.getFullYear() 
         let datosRecordatorio = {}
         if (editar){
-            
+            const id = props.route.params.id
             datosRecordatorio = {
+                id:id,
+                uid:uid,
                 nombreMed: nombreMed, 
                 tipoAdm: tipoAdm,
                 dose: dose,
                 quantity:quantity,
                 item: item,
                 hora:hora,
-                duracion: duracion
+                duracion: duracion,
+                editar:true
             } 
-            const id = props.route.params.id
-            guardarEdit(id,datosRecordatorio)
+            
+            // guardarEdit(id,datosRecordatorio)
         }
         else{
             datosRecordatorio = {
@@ -39,8 +42,9 @@ const DuracionTratamiento = (props) => {
                 duracion: duracion,
                 editar:false
             }
+            props.navigation.navigate("Configurar Notificacion",datosRecordatorio);
         }
-        props.navigation.navigate("Configurar Notificacion",datosRecordatorio);
+        
     }
 
     const guardarEdit = async (id,datos) =>{
@@ -116,7 +120,7 @@ const styles = StyleSheet.create({
         borderRadius:25,
         marginBottom: 20,
         padding: 10,
-		alignItems: 'center'
+  alignItems: 'center'
     },
     textBoton:{
         fontSize: 20,
