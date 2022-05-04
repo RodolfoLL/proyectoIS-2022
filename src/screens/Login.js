@@ -10,12 +10,17 @@ const Login = (props) => {
     const [mostarContra, setmostarContra] = useState(false)
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
+    const [errorEmail,seterrorEmail] = useState("")
+    const [errorContra,seterrorContra]= useState("")
 
     const auth = getAuth(app);
 
     const iniciarSesion = () => {
+      seterrorContra("")
+      seterrorEmail("")
       console.log(email+" "+ password)
-      if(verificarEmail()){
+      if(validarCorreo(email)){
+        
         signInWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
           console.log('Signed in!')
@@ -29,23 +34,36 @@ const Login = (props) => {
           props.navigation.navigate("Medicate",{uid:Usuario.uid});
         })
         .catch(error => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
           //console.log(error)
-          Alert.alert("Correo no registrado")
+          if(password !== ""){
+            if(errorCode == "auth/wrong-password"){
+              //Alert.alert("Contraseña incorrecta")
+              seterrorContra("Contraseña incorrecta")
+            }else{
+              //Alert.alert("Correo no registrado")
+              seterrorEmail("Correo no registrado")
+            }
+          }else{
+            seterrorContra("No se ingreso contraseña")
+          }
+          
         })
+      }else if(email === ""){
+        seterrorEmail("No se ingreso el correo electronico")
+        return;
       }else{
-        Alert.alert("Formato invalido","El formato de Email ingresado es incorrecto")
+        seterrorEmail("Formato de correo invalido")
+        return;
       }
       
     }
 
-    const verificarEmail = () => {
-      let emailTemporal = email.substring(email.length-10,email.length)
-      console.log(emailTemporal)
-      let emailCorrecto = false
-      if(emailTemporal === "@gmail.com"){
-        emailCorrecto = true
-      }
-      return emailCorrecto
+    function validarCorreo(email) {
+      const re = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i
+      console.log(re.test(email))
+      return re.test(email) 
     }
 
     const registrarUsuario = () => {
@@ -70,6 +88,7 @@ const Login = (props) => {
           containerStyle={styles.input}
           placeholder="email@address.com"
           onChangeText={(value) => setEmail(value)}
+          errorMessage={errorEmail}
           keyboardType="email-address"
           //value={email}
         />
@@ -81,6 +100,7 @@ const Login = (props) => {
           containerStyle={styles.input}
           placeholder="Contraseña"
           onChangeText={(value) => setPassword(value)}
+          errorMessage={errorContra}
           //value={password}
           secureTextEntry={!mostarContra}
           rightIcon={
