@@ -4,7 +4,7 @@ import {KeyboardAwareScrollView} from "react-native-keyboard-aware-scroll-view"
 import { Input,Icon } from "react-native-elements";
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 import {app} from '../../database/firebase'
-export let Usuario = {};
+// export let Usuario = {};
 
 const Login = (props) => {
     const [mostarContra, setmostarContra] = useState(false)
@@ -20,12 +20,12 @@ const Login = (props) => {
         .then((userCredential) => {
           console.log('Signed in!')
           const user = userCredential.user;
-          Usuario = {
-            uid:user.uid
-          }
+          // Usuario = {
+          //   uid: user.uid,
+          // }
           //console.log(user)
           console.log("UID:  "+ user.uid)
-          props.navigation.navigate("Medicate",{uid:Usuario.uid});
+          props.navigation.navigate("Medicate",{uid:user.uid});
         })
         .catch(error => {
           //console.log(error)

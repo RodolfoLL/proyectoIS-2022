@@ -4,11 +4,14 @@ import image from '../assets/medicate.png'
 import {db} from '../../database/firebase'
 import { StatusBar } from 'expo-status-bar';
 import { collection, query, where, getDocs ,doc, deleteDoc, onSnapshot} from "firebase/firestore";
-import { render } from "react-dom";
 import { ListItem ,Icon} from 'react-native-elements';
-import { Usuario } from "./Login";
-const PantallaInicio = ({navigation}) => {
-    const {uid} = Usuario;
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+
+
+const PantallaInicio = ({navigation}) => { 
+    const auth = getAuth();
+    const user = auth.currentUser;
+    const uid = user.uid;
     console.log(uid);
     navigation.setOptions({ 
     headerRight: () => (
@@ -42,8 +45,12 @@ const PantallaInicio = ({navigation}) => {
                 }}
             >{'añadir'}</Text>
         </TouchableOpacity>)}
+    
         
     );
+    
+     
+
 
     const [recordatorios, setRecordatorios] = useState([]);
     console.log(recordatorios)
@@ -158,7 +165,7 @@ const PantallaInicio = ({navigation}) => {
     </SafeAreaView>
    
     );
-                                    
+    
 };
 
 
