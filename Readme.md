@@ -64,3 +64,9 @@ y depués para correr el proyecto:
 ```cmd
 npm start
 ```
+## Como hacer deploy?
+Debes cambiar version del proyecto y la versión del codigo en el archivo app.json y correr el siguiente comando:
+```cmd
+expo build:android
+```
+Esto subira el proyecto a expo y hará el lanzamiento de la applicación de forma clásica, hay otra forma de lanzar con eas pero se explicará en otro apartado.

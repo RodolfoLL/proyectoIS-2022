@@ -1,4 +1,3 @@
-
 import React, { useState } from "react"
 import { Button, View, ScrollView, Text,TouchableOpacity } from "react-native";
 import { Picker } from '@react-native-picker/picker'
