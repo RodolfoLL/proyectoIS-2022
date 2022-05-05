@@ -83,21 +83,6 @@ const PantallaInicio = ({navigation}) => {
        {text: "No" ,onPress: () =>{ console.log("ok sin elimnar")} }
         ])
     }
-    // const ordenar = () =>{
-    //     let newList = [...recordatorios];
-    //         newList.sort((a,b) => {
-    //         if(a.nombreMed > b.nombreMed){
-    //             return 1;
-    //         }else{
-    //             if(b.nombreMed > a.nombreMed){
-    //                 return -1;
-    //             }else{
-    //                 return 0;
-    //             }
-    //         }
-    //         });
-    //     setRecordatorios(newList);
-    // }
     return (
       
         <SafeAreaView style={{ backgroundColor: '#001B48', height: "100%"}}>  

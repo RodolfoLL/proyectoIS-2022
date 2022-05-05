@@ -1,7 +1,6 @@
 import React,{useState} from 'react';
 import { View,Text,StyleSheet,TouchableOpacity,FlatList} from 'react-native';
-// import {db} from './database/firebase';
-// import { doc, setDoc } from 'firebase/firestore';
+
 
 
 const FrecuenciaScreen = (props) => {

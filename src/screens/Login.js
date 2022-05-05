@@ -25,10 +25,6 @@ const Login = ({navigation}) => {
         .then((userCredential) => {
           console.log('Signed in!')
           const user = userCredential.user;
-          // Usuario = {
-          //   uid: user.uid,
-          // }
-          //console.log(user)
           console.log("UID:  "+ user.uid)
           navigation.navigate("Medicate");
         })
