@@ -1,5 +1,5 @@
 import React, { useState } from "react"
-import { Button, View, ScrollView, Text,TouchableOpacity } from "react-native";
+import { Button, View, ScrollView, Text,TouchableOpacity, Alert } from "react-native";
 import { Picker } from '@react-native-picker/picker'
 import { StyleSheet } from "react-native";
 
@@ -44,6 +44,7 @@ const CantidadMedicamentos = ({ route, navigation }) => {
 
     const guardarCantidad = () => {
         if (selectDose != "" && selectQuantity != "") {
+            if(selectDose<=selectQuantity){
             navigation.navigate("Frecuencia Dosis", {
                 uid: uid,
                 nombreMed: nombreMed,
@@ -52,6 +53,9 @@ const CantidadMedicamentos = ({ route, navigation }) => {
                 quantity: selectQuantity,
                 editar:false
             })
+         } else{
+            Alert.alert("Dosis de medicamento","La dosis es mayor a la cantidad de medicamentos que tienes")
+         }
         }
     };
 
