@@ -2,7 +2,28 @@ import React, { useState, useEffect } from "react";
 import * as Notifications from 'expo-notifications'
 import * as Device from 'expo-device'
 import {crearFechasNotificación, guardarNotificaciones} from '../functions/notificacionFunciones'
+// import * as TaskManager from 'expo-task-manager';
 
+const BACKGROUND_NOTIFICATION_TASK = 'BACKGROUND-NOTIFICATION-TASK';
+
+// TaskManager.defineTask(BACKGROUND_NOTIFICATION_TASK, async ({ data, error, executionInfo }) => {
+//   console.log('----------Received a notification in the background!');
+//   console.log(data)
+//   console.log(error)
+//   console.log(executionInfo)
+//   console.log("----------------------------------")
+//   alert('----------Received a notification in the background!')
+//   // Do something with the notification data
+//   await Notifications.scheduleNotificationAsync({
+//     content: {
+//      title: "Solo le queda "+cantidad+" "+nombre+" de medicamento",
+//      body: "Debes comprar mas medicamentos para mañana 💊",
+//     },
+//     trigger: { seconds:60*5},
+//   });
+// });
+
+// Notifications.registerTaskAsync(BACKGROUND_NOTIFICATION_TASK);
 
 Notifications.setNotificationHandler(
   {

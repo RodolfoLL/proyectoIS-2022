@@ -85,7 +85,7 @@ const PantallaInicio = ({navigation}) => {
             console.log(maniana)
             let fechaFin=(new Date(Duracion)).getTime();
             console.log(fechaFin);
-            if(maniana=fechaFin){
+            if(maniana==fechaFin){
                 let cantidadMan=dosisMed*(FrecuenciaHoras+1);
                 if(cantidadMan>sig){
                     schedulePushNotification(nombreMed,cantidadMed);
@@ -112,7 +112,7 @@ const PantallaInicio = ({navigation}) => {
            title: "Solo le queda "+cantidad+" "+nombre+" de medicamento",
            body: "Debes comprar mas medicamentos para mañana 💊",
         },
-        trigger: { seconds:60*5},
+        trigger: { seconds:2},
      });
       }
 
@@ -127,7 +127,7 @@ const PantallaInicio = ({navigation}) => {
         Alert.alert("Eliminar recordatorio", "estas seguro?",[
        {text: "Si" ,onPress: () =>{ elimnarRecordatorio(id)} },
        {text: "No" ,onPress: async () =>{ 
-        //    await obetnerNotificaciones(uid)
+           await obetnerNotificaciones(uid)
            console.log("ok sin elimnar")} }
         ])
         listaAgotados=[];
