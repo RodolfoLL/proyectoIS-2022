@@ -4,7 +4,7 @@ import { Input,Button,Icon,Text,Overlay } from "react-native-elements";
 import {KeyboardAwareScrollView} from "react-native-keyboard-aware-scroll-view"
 import{useHeaderHeight } from "@react-navigation/elements"
 import { size } from "lodash";
-import {getAuth,createUserWithEmailAndPassword} from "firebase/auth"
+import {getAuth,createUserWithEmailAndPassword,updateProfile} from "firebase/auth"
 import {app} from '../../database/firebase'
 const RegistroUsuario= ({route,navigation}) =>{
      let {height, width} = Dimensions.get('window');
@@ -17,6 +17,7 @@ const RegistroUsuario= ({route,navigation}) =>{
     const [errorEmail,seterrorEmail] = useState("")
     const [loading,setLoading] = useState(false)
     const auth = getAuth(app);
+    
     const headerHeight = useHeaderHeight();
     const onChange = (e, type) => {
         setDatos({ ...Datos, [type]: e.nativeEvent.text })
@@ -37,10 +38,16 @@ const RegistroUsuario= ({route,navigation}) =>{
         return result
     }
     function validarCorreo(email) {
-        const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-        return re.test(email)
+        
+        const re = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i
+        return re.test(email) 
     }
-    
+    function validarContra(contra){
+        const regex = /^[0-9a-zA-Z\_]+$/
+        return regex.test(contra) 
+        
+
+    }
     const validarDatos=() =>{
         let regex = new RegExp("^[a-zA-ZÀ-ÿ ]+$");
         let letras= new RegExp("[a-zA-Z]");
@@ -59,10 +66,10 @@ const RegistroUsuario= ({route,navigation}) =>{
                 valido = false
             }
         }
-        if(Datos.nombre.length < 2){
-            seterrorNombre("el nombre tiene que tener mas de 1 caracter")
-            valido = false
-        }
+        //if(Datos.nombre.length < 2){
+          //  seterrorNombre("el nombre tiene que tener mas de 1 caracter")
+           // valido = false
+       // }
         
         if(Datos.nombre.charAt(0) == " "){
             seterrorNombre("el nombre no debe empezar con  espacios")
@@ -84,12 +91,24 @@ const RegistroUsuario= ({route,navigation}) =>{
             seterrorContra("La contraseña debe tener 8 o más caracteres")
             valido = false
         }
-        
+        else{
+            if(!validarContra(Datos.contraseña)){
+                seterrorContra("la contraseña no debe tener caracteres especiales o espacios")
+                valido = false
+            }
+        }
          if(Datos.contraseña != Datos.confirmar){
                 seterrorConfirmar("Las contraseñas no coinciden")
                 valido = false
             
         }
+      //  else
+       // {
+         //   if(!validarContra(Datos.confirmar)){
+           //     seterrorConfirmar("la contraseña no debe tener caracteres especiales o espacios")
+             //   valido = false
+            //} 
+        //}
         
         return valido
     }
@@ -105,13 +124,21 @@ const RegistroUsuario= ({route,navigation}) =>{
             seterrorEmail(usuario.error)
             return
         }
+        updateProfile(auth.currentUser, {
+            displayName: Datos.nombre, 
+          }).then(() => {
+            console.log("nombre cambiado")
+          }).catch((error) => {
+            console.log("nombre--- ups")
+          });
+        navigation.navigate("Login")
         setLoading(false)
-        const user = usuario.user
         Alert.alert("Cuenta creada", "Ya puedes acceder",[
             {text: "OK" ,onPress: () =>{ console.log("ok a Login")} }
              ])
-
-        navigation.navigate("Login")
+        
+        console.log(auth)
+        
     }
     return (
        

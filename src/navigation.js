@@ -16,6 +16,7 @@ import CantidadMedicamentos from "./screens/CantidadMedicamentos"
 import PantallaRegistroMed from "./screens/PantallaRegistroMed";
 import DosisEdit from './screens/DosisEdit';
 import Configuracion from './screens/Configaracion';
+import ConfiguraciónNotificación from './screens/ConfiguracionNotificación'
 
 import Login from './screens/Login';
 import RegistroUsuario from './screens/Registrar-Usuario';
@@ -26,14 +27,6 @@ const Stack = createNativeStackNavigator();
 
 function MyStacks() {
     
-    // React.useLayoutEffect(() => {
-    //     const tabHiddenroute = ['RegistroUsuario','Login'];
-    //     if(tabHiddenroute.includes(getFocusedRouteNameFromRoute(route))){
-    //         navigation.setOptions({tabBarStyle: {display: 'none'}});
-    //     } else {
-    //        navigation.setOptions({tabBarStyle: {display: 'flex'}});
-    //     }
-    // }, [navigation, route]);
     return(
         
         <HomeStackNavigator.Navigator initialRouteName='Medicate'
@@ -66,7 +59,9 @@ function MyStacks() {
             <HomeStackNavigator.Screen name="Editar Dosis" component={DosisEdit}
             options={{headerTintColor: 'white',
             headerStyle:{ backgroundColor: "#0093B7"}}}/>
-            
+            <HomeStackNavigator.Screen name="Configurar Notificacion" component={ConfiguraciónNotificación}
+            options={{headerTintColor: 'white',
+            headerStyle:{ backgroundColor: "#0093B7"}}}/>
         </HomeStackNavigator.Navigator>
     );
 }
@@ -74,11 +69,6 @@ function MyStacks() {
 
 
 function MyTabs() {
-    // const getTabBarStyle = (route) => {  
-    //     const routeName = getFocusedRouteNameFromRoute(route) ?? 'Recordatorios';
-    //     let display = (routeName === 'Login') ? 'none':'flex';
-    //     return {display}
-    //   }
     return(
         <Tab.Navigator
             initialRouteName="Recordatorios"
@@ -99,11 +89,6 @@ function MyTabs() {
             <Tab.Screen 
                 name="tabs" 
                 component={MyStacks}
-                // options={({route}) =>({ tabBarStyle: getTabBarStyle(route),tabBarLabel:'inicio',
-                // tabBarIcon:({color,size})=>(
-                //     <Icon type="material-community" name={"home"} size={size} color={color} />
-                // ),
-                // headerShown:false,})}
                 options ={{tabBarLabel:'Inicio',tabBarIcon:({color,size})=>(
                     <Icon type="material-community" name={"home"} size={size} color={color} />
                 ),
@@ -112,11 +97,6 @@ function MyTabs() {
             <Tab.Screen 
                 name="Cerrar" 
                 component={Configuracion}
-                // options={({route}) =>({ tabBarStyle: getTabBarStyle(route),tabBarLabel:'inicio',
-                // tabBarIcon:({color,size})=>(
-                //     <FontAwesome name="sign-out" size={24} color="black" />
-                // ),
-                // headerShown:false,})}
                 options ={{tabBarLabel:'Cerrar',tabBarIcon:({color,size})=>(
                     <FontAwesome name="sign-out" size={size} color={color} />
                 ),
