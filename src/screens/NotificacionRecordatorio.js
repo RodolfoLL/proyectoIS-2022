@@ -83,12 +83,12 @@ const creadorDeNotificaciones = async (fechaTemporal, datosRecordatorio, uid, re
   const fechasDeNotificacion =
     crearFechasNotificación(datosRecordatorio.hora, fechaTemporal, minutosAnticipacion);
   let notificacionesIds = [];
-  fechasDeNotificacion.forEach(async fechaLimite => {
+  fechasDeNotificacion.forEach(async unaFecha => {
     try {
-
-      let minuto = (fechaLimite.getMinutes()+ minutosAnticipacion) < 10 ?
-        "0" + (fechaLimite.getMinutes() + minutosAnticipacion) :
-        "" + (fechaLimite.getMinutes() + minutosAnticipacion)
+      let fechaLimite = new Date(unaFecha.getTime()+(60*minAnticipacion*1000)) 
+      let minuto = fechaLimite.getMinutes() < 10 ?
+        "0" + (fechaLimite.getMinutes() ) :
+        "" + (fechaLimite.getMinutes() )
       let hora = fechaLimite.getHours() < 10 ?
         "0" + fechaLimite.getHours() :
         "" + fechaLimite.getHours()
