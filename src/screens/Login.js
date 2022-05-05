@@ -2,16 +2,21 @@ import React, { useState } from 'react'
 import { View, TextInput, StyleSheet, Button,TouchableOpacity,Text, Image, Alert} from 'react-native'
 import {KeyboardAwareScrollView} from "react-native-keyboard-aware-scroll-view"
 import { Input,Icon } from "react-native-elements";
-import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
+import { getAuth, signInWithEmailAndPassword, } from 'firebase/auth';
 import {app} from '../../database/firebase'
-// export let Usuario = {};
 
-const Login = (props) => {
+
+const Login = ({navigation}) => {
     const [mostarContra, setmostarContra] = useState(false)
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
-
     const auth = getAuth(app);
+
+    auth.onAuthStateChanged(user => {
+      if(user){
+        navigation.navigate('Medicate');
+      }
+    })
 
     const iniciarSesion = () => {
       console.log(email+" "+ password)
@@ -25,7 +30,7 @@ const Login = (props) => {
           // }
           //console.log(user)
           console.log("UID:  "+ user.uid)
-          props.navigation.navigate("Medicate",{uid:user.uid});
+          navigation.navigate("Medicate");
         })
         .catch(error => {
           //console.log(error)
