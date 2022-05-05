@@ -10,12 +10,9 @@ const Login = ({navigation}) => {
     const [mostarContra, setmostarContra] = useState(false)
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
-<<<<<<< HEAD
-=======
     const [errorEmail,seterrorEmail] = useState("")
     const [errorContra,seterrorContra]= useState("")
 
->>>>>>> develop
     const auth = getAuth(app);
 
     auth.onAuthStateChanged(user => {
@@ -34,14 +31,6 @@ const Login = ({navigation}) => {
         .then((userCredential) => {
           console.log('Signed in!')
           const user = userCredential.user;
-<<<<<<< HEAD
-=======
-          Usuario = {
-            uid:user.uid
-          }
-          //console.log(user)
-          console.log(user)
->>>>>>> develop
           console.log("UID:  "+ user.uid)
           navigation.navigate("Medicate");
         })

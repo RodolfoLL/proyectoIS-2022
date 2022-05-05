@@ -17,10 +17,6 @@ const Configuracion =({navigation})=>{
     }
     return(
         <View style = {style.container}>
-            {/* <Button
-            title="Cerrar Sesion"
-            onPress={()=>signOutUser()}
-            /> */}
             <TouchableOpacity
               onPress={() => signOutUser()}
             >
