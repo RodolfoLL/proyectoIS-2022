@@ -65,7 +65,17 @@ const PantallaInicio = ({navigation}) => {
     console.log(recordatorios)
     useEffect( () =>{
         onSnapshot(collection(db,uid), (snapshot) =>{
-            setRecordatorios(snapshot.docs.map((doc) => ({...doc.data(),id: doc.id})))
+            setRecordatorios(snapshot.docs.map((doc) => ({...doc.data(),id: doc.id})).sort((a,b) => {
+                if(a.nombreMed > b.nombreMed){
+                    return 1;
+                }else{
+                    if(b.nombreMed > a.nombreMed){
+                        return -1;
+                    }else{
+                        return 0;
+                    }
+                }
+                }))
             registerForPushNotificationsAsync()
             .then(token => setExpoPushToken(token))
             .catch(e => console.log(e))
