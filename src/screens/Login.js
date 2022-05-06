@@ -14,7 +14,7 @@ const Login = (props) => {
     const [errorContra,seterrorContra]= useState("")
 
     const auth = getAuth(app);
-
+    
     const iniciarSesion = () => {
       seterrorContra("")
       seterrorEmail("")
@@ -25,12 +25,15 @@ const Login = (props) => {
         .then((userCredential) => {
           console.log('Signed in!')
           const user = userCredential.user;
+
+          setEmail("")
+          setPassword("")
           Usuario = {
             uid:user.uid
           }
-          //console.log(user)
           console.log(user)
           console.log("UID:  "+ user.uid)
+         
           props.navigation.navigate("Medicate",{uid:Usuario.uid});
         })
         .catch(error => {
@@ -59,7 +62,9 @@ const Login = (props) => {
       }
       
     }
-
+    function eliminardatos() {
+        
+    }
     function validarCorreo(email) {
       const re = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i
       console.log(re.test(email))
@@ -90,7 +95,8 @@ const Login = (props) => {
           onChangeText={(value) => setEmail(value)}
           errorMessage={errorEmail}
           keyboardType="email-address"
-          //value={email}
+          
+          value={email}
         />
       
         <Text style={styles.text}>
@@ -101,7 +107,7 @@ const Login = (props) => {
           placeholder="Contraseña"
           onChangeText={(value) => setPassword(value)}
           errorMessage={errorContra}
-          //value={password}
+          value={password}
           secureTextEntry={!mostarContra}
           rightIcon={
             <Icon
