@@ -27,7 +27,7 @@ const FechaFinal = (props) => {
 
             let fechaTemporal = new Date(currentDate)
             let fechaActual = new Date()
-            let fecha = fechaTemporal.getDate() +'/'+ (fechaTemporal.getMonth()+1)+'/'+ fechaTemporal.getFullYear()
+            let fecha = (fechaTemporal.getMonth()+1) +'/'+ fechaTemporal.getDate()+'/'+ fechaTemporal.getFullYear()
 
             if(fechaTemporal.toDateString() === fechaActual.toDateString()){
                 if(validarHora()){
@@ -120,32 +120,32 @@ const FechaFinal = (props) => {
     
     const guardarDuracion = (duracion)=>{
         if(editar){
+            const id = props.route.params.id
             let datosRecordatorio = {
+                uid:uid,
+                id:id,
                 nombreMed: nombreMed, 
                 tipoAdm: tipoAdm,
                 dose: dose,
                 quantity:quantity,
                 item: item,
                 hora:hora,
-                duracion: duracion
+                duracion: duracion,
+                editar:editar
             }
-            const id = props.route.params.id
-
             let fechaActual = new Date()
-            let fecha = fechaActual.getDate() +'/'+ (fechaActual.getMonth()+1)+'/'+ fechaActual.getFullYear()
+            let fecha = fechaActual.getMonth()+ +'/'+fechaActual.getDate()+'/'+ fechaActual.getFullYear()
             if(textDate === fecha){
                 if(validarHora()){
                     console.log("SE GUARDO")
-                    guardarEdit(id,datosRecordatorio)
-                    props.navigation.navigate("Recordatorios",{uid: uid})
+                    props.navigation.navigate("Configurar Notificacion",datosRecordatorio);
                 }else{
                     console.log("NO SE GUARDO")
-                    Alert.alert("Fecha No Registra!","Eliga una hora que no halla pasado");
+                    Alert.alert("Fecha No Registra!","Elija una hora que no pueda haber pasado");
                     actualizarHoraRegistrada()
                 }
             }else{
-                guardarEdit(id,datosRecordatorio)
-                props.navigation.navigate("Recordatorios",{uid: uid})
+                props.navigation.navigate("Configurar Notificacion",datosRecordatorio);
             }  
         }
         else{
@@ -159,8 +159,7 @@ const FechaFinal = (props) => {
                     hora:hora,
                     duracion: duracion
                 }
-                addDoc(collection(db, uid), datosRecordatorio)
-                props.navigation.navigate("Recordatorios",{uid: uid})
+                props.navigation.navigate("Configurar Notificacion",datosRecordatorio);
 
             }else{
                 Alert.alert("Fecha No Escogida!","Eliga la duracion del tratamiento");
@@ -169,7 +168,6 @@ const FechaFinal = (props) => {
     }
 
     const guardarEdit = async (id,datos) =>{
-        
         const docref = doc(db,uid,id)
         console.log(docref)
         console.log(datos);

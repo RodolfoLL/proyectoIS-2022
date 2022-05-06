@@ -58,6 +58,7 @@ const HoraScreen=(props)=>{
         if(hora.length !== 0 ){
 
             if(editar){
+                console.log("Entra a editar hora ")
                 var datosRecordatorio = {
                     uid:uid,
                     id: props.route.params.id,
@@ -69,9 +70,9 @@ const HoraScreen=(props)=>{
                     hora:hora,
                     duracion: props.route.params.duracion,
                     editar:editar
-            }
+                }
 
-        }
+            }
             else{
                     var datosRecordatorio = {
                         uid: uid,

@@ -14,10 +14,11 @@ const DuracionTratamiento = (props) => {
         let duracion = (fechaTemporal.getMonth()+1) + '/'+fechaTemporal.getDate() + '/'+ fechaTemporal.getFullYear() 
         let datosRecordatorio = {}
         if (editar){
+            console.log("Entra a editar la duración del tratamiento")
             const id = props.route.params.id
             datosRecordatorio = {
-                id:id,
                 uid:uid,
+                id:id,
                 nombreMed: nombreMed, 
                 tipoAdm: tipoAdm,
                 dose: dose,
@@ -79,15 +80,7 @@ const DuracionTratamiento = (props) => {
                     <Text style={styles.textBoton}>30 dias</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.boton}
-                    onPress={() => {props.navigation.navigate('FechaFinal',  {
-                        uid:uid,
-                        nombreMed: nombreMed, 
-                        tipoAdm: tipoAdm,
-                        dose: dose,
-                        quantity:quantity,
-                        item: item,
-                        hora:hora,
-                        editar:false})}}  >
+                    onPress={() => {props.navigation.navigate('FechaFinal', props.route.params)}}  >
                     <Text style={styles.textBoton}>Establecer la fecha final</Text>
                 </TouchableOpacity>
             </View>
