@@ -44,14 +44,47 @@ const guardarNotificaciones = async (userId,recordatorioId,notificacionId) => {
       userId = userId + "";
       recordatorioId = recordatorioId + ""
       notificacionId = notificacionId + ""
-      const itemStorage = await AsyncStorage.getItem(userId)           
-      const recordatorio = itemStorage != null ? alert(JSON.parse(jsonValue)) : {};
-      recordatorio[recordatorioId] = notificacionId
-      const jsonValue = JSON.stringify(recordatorio)
-      console.log("**********************")
-      console.log(jsonValue)
-      await AsyncStorage.setItem(userId, jsonValue)
+      let recordatorio = {};
+      AsyncStorage.getItem(userId)
+      .then(itemStorage=> {
+        // console.log(itemStorage)
+        if(itemStorage != null){
+            recordatorio = JSON.parse(itemStorage);
+            console.log(recordatorio)
+            console.log("------------------------------------------------------Entra para itemStorage "+ userId)
+           
+            if((recordatorio["usersId"][userId] !=null)){
+                
+                console.log("------------------------------------------------------Entra para userid")
+                if(recordatorio["usersId"][userId]["recordatoriosId"][recordatorioId] !=null){
+                    const indicePos = recordatorio["usersId"][userId]["recordatoriosId"][recordatorioId].indexOf(notificacionId);
+                    if(indicePos ==-1){
+                        recordatorio["usersId"][userId]["recordatoriosId"][recordatorioId].push(notificacionId);
+                    }
+                }else{
+                    console.log("------------------------------------------------------Entra para guardar nuevo recordatorio")
+                    recordatorio["usersId"][userId]["recordatoriosId"][recordatorioId] = [notificacionId]
+                }
+            }else{
+                recordatorio["usersId"][userId]= {"recordatoriosId":{}}
+                recordatorio["usersId"][userId]["recordatoriosId"][recordatorioId] = [notificacionId]
+            }
+        }else{
+            recordatorio["usersId"] = {}
+            recordatorio["usersId"][userId]= {"recordatoriosId":{}}
+            recordatorio["usersId"][userId]["recordatoriosId"][recordatorioId] = [notificacionId]
+        }  
+        const jsonValue = JSON.stringify(recordatorio)
+        console.log("**********************")
+        console.log(jsonValue)
+        AsyncStorage.setItem(userId, jsonValue)
+        .then(()=>{return jsonValue})
+        
+      });
+      
+
     } catch (e) {
+        console.log("Error al guardar datos en la memoria !!!!")
       // saving error
     }
   }
@@ -61,7 +94,8 @@ try {
     userId = userId + "";
     const jsonValue = await AsyncStorage.getItem(userId)
     var res = jsonValue != null ? JSON.parse(jsonValue) : {};
-    alert(JSON.stringify(res));
+    console.log(JSON.stringify(res))
+    // alert(JSON.stringify(res));
 } catch(e) {
     console.log(e)
     // error reading value

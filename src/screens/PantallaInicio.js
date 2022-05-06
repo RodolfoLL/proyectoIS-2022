@@ -9,6 +9,7 @@ import { ListItem ,Icon} from 'react-native-elements';
 import { Usuario } from "./Login";
 import {registerForPushNotificationsAsync} from './NotificacionRecordatorio';
 import * as Notifications from 'expo-notifications'
+import { obetnerNotificaciones } from "../functions/notificacionFunciones";
 let c=0;
 
 const verificarFechas=(a)=>{
@@ -127,8 +128,9 @@ const PantallaInicio = ({navigation}) => {
         Alert.alert("Eliminar recordatorio", "estas seguro?",[
        {text: "Si" ,onPress: () =>{ elimnarRecordatorio(id)} },
        {text: "No" ,onPress: async () =>{ 
-           await obetnerNotificaciones(uid)
-           console.log("ok sin elimnar")} }
+        console.log("ok sin elimnar")
+        await obetnerNotificaciones(uid)
+           } }
         ])
         listaAgotados=[];
     }

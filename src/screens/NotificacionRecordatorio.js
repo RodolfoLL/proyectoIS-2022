@@ -35,13 +35,13 @@ Notifications.setNotificationHandler(
   }
 );
 
-async function schedulePushNotification(trigger, contentNoti) {
+async function schedulePushNotification(uid, recordatorioId,trigger, contentNoti) {
   Notifications.scheduleNotificationAsync({
     content: contentNoti,
     trigger,
   })
   .then(id => { 
-    // guardarNotificaciones(uid,recordatorioId,id)
+    guardarNotificaciones(uid,recordatorioId,id)
     console.log("===============Notificacion Creada============<")
     console.log("Id de notificacion" + id)
     return id });
@@ -85,7 +85,9 @@ const creadorDeNotificaciones = async (fechaTemporal, datosRecordatorio, uid, re
   let notificacionesIds = [];
   fechasDeNotificacion.forEach(async unaFecha => {
     try {
-      let fechaLimite = new Date(unaFecha.getTime()+(60*minAnticipacion*1000)) 
+      let fechaLimite = new Date(unaFecha.getTime()+(60*minutosAnticipacion*1000))
+      console.log("Fecha Limite "+ fechaLimite) 
+      console.log("Fecha Limite Real "+ unaFecha ) 
       let minuto = fechaLimite.getMinutes() < 10 ?
         "0" + (fechaLimite.getMinutes() ) :
         "" + (fechaLimite.getMinutes() )
@@ -122,7 +124,7 @@ const creadorDeNotificaciones = async (fechaTemporal, datosRecordatorio, uid, re
           FrecuenciaHoras:(datosRecordatorio.hora).length+''
         }
       }
-      await schedulePushNotification(fechaLimite, content)
+      await schedulePushNotification(uid,recordatorioId,unaFecha, content)
       // .then(id => {notificacionesIds.push(id )})
       
     } catch (e) {
