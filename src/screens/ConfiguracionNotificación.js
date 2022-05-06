@@ -41,6 +41,7 @@ const ConfiguraciónNotificación = (props) => {
                 await creadorDeNotificaciones(new Date(duracion), datosRecordatorio,uid,id, parseInt(minAnticipación))
             })
         }else{
+            console.log("DB: "+db+" UID: "+uid)
             addDoc(collection(db, uid), datosRecordatorio)
             .then(async function(docRef) {
                 let idRecordatorio = docRef.id+""

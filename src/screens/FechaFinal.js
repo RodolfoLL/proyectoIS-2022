@@ -151,6 +151,7 @@ const FechaFinal = (props) => {
         else{
             if(textDate !== ""){
                 let datosRecordatorio = {
+                    uid:uid,
                     nombreMed: nombreMed, 
                     tipoAdm: tipoAdm,
                     dose: dose,

@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
 import * as Notifications from 'expo-notifications'
 import * as Device from 'expo-device'
-import {crearFechasNotificación, guardarNotificaciones} from '../functions/notificacionFunciones'
+import {crearFechasNotificación, guardarNotificaciones,obetenerDatosRecordatorios,
+        eliminarRecordatorioStorage} from '../functions/notificacionFunciones'
+import { async } from "@firebase/util";
 // import * as TaskManager from 'expo-task-manager';
 
 const BACKGROUND_NOTIFICATION_TASK = 'BACKGROUND-NOTIFICATION-TASK';
@@ -47,6 +49,31 @@ async function schedulePushNotification(uid, recordatorioId,trigger, contentNoti
     return id });
 
   
+}
+
+async function cancelScheduledNotificationAsync(notificacionId){
+  Notifications.cancelScheduledNotificationAsync(notificacionId)
+  .then(data => {console.log("Se cancela la notifcacion " +notificacionId+" con data: "+data)})
+}
+
+const eliminarRecordatorioNotif= async (uid,recordatorioId) => {
+  let booleanVar = true
+  obetenerDatosRecordatorios(uid,recordatorioId)
+  .then(recordatorios =>{
+    console.log(recordatorios);
+    if(recordatorios[recordatorioId]!=null){
+      let notificaciones =  recordatorios[recordatorioId]
+      notificaciones.forEach(async notificacionId => {
+          await cancelScheduledNotificationAsync(notificacionId);
+      });
+     eliminarRecordatorioStorage(uid,recordatorioId)
+     booleanVar = true;
+    }else{
+      alert("No existe ese recordatorio")
+      booleanVar = false;
+    }
+  })
+  return booleanVar
 }
 
 const registerForPushNotificationsAsync = async () => {
@@ -135,4 +162,4 @@ const creadorDeNotificaciones = async (fechaTemporal, datosRecordatorio, uid, re
   return notificacionesIds;
 };
 
-export { schedulePushNotification, registerForPushNotificationsAsync, creadorDeNotificaciones };
+export { schedulePushNotification, registerForPushNotificationsAsync, creadorDeNotificaciones , cancelScheduledNotificationAsync, eliminarRecordatorioNotif};

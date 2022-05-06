@@ -7,9 +7,10 @@ import { collection, query, where, getDocs ,doc, deleteDoc,updateDoc, onSnapshot
 import { render } from "react-dom";
 import { ListItem ,Icon} from 'react-native-elements';
 import { Usuario } from "./Login";
-import {registerForPushNotificationsAsync} from './NotificacionRecordatorio';
+import {registerForPushNotificationsAsync, eliminarRecordatorioNotif} from './NotificacionRecordatorio';
 import * as Notifications from 'expo-notifications'
-import { obetnerNotificaciones } from "../functions/notificacionFunciones";
+import { obetenerDatosRecordatorios } from "../functions/notificacionFunciones";
+import { async } from "@firebase/util";
 let c=0;
 
 const verificarFechas=(a)=>{
@@ -121,20 +122,22 @@ const PantallaInicio = ({navigation}) => {
         console.log(id)
         const docRef = doc(db,uid,id)
         console.log(docRef)
-         deleteDoc(docRef)
+        eliminarRecordatorioNotif(uid,id)
+        deleteDoc(docRef)
         navigation.navigate("Recordatorios",{uid: uid})
+       
     }
     const confirmarElimniar = (id) => {
         Alert.alert("Eliminar recordatorio", "estas seguro?",[
        {text: "Si" ,onPress: () =>{ elimnarRecordatorio(id)} },
        {text: "No" ,onPress: async () =>{ 
         console.log("ok sin elimnar")
-        await obetnerNotificaciones(uid)
            } }
         ])
         listaAgotados=[];
     }
-    const ordenar = () =>{
+    const ordenar = async () =>{
+        await obetenerDatosRecordatorios(uid)
         let newList = [...recordatorios];
             newList.sort((a,b) => {
             if(a.nombreMed > b.nombreMed){

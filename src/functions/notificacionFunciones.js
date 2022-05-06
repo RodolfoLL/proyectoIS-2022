@@ -38,7 +38,21 @@ const crearFechasNotificación = (horasMinutos,fechaTermino, minutosAnticipació
     });
     return fechasNotificacion;
 };
-
+const eliminarRecordatorioStorage = async (userId,recordatorioId)=>{
+    let recordatorio = {};
+    AsyncStorage.getItem(userId)
+      .then(itemStorage=> {
+        if(itemStorage != null){
+            recordatorio = JSON.parse(itemStorage);
+            if(recordatorio["usersId"][userId]["recordatoriosId"][recordatorioId] !=null){
+                delete recordatorio["usersId"][userId]["recordatoriosId"][recordatorioId]
+                let jsonValue = JSON.stringify(recordatorio);
+                AsyncStorage.setItem(userId, jsonValue)
+                .then(data=>{console.log("Recordatorio eliminado-----------------------------");})
+            }
+        }
+      })
+};
 const guardarNotificaciones = async (userId,recordatorioId,notificacionId) => {
     try {
       userId = userId + "";
@@ -89,17 +103,24 @@ const guardarNotificaciones = async (userId,recordatorioId,notificacionId) => {
     }
   }
 //recordatorio = {item.id, notificaciones}
-const obetnerNotificaciones = async (userId) => {
+const obetenerDatosRecordatorios = async (userId, recordatorioId) => {
 try {
     userId = userId + "";
-    const jsonValue = await AsyncStorage.getItem(userId)
-    var res = jsonValue != null ? JSON.parse(jsonValue) : {};
-    console.log(JSON.stringify(res))
+    const jsonValue = await AsyncStorage.getItem(userId);
+    let recordatorios = {};
+    let recordatoriosIds = {};
+    // var res = jsonValue != null ? JSON.parse(jsonValue) : {};
+    if(jsonValue != null){
+        recordatorios = JSON.parse(jsonValue);
+        recordatoriosIds = recordatorios["usersId"][userId]["recordatoriosId"]
+    }
+    console.log(JSON.stringify(recordatorios))
+    return recordatoriosIds
     // alert(JSON.stringify(res));
 } catch(e) {
-    console.log(e)
+    console.log("No se pudo obtener las notiicaiones del almacenamiento por :"+e)
     // error reading value
 }
 }
 
-export { parseHorasMinutos, crearFechasNotificación, obetnerNotificaciones, guardarNotificaciones};
+export { parseHorasMinutos, crearFechasNotificación, obetenerDatosRecordatorios, guardarNotificaciones, eliminarRecordatorioStorage};
