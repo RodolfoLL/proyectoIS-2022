@@ -38,34 +38,89 @@ const crearFechasNotificación = (horasMinutos,fechaTermino, minutosAnticipació
     });
     return fechasNotificacion;
 };
-
+const eliminarRecordatorioStorage = async (userId,recordatorioId)=>{
+    let recordatorio = {};
+    AsyncStorage.getItem(userId)
+      .then(itemStorage=> {
+        if(itemStorage != null){
+            recordatorio = JSON.parse(itemStorage);
+            if(recordatorio["usersId"][userId]["recordatoriosId"][recordatorioId] !=null){
+                delete recordatorio["usersId"][userId]["recordatoriosId"][recordatorioId]
+                let jsonValue = JSON.stringify(recordatorio);
+                AsyncStorage.setItem(userId, jsonValue)
+                .then(data=>{console.log("Recordatorio eliminado-----------------------------");})
+            }
+        }
+      })
+};
 const guardarNotificaciones = async (userId,recordatorioId,notificacionId) => {
     try {
       userId = userId + "";
       recordatorioId = recordatorioId + ""
       notificacionId = notificacionId + ""
-      const itemStorage = await AsyncStorage.getItem(userId)           
-      const recordatorio = itemStorage != null ? alert(JSON.parse(jsonValue)) : {};
-      recordatorio[recordatorioId] = notificacionId
-      const jsonValue = JSON.stringify(recordatorio)
-      console.log("**********************")
-      console.log(jsonValue)
-      await AsyncStorage.setItem(userId, jsonValue)
+      let recordatorio = {};
+      AsyncStorage.getItem(userId)
+      .then(itemStorage=> {
+        // console.log(itemStorage)
+        if(itemStorage != null){
+            recordatorio = JSON.parse(itemStorage);
+            console.log(recordatorio)
+            console.log("------------------------------------------------------Entra para itemStorage "+ userId)
+           
+            if((recordatorio["usersId"][userId] !=null)){
+                
+                console.log("------------------------------------------------------Entra para userid")
+                if(recordatorio["usersId"][userId]["recordatoriosId"][recordatorioId] !=null){
+                    const indicePos = recordatorio["usersId"][userId]["recordatoriosId"][recordatorioId].indexOf(notificacionId);
+                    if(indicePos ==-1){
+                        recordatorio["usersId"][userId]["recordatoriosId"][recordatorioId].push(notificacionId);
+                    }
+                }else{
+                    console.log("------------------------------------------------------Entra para guardar nuevo recordatorio")
+                    recordatorio["usersId"][userId]["recordatoriosId"][recordatorioId] = [notificacionId]
+                }
+            }else{
+                recordatorio["usersId"][userId]= {"recordatoriosId":{}}
+                recordatorio["usersId"][userId]["recordatoriosId"][recordatorioId] = [notificacionId]
+            }
+        }else{
+            recordatorio["usersId"] = {}
+            recordatorio["usersId"][userId]= {"recordatoriosId":{}}
+            recordatorio["usersId"][userId]["recordatoriosId"][recordatorioId] = [notificacionId]
+        }  
+        const jsonValue = JSON.stringify(recordatorio)
+        console.log("**********************")
+        console.log(jsonValue)
+        AsyncStorage.setItem(userId, jsonValue)
+        .then(()=>{return jsonValue})
+        
+      });
+      
+
     } catch (e) {
+        console.log("Error al guardar datos en la memoria !!!!")
       // saving error
     }
   }
 //recordatorio = {item.id, notificaciones}
-const obetnerNotificaciones = async (userId) => {
+const obetenerDatosRecordatorios = async (userId, recordatorioId) => {
 try {
     userId = userId + "";
-    const jsonValue = await AsyncStorage.getItem(userId)
-    var res = jsonValue != null ? JSON.parse(jsonValue) : {};
-    alert(JSON.stringify(res));
+    const jsonValue = await AsyncStorage.getItem(userId);
+    let recordatorios = {};
+    let recordatoriosIds = {};
+    // var res = jsonValue != null ? JSON.parse(jsonValue) : {};
+    if(jsonValue != null){
+        recordatorios = JSON.parse(jsonValue);
+        recordatoriosIds = recordatorios["usersId"][userId]["recordatoriosId"]
+    }
+    console.log(JSON.stringify(recordatorios))
+    return recordatoriosIds
+    // alert(JSON.stringify(res));
 } catch(e) {
-    console.log(e)
+    console.log("No se pudo obtener las notiicaiones del almacenamiento por :"+e)
     // error reading value
 }
 }
 
-export { parseHorasMinutos, crearFechasNotificación, obetnerNotificaciones, guardarNotificaciones};
+export { parseHorasMinutos, crearFechasNotificación, obetenerDatosRecordatorios, guardarNotificaciones, eliminarRecordatorioStorage};

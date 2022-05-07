@@ -1,8 +1,31 @@
 import React, { useState, useEffect } from "react";
 import * as Notifications from 'expo-notifications'
 import * as Device from 'expo-device'
-import {crearFechasNotificación, guardarNotificaciones} from '../functions/notificacionFunciones'
+import {crearFechasNotificación, guardarNotificaciones,obetenerDatosRecordatorios,
+        eliminarRecordatorioStorage} from '../functions/notificacionFunciones'
+import { async } from "@firebase/util";
+// import * as TaskManager from 'expo-task-manager';
 
+const BACKGROUND_NOTIFICATION_TASK = 'BACKGROUND-NOTIFICATION-TASK';
+
+// TaskManager.defineTask(BACKGROUND_NOTIFICATION_TASK, async ({ data, error, executionInfo }) => {
+//   console.log('----------Received a notification in the background!');
+//   console.log(data)
+//   console.log(error)
+//   console.log(executionInfo)
+//   console.log("----------------------------------")
+//   alert('----------Received a notification in the background!')
+//   // Do something with the notification data
+//   await Notifications.scheduleNotificationAsync({
+//     content: {
+//      title: "Solo le queda "+cantidad+" "+nombre+" de medicamento",
+//      body: "Debes comprar mas medicamentos para mañana 💊",
+//     },
+//     trigger: { seconds:60*5},
+//   });
+// });
+
+// Notifications.registerTaskAsync(BACKGROUND_NOTIFICATION_TASK);
 
 Notifications.setNotificationHandler(
   {
@@ -14,18 +37,43 @@ Notifications.setNotificationHandler(
   }
 );
 
-async function schedulePushNotification(trigger, contentNoti) {
+async function schedulePushNotification(uid, recordatorioId,trigger, contentNoti) {
   Notifications.scheduleNotificationAsync({
     content: contentNoti,
     trigger,
   })
   .then(id => { 
-    // guardarNotificaciones(uid,recordatorioId,id)
+    guardarNotificaciones(uid,recordatorioId,id)
     console.log("===============Notificacion Creada============<")
     console.log("Id de notificacion" + id)
     return id });
 
   
+}
+
+async function cancelScheduledNotificationAsync(notificacionId){
+  Notifications.cancelScheduledNotificationAsync(notificacionId)
+  .then(data => {console.log("Se cancela la notifcacion " +notificacionId+" con data: "+data)})
+}
+
+const eliminarRecordatorioNotif= async (uid,recordatorioId) => {
+  let booleanVar = true
+  obetenerDatosRecordatorios(uid,recordatorioId)
+  .then(recordatorios =>{
+    console.log(recordatorios);
+    if(recordatorios[recordatorioId]!=null){
+      let notificaciones =  recordatorios[recordatorioId]
+      notificaciones.forEach(async notificacionId => {
+          await cancelScheduledNotificationAsync(notificacionId);
+      });
+     eliminarRecordatorioStorage(uid,recordatorioId)
+     booleanVar = true;
+    }else{
+      alert("No existe ese recordatorio")
+      booleanVar = false;
+    }
+  })
+  return booleanVar
 }
 
 const registerForPushNotificationsAsync = async () => {
@@ -62,12 +110,14 @@ const creadorDeNotificaciones = async (fechaTemporal, datosRecordatorio, uid, re
   const fechasDeNotificacion =
     crearFechasNotificación(datosRecordatorio.hora, fechaTemporal, minutosAnticipacion);
   let notificacionesIds = [];
-  fechasDeNotificacion.forEach(async fechaLimite => {
+  fechasDeNotificacion.forEach(async unaFecha => {
     try {
-
-      let minuto = (fechaLimite.getMinutes()+ minutosAnticipacion) < 10 ?
-        "0" + (fechaLimite.getMinutes() + minutosAnticipacion) :
-        "" + (fechaLimite.getMinutes() + minutosAnticipacion)
+      let fechaLimite = new Date(unaFecha.getTime()+(60*minutosAnticipacion*1000))
+      console.log("Fecha Limite "+ fechaLimite) 
+      console.log("Fecha Limite Real "+ unaFecha ) 
+      let minuto = fechaLimite.getMinutes() < 10 ?
+        "0" + (fechaLimite.getMinutes() ) :
+        "" + (fechaLimite.getMinutes() )
       let hora = fechaLimite.getHours() < 10 ?
         "0" + fechaLimite.getHours() :
         "" + fechaLimite.getHours()
@@ -101,7 +151,7 @@ const creadorDeNotificaciones = async (fechaTemporal, datosRecordatorio, uid, re
           FrecuenciaHoras:(datosRecordatorio.hora).length+''
         }
       }
-      await schedulePushNotification(fechaLimite, content)
+      await schedulePushNotification(uid,recordatorioId,unaFecha, content)
       // .then(id => {notificacionesIds.push(id )})
       
     } catch (e) {
@@ -112,4 +162,4 @@ const creadorDeNotificaciones = async (fechaTemporal, datosRecordatorio, uid, re
   return notificacionesIds;
 };
 
-export { schedulePushNotification, registerForPushNotificationsAsync, creadorDeNotificaciones };
+export { schedulePushNotification, registerForPushNotificationsAsync, creadorDeNotificaciones , cancelScheduledNotificationAsync, eliminarRecordatorioNotif};

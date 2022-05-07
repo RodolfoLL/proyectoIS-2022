@@ -6,11 +6,13 @@ import { StatusBar } from 'expo-status-bar';
 import { collection, query, where, getDocs ,doc, deleteDoc,updateDoc, onSnapshot} from "firebase/firestore";
 import { render } from "react-dom";
 import { ListItem ,Icon} from 'react-native-elements';
+import { Usuario } from "./Login";
+import {registerForPushNotificationsAsync, eliminarRecordatorioNotif} from './NotificacionRecordatorio';
 import { getAuth} from 'firebase/auth';
 import {app} from '../../database/firebase'
-
-import {registerForPushNotificationsAsync} from './NotificacionRecordatorio';
 import * as Notifications from 'expo-notifications'
+import { obetenerDatosRecordatorios } from "../functions/notificacionFunciones";
+import { async } from "@firebase/util";
 let c=0;
 
 const verificarFechas=(a)=>{
@@ -110,7 +112,7 @@ const PantallaInicio = ({navigation}) => {
             console.log(maniana)
             let fechaFin=(new Date(Duracion)).getTime();
             console.log(fechaFin);
-            if(maniana=fechaFin){
+            if(maniana==fechaFin){
                 let cantidadMan=dosisMed*(FrecuenciaHoras+1);
                 if(cantidadMan>sig){
                     schedulePushNotification(nombreMed,cantidadMed);
@@ -140,7 +142,7 @@ const PantallaInicio = ({navigation}) => {
            title: "Solo le queda "+cantidad+" "+nombre+" de medicamento",
            body: "Debes comprar mas medicamentos para mañana 💊",
         },
-        trigger: { seconds:60*5},
+        trigger: { seconds:2},
      });
       }
 
@@ -148,15 +150,17 @@ const PantallaInicio = ({navigation}) => {
         console.log(id)
         const docRef = doc(db,uid,id)
         console.log(docRef)
-         deleteDoc(docRef)
+        eliminarRecordatorioNotif(uid,id)
+        deleteDoc(docRef)
         navigation.navigate("Recordatorios",{uid: uid})
+       
     }
     const confirmarElimniar = (id) => {
         Alert.alert("Eliminar recordatorio", "estas seguro?",[
        {text: "Si" ,onPress: () =>{ elimnarRecordatorio(id)} },
        {text: "No" ,onPress: async () =>{ 
-        //    await obetnerNotificaciones(uid)
-           console.log("ok sin elimnar")} }
+        console.log("ok sin elimnar")
+           } }
         ])
         listaAgotados=[];
     }
