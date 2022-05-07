@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, TouchableOpacity, ScrollView, Image, SafeAreaView,Alert,FlatList,Button} from "react-native";
+import { View, Text, TouchableOpacity, ScrollView, Image, SafeAreaView,Alert,FlatList,Button,BackHandler} from "react-native";
 import image from '../assets/medicate.png'
 import {db} from '../../database/firebase'
 import { StatusBar } from 'expo-status-bar';
@@ -8,6 +8,8 @@ import { render } from "react-dom";
 import { ListItem ,Icon} from 'react-native-elements';
 import { Usuario } from "./Login";
 import {registerForPushNotificationsAsync, eliminarRecordatorioNotif} from './NotificacionRecordatorio';
+import { getAuth} from 'firebase/auth';
+import {app} from '../../database/firebase'
 import * as Notifications from 'expo-notifications'
 import { obetenerDatosRecordatorios } from "../functions/notificacionFunciones";
 import { async } from "@firebase/util";
@@ -20,7 +22,9 @@ const verificarFechas=(a)=>{
     fechHoy=(hoy.getTime())
 }
 const PantallaInicio = ({navigation}) => {
-    const {uid} = Usuario;
+    const auth = getAuth(app);
+    const user = auth.currentUser;
+    const uid = user.uid;
     console.log(uid);
     navigation.setOptions({ 
     headerRight: () => (
@@ -54,15 +58,36 @@ const PantallaInicio = ({navigation}) => {
                 }}
             >{'añadir'}</Text>
         </TouchableOpacity>)}
+    
         
     );
-    
+      const backAction = () => {
+        Alert.alert('Salir', 'Seguro quieres salir de la aplicacion?', [
+          {
+            text: 'Cancelar',
+            onPress: () => null,
+            style: 'cancel',
+          },
+          { text: 'Aceptar', onPress: () => BackHandler.exitApp() },
+        ]);
+        return true;
+      };
     const [getExpoPushToken, setExpoPushToken]= useState('')
     const [recordatorios, setRecordatorios] = useState([]);
     console.log(recordatorios)
     useEffect( () =>{
         onSnapshot(collection(db,uid), (snapshot) =>{
-            setRecordatorios(snapshot.docs.map((doc) => ({...doc.data(),id: doc.id})))
+            setRecordatorios(snapshot.docs.map((doc) => ({...doc.data(),id: doc.id})).sort((a,b) => {
+                if(a.nombreMed > b.nombreMed){
+                    return 1;
+                }else{
+                    if(b.nombreMed > a.nombreMed){
+                        return -1;
+                    }else{
+                        return 0;
+                    }
+                }
+                }))
             registerForPushNotificationsAsync()
             .then(token => setExpoPushToken(token))
             .catch(e => console.log(e))
@@ -99,6 +124,9 @@ const PantallaInicio = ({navigation}) => {
             console.log("=======Notificacion recibida=======")
             console.log(notification);
           });
+          BackHandler.addEventListener('hardwareBackPress', backAction);
+  
+          return () => BackHandler.removeEventListener('hardwareBackPress', backAction);
     },[]
     );
      
@@ -136,22 +164,6 @@ const PantallaInicio = ({navigation}) => {
         ])
         listaAgotados=[];
     }
-    const ordenar = async () =>{
-        await obetenerDatosRecordatorios(uid)
-        let newList = [...recordatorios];
-            newList.sort((a,b) => {
-            if(a.nombreMed > b.nombreMed){
-                return 1;
-            }else{
-                if(b.nombreMed > a.nombreMed){
-                    return -1;
-                }else{
-                    return 0;
-                }
-            }
-            });
-        setRecordatorios(newList);
-    }
     return (
          
         <SafeAreaView style={{ backgroundColor: '#001B48', height: "100%"}}>  
@@ -164,16 +176,6 @@ const PantallaInicio = ({navigation}) => {
                 <Text style={{ fontSize: 50, color: 'white', fontWeight: 'bold' }}>
                     MEDICATE 
                 </Text>
-                <View style={{bottom:5}}>
-                
-                <Button
-                
-                title="ORDENAR"
-                color= "#0093B7"
-              
-                onPress={() => ordenar()} />
-        
-                 </View>  
             </View>
             
         <FlatList
@@ -229,7 +231,7 @@ const PantallaInicio = ({navigation}) => {
     </SafeAreaView>
    
     );
-                                    
+    
 };
 
 export default PantallaInicio;
