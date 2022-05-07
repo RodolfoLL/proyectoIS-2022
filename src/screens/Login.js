@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import { View, TextInput, StyleSheet, Button,TouchableOpacity,Text, Image, Alert} from 'react-native'
+import React, { useState,useEffect} from 'react'
+import { View, TextInput, StyleSheet, Button,TouchableOpacity,Text, Image, Alert,BackHandler} from 'react-native'
 import {KeyboardAwareScrollView} from "react-native-keyboard-aware-scroll-view"
 import { Input,Icon } from "react-native-elements";
 import { getAuth, signInWithEmailAndPassword, } from 'firebase/auth';
@@ -12,7 +12,6 @@ const Login = ({navigation}) => {
     const [password, setPassword] = useState("")
     const [errorEmail,seterrorEmail] = useState("")
     const [errorContra,seterrorContra]= useState("")
-
     const auth = getAuth(app);
 
     auth.onAuthStateChanged(user => {
@@ -20,7 +19,24 @@ const Login = ({navigation}) => {
         navigation.navigate('Medicate');
       }
     })
-
+    const backAction = () => {
+      Alert.alert('Salir', 'Estas seguro de salir', [
+        {
+          text: 'Cancelar',
+          onPress: () => null,
+          style: 'cancel',
+        },
+        { text: 'Aceptar', onPress: () => BackHandler.exitApp() },
+      ]);
+      return true;
+    };
+  
+    useEffect(() => {
+      BackHandler.addEventListener('hardwareBackPress', backAction);
+  
+      return () => BackHandler.removeEventListener('hardwareBackPress', backAction);
+    }, []);
+  
     const iniciarSesion = () => {
       seterrorContra("")
       seterrorEmail("")
