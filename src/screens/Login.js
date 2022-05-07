@@ -1,55 +1,75 @@
-import React, { useState } from 'react'
-import { View, TextInput, StyleSheet, Button,TouchableOpacity,Text, Image, Alert} from 'react-native'
+import React, { useState,useEffect} from 'react'
+import { View, TextInput, StyleSheet, Button,TouchableOpacity,Text, Image, Alert,BackHandler} from 'react-native'
 import {KeyboardAwareScrollView} from "react-native-keyboard-aware-scroll-view"
 import { Input,Icon } from "react-native-elements";
-import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
+import { getAuth, signInWithEmailAndPassword, } from 'firebase/auth';
 import {app} from '../../database/firebase'
-export let Usuario = {};
 
-const Login = (props) => {
+
+const Login = ({navigation}) => {
     const [mostarContra, setmostarContra] = useState(false)
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
-
+    const [errorEmail,seterrorEmail] = useState("")
+    const [errorContra,seterrorContra]= useState("")
     const auth = getAuth(app);
-
+    auth.onAuthStateChanged(user => {
+      if(user){
+        navigation.navigate('Medicate');
+      }
+    });
     const iniciarSesion = () => {
+      seterrorContra("")
+      seterrorEmail("")
       console.log(email+" "+ password)
-      if(verificarEmail()){
+      if(validarCorreo(email)){
+        
         signInWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
           console.log('Signed in!')
           const user = userCredential.user;
-          Usuario = {
-            uid:user.uid
-          }
-          //console.log(user)
-          console.log(user)
           console.log("UID:  "+ user.uid)
-          props.navigation.navigate("Medicate",{uid:Usuario.uid});
+          navigation.navigate("Medicate");
+          setEmail("")
+          setPassword("")
+          console.log("UID:  "+ user.uid)
+         
+          navigation.navigate("Medicate");
         })
         .catch(error => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
           //console.log(error)
-          Alert.alert("Correo no registrado")
+          if(password !== ""){
+            if(errorCode == "auth/wrong-password"){
+              //Alert.alert("Contraseña incorrecta")
+              seterrorContra("Contraseña incorrecta")
+            }else{
+              //Alert.alert("Correo no registrado")
+              seterrorEmail("Correo no registrado")
+            }
+          }else{
+            seterrorContra("No se ingreso contraseña")
+          }
+          
         })
+      }else if(email === ""){
+        seterrorEmail("No se ingreso el correo electronico")
+        return;
       }else{
-        Alert.alert("Formato invalido","El formato de Email ingresado es incorrecto")
+        seterrorEmail("Formato de correo invalido")
+        return;
       }
       
     }
-
-    const verificarEmail = () => {
-      let emailTemporal = email.substring(email.length-10,email.length)
-      console.log(emailTemporal)
-      let emailCorrecto = false
-      if(emailTemporal === "@gmail.com"){
-        emailCorrecto = true
-      }
-      return emailCorrecto
+    function validarCorreo(email) {
+      const re = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i
+      console.log(re.test(email))
+      return re.test(email) 
     }
 
     const registrarUsuario = () => {
-      props.navigation.navigate("Registro Usuario");
+      navigation.navigate("Registro Usuario");
     }
 
   return (
@@ -70,8 +90,10 @@ const Login = (props) => {
           containerStyle={styles.input}
           placeholder="email@address.com"
           onChangeText={(value) => setEmail(value)}
+          errorMessage={errorEmail}
           keyboardType="email-address"
-          //value={email}
+          
+          value={email}
         />
       
         <Text style={styles.text}>
@@ -81,7 +103,8 @@ const Login = (props) => {
           containerStyle={styles.input}
           placeholder="Contraseña"
           onChangeText={(value) => setPassword(value)}
-          //value={password}
+          errorMessage={errorContra}
+          value={password}
           secureTextEntry={!mostarContra}
           rightIcon={
             <Icon

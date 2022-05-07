@@ -30,7 +30,7 @@ const DosisEdit = ({route, navigation }) => {
     const parametros  = route.params
     console.log(parametros)
     const [selectDose, setselectDose] = useState(parametros.dose);
-    const [selectQuantity, setselectQuantity] = useState(parametros.quantity);
+    const [selectQuantity, setselectQuantity] = useState(parametros.quantity=="0"?"1":parametros.quantity);
     let { tipoAdm } = route.params;
     let tipoDosis = route.params.dose
     if (tipoAdm == "Via Oral") { tipoDosis = "Comprimido"; }

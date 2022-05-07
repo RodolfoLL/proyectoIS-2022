@@ -2,7 +2,7 @@ import React, { useState } from "react"
 import { StyleSheet , ScrollView, View,Text, TextInput, TouchableOpacity} from "react-native";
 import {db} from '../../database/firebase'
 import {collection, addDoc,doc,setDoc} from 'firebase/firestore';
-import {creadorDeNotificaciones} from './NotificacionRecordatorio';
+import {creadorDeNotificaciones, eliminarRecordatorioNotif} from './NotificacionRecordatorio';
 
 let expRegSoloNumeros =  new RegExp("^[0-9]*$")
 
@@ -10,7 +10,7 @@ const ConfiguraciónNotificación = (props) => {
     let minAnticipación = "5";
     const [anticipación, setMinAnticipacion] = useState(minAnticipación);
     const { uid,nombreMed,tipoAdm,dose,quantity,item,hora,duracion,editar } = props.route.params;
-    const guardarRecordatorio = () => {
+    const guardarRecordatorio = async() => {
         let datosRecordatorio = {}
         datosRecordatorio = {
             nombreMed: nombreMed, 
@@ -21,6 +21,8 @@ const ConfiguraciónNotificación = (props) => {
             hora:hora,
             duracion: duracion
         }
+        minAnticipación= anticipación == ""?"0":anticipación;
+        console.log("Minutos de anticipacion " + minAnticipación)
         if(editar){
             const id = props.route.params.id
             datosRecordatorio = {
@@ -33,18 +35,20 @@ const ConfiguraciónNotificación = (props) => {
                 duracion: duracion
             }
             const docref = doc(db,uid,id)
-            console.log(docref)
             //console.log(datos);
-            setDoc(docref,datosRecordatorio)
-            .then(async function(docRef) {
-                minAnticipación= anticipación == ""?"0":anticipación;
-                await creadorDeNotificaciones(new Date(duracion), datosRecordatorio,uid,id, parseInt(minAnticipación))
-            })
+            eliminarRecordatorioNotif(uid, id)
+            .then(data=>{
+                setDoc(docref,datosRecordatorio)
+                .then(async function(docRef) {
+                    await creadorDeNotificaciones(new Date(duracion), datosRecordatorio,uid,id, parseInt(minAnticipación))
+                });
+            });
+           
         }else{
+            console.log("DB: "+db+" UID: "+uid)
             addDoc(collection(db, uid), datosRecordatorio)
             .then(async function(docRef) {
                 let idRecordatorio = docRef.id+""
-                minAnticipación= anticipación == ""?"0":anticipación;
                 console.log("Doc ID: ", docRef.id);
                 await creadorDeNotificaciones(new Date(duracion), datosRecordatorio,uid,idRecordatorio, parseInt(minAnticipación))
             })
