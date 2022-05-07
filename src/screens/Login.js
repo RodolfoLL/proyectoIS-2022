@@ -33,7 +33,6 @@ const Login = ({navigation}) => {
   
     useEffect(() => {
       BackHandler.addEventListener('hardwareBackPress', backAction);
-  
       return () => BackHandler.removeEventListener('hardwareBackPress', backAction);
     }, []);
   
