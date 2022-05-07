@@ -13,31 +13,12 @@ const Login = ({navigation}) => {
     const [errorEmail,seterrorEmail] = useState("")
     const [errorContra,seterrorContra]= useState("")
     const auth = getAuth(app);
-
-    useEffect(() => {
-      BackHandler.addEventListener('hardwareBackPress', backAction);
-      return () => BackHandler.removeEventListener('hardwareBackPress', backAction);
-    }, []);
-    
     auth.onAuthStateChanged(user => {
       if(user){
         navigation.navigate('Medicate');
       }
-    })
-    const backAction = () => {
-      Alert.alert('Salir', 'Estas seguro de salir', [
-        {
-          text: 'Cancelar',
-          onPress: () => null,
-          style: 'cancel',
-        },
-        { text: 'Aceptar', onPress: () => BackHandler.exitApp() },
-      ]);
-      return true;
-    };
-  
+    });
     
-  
     const iniciarSesion = () => {
       seterrorContra("")
       seterrorEmail("")
@@ -85,7 +66,7 @@ const Login = ({navigation}) => {
     }
 
     const registrarUsuario = () => {
-      props.navigation.navigate("Registro Usuario");
+      navigation.navigate("Registro Usuario");
     }
 
   return (

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, TouchableOpacity, ScrollView, Image, SafeAreaView,Alert,FlatList,Button} from "react-native";
+import { View, Text, TouchableOpacity, ScrollView, Image, SafeAreaView,Alert,FlatList,Button,BackHandler} from "react-native";
 import image from '../assets/medicate.png'
 import {db} from '../../database/firebase'
 import { StatusBar } from 'expo-status-bar';
@@ -59,7 +59,17 @@ const PantallaInicio = ({navigation}) => {
     
         
     );
-    
+      const backAction = () => {
+        Alert.alert('Salir', 'Seguro quieres salir de la aplicacion?', [
+          {
+            text: 'Cancelar',
+            onPress: () => null,
+            style: 'cancel',
+          },
+          { text: 'Aceptar', onPress: () => BackHandler.exitApp() },
+        ]);
+        return true;
+      };
     const [getExpoPushToken, setExpoPushToken]= useState('')
     const [recordatorios, setRecordatorios] = useState([]);
     console.log(recordatorios)
@@ -112,6 +122,9 @@ const PantallaInicio = ({navigation}) => {
             console.log("=======Notificacion recibida=======")
             console.log(notification);
           });
+          BackHandler.addEventListener('hardwareBackPress', backAction);
+  
+          return () => BackHandler.removeEventListener('hardwareBackPress', backAction);
     },[]
     );
      
