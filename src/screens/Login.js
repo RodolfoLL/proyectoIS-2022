@@ -13,11 +13,14 @@ const Login = ({navigation}) => {
     const [errorEmail,seterrorEmail] = useState("")
     const [errorContra,seterrorContra]= useState("")
     const auth = getAuth(app);
+<<<<<<< HEAD
     auth.onAuthStateChanged(user => {
       if(user){
         navigation.navigate('Medicate');
       }
     });
+=======
+>>>>>>> develop
     
     const iniciarSesion = () => {
       seterrorContra("")
@@ -29,8 +32,21 @@ const Login = ({navigation}) => {
         .then((userCredential) => {
           console.log('Signed in!')
           const user = userCredential.user;
+<<<<<<< HEAD
           console.log("UID:  "+ user.uid)
           navigation.navigate("Medicate");
+=======
+
+          setEmail("")
+          setPassword("")
+          Usuario = {
+            uid:user.uid
+          }
+          console.log(user)
+          console.log("UID:  "+ user.uid)
+         
+          props.navigation.navigate("Medicate",{uid:Usuario.uid});
+>>>>>>> develop
         })
         .catch(error => {
           const errorCode = error.code;
@@ -58,7 +74,9 @@ const Login = ({navigation}) => {
       }
       
     }
-
+    function eliminardatos() {
+        
+    }
     function validarCorreo(email) {
       const re = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i
       console.log(re.test(email))
@@ -89,7 +107,8 @@ const Login = ({navigation}) => {
           onChangeText={(value) => setEmail(value)}
           errorMessage={errorEmail}
           keyboardType="email-address"
-          //value={email}
+          
+          value={email}
         />
       
         <Text style={styles.text}>
@@ -100,7 +119,7 @@ const Login = ({navigation}) => {
           placeholder="Contraseña"
           onChangeText={(value) => setPassword(value)}
           errorMessage={errorContra}
-          //value={password}
+          value={password}
           secureTextEntry={!mostarContra}
           rightIcon={
             <Icon
