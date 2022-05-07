@@ -1,6 +1,6 @@
 
 import React, { useState } from "react"
-import { Button, View, ScrollView, Text, TouchableOpacity } from "react-native";
+import { Button, View, ScrollView, Text, TouchableOpacity,Alert} from "react-native";
 import { Picker } from '@react-native-picker/picker'
 import { StyleSheet } from "react-native";
 function generarArregloDosis(name) {
@@ -45,7 +45,7 @@ const DosisEdit = ({route, navigation }) => {
     arregloCantidadMed.fill(2, 0, 10);
     const guardarCantidad = () => {
         if (selectDose != "" && selectQuantity != "") {
-      
+           if(selectDose<=selectQuantity){
             var quantityField = {
                 quantityField:
                     { dose: selectDose, quantity: selectQuantity }
@@ -62,7 +62,11 @@ const DosisEdit = ({route, navigation }) => {
             duracion: parametros.duracion,
             editar: true
             })
-        }else(console.log("no entra al if de edit dosis dosis: "+parametros.dose+" Cantidad: "+parametros.quantity))
+           }
+           else{
+            Alert.alert("Dosis de medicamento","La dosis de medicamento es mayor a la cantidad que tienes")
+           }
+        }
     };
     return (
         <ScrollView style={STYLE_GROUP.containerMain} >
