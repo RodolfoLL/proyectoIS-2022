@@ -13,15 +13,11 @@ const Login = ({navigation}) => {
     const [errorEmail,seterrorEmail] = useState("")
     const [errorContra,seterrorContra]= useState("")
     const auth = getAuth(app);
-<<<<<<< HEAD
     auth.onAuthStateChanged(user => {
       if(user){
         navigation.navigate('Medicate');
       }
     });
-=======
->>>>>>> develop
-    
     const iniciarSesion = () => {
       seterrorContra("")
       seterrorEmail("")
