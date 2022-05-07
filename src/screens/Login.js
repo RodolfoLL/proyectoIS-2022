@@ -14,6 +14,11 @@ const Login = ({navigation}) => {
     const [errorContra,seterrorContra]= useState("")
     const auth = getAuth(app);
 
+    useEffect(() => {
+      BackHandler.addEventListener('hardwareBackPress', backAction);
+      return () => BackHandler.removeEventListener('hardwareBackPress', backAction);
+    }, []);
+    
     auth.onAuthStateChanged(user => {
       if(user){
         navigation.navigate('Medicate');
@@ -31,10 +36,7 @@ const Login = ({navigation}) => {
       return true;
     };
   
-    useEffect(() => {
-      BackHandler.addEventListener('hardwareBackPress', backAction);
-      return () => BackHandler.removeEventListener('hardwareBackPress', backAction);
-    }, []);
+    
   
     const iniciarSesion = () => {
       seterrorContra("")
