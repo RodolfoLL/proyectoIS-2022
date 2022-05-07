@@ -28,21 +28,13 @@ const Login = ({navigation}) => {
         .then((userCredential) => {
           console.log('Signed in!')
           const user = userCredential.user;
-<<<<<<< HEAD
           console.log("UID:  "+ user.uid)
           navigation.navigate("Medicate");
-=======
-
           setEmail("")
           setPassword("")
-          Usuario = {
-            uid:user.uid
-          }
-          console.log(user)
           console.log("UID:  "+ user.uid)
          
-          props.navigation.navigate("Medicate",{uid:Usuario.uid});
->>>>>>> develop
+          navigation.navigate("Medicate");
         })
         .catch(error => {
           const errorCode = error.code;
@@ -69,9 +61,6 @@ const Login = ({navigation}) => {
         return;
       }
       
-    }
-    function eliminardatos() {
-        
     }
     function validarCorreo(email) {
       const re = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i
