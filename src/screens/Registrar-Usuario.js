@@ -21,7 +21,6 @@ const RegistroUsuario= ({route,navigation}) =>{
     const headerHeight = useHeaderHeight();
     const onChange = (e, type) => {
         setDatos({ ...Datos, [type]: e.nativeEvent.text })
-        console.log(Datos)
     }
     const registrarUsuario = async(email, password) => {
         const result = { statusResponse: true, error: null , user: null}
@@ -29,7 +28,6 @@ const RegistroUsuario= ({route,navigation}) =>{
             const user =await createUserWithEmailAndPassword(auth,email,password)
             const uid = user.user.uid
             result.user = {user, uid}
-            console.log(user.user.uid)
         } catch (error) {
             result.statusResponse = false
             result.error = "Este correo ya ha sido registrado."
@@ -112,6 +110,13 @@ const RegistroUsuario= ({route,navigation}) =>{
         
         return valido
     }
+    const signOutUser = async () => {
+        try {
+            await auth.signOut();
+        } catch (e) {
+            console.log(e);
+        }
+    }
     const guardarUsario= async ()=>{
         
         if(!validarDatos()){
@@ -127,17 +132,16 @@ const RegistroUsuario= ({route,navigation}) =>{
         updateProfile(auth.currentUser, {
             displayName: Datos.nombre, 
           }).then(() => {
-            console.log("nombre cambiado")
+            signOutUser()
           }).catch((error) => {
             console.log("nombre--- ups")
-          });
+          });    
         navigation.navigate("Login")
         setLoading(false)
         Alert.alert("Cuenta creada", "Ya puedes acceder",[
             {text: "OK" ,onPress: () =>{ console.log("ok a Login")} }
              ])
-        
-        console.log(auth)
+    
         
     }
     return (
