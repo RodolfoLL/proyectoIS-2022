@@ -11,6 +11,9 @@ const EditarDatosUs= ({navigation}) =>{
     const headerHeight = useHeaderHeight();
     const auth = getAuth(app);
     const user = auth.currentUser
+    const defaultFormValues = () => {
+        return { nombre:user.displayName,email:user.email, contraseña:"" }
+    }
     return (
        
         <KeyboardAwareScrollView
@@ -79,9 +82,7 @@ const EditarDatosUs= ({navigation}) =>{
        </KeyboardAwareScrollView>
      )
 }
-const defaultFormValues = () => {
-    return { nombre:user.displayName,email:user.email }
-}
+
 const styles = StyleSheet.create({
     container: {
         flex: 1,
