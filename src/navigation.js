@@ -20,6 +20,7 @@ import ConfiguraciónNotificación from './screens/ConfiguracionNotificación'
 
 import Login from './screens/Login';
 import RegistroUsuario from './screens/Registrar-Usuario';
+import TamañoDeFuente from './screens/TamañoDeFuente';
 const HomeStackNavigator = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -32,6 +33,10 @@ function MyStacks() {
         <HomeStackNavigator.Navigator initialRouteName='Medicate'
             >
             <HomeStackNavigator.Screen name="Recordatorios" component={PantallaInicio}
+            options={{headerTintColor: 'white',
+            headerStyle:{ backgroundColor: "#0093B7"}}}/>
+
+            <HomeStackNavigator.Screen name="Tamaño de Fuente" component={TamañoDeFuente}
             options={{headerTintColor: 'white',
             headerStyle:{ backgroundColor: "#0093B7"}}}/>
              
