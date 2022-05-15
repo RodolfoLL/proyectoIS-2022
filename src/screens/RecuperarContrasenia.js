@@ -36,7 +36,7 @@ const RecuperarContrasenia = ({ navigation }) => {
                         onPress={() => enviarCorreo(correo)}
                     >
                         <View style={STYLE_GROUP.button}>
-                            <Text style={STYLE_GROUP.texto}>Obtener codigos de acceso</Text>
+                            <Text style={STYLE_GROUP.texto}>Obtener enlace</Text>
                         </View>
                     </TouchableOpacity>
                 </View>
