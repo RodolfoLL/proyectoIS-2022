@@ -20,6 +20,7 @@ import ConfiguraciónNotificación from './screens/ConfiguracionNotificación'
 
 import Login from './screens/Login';
 import RegistroUsuario from './screens/Registrar-Usuario';
+import RecuperarContrasenia from './screens/RecuperarContrasenia';
 const HomeStackNavigator = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -120,6 +121,10 @@ export default function Navigation(){
                 headerStyle:{ backgroundColor: "#0093B7"}}}/>
             <Stack.Screen name="Medicate" component={MyTabs}
                 options={{headerShown:false}}
+            />
+            <Stack.Screen name="Recuperar contraseña" component={RecuperarContrasenia}
+                options={{headerTintColor: 'white',
+                headerStyle:{ backgroundColor: "#0093B7"}}}
             />
             
             </Stack.Navigator>
