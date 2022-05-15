@@ -6,9 +6,9 @@ const enviarCorreo = async(correo) => {
     const respuesta = await enviarCorreoRecuperacion(correo);
     console.log(respuesta)
     if (respuesta.statusResponse != true) {
-        Alert.alert("Recuperar contraseña", "No se mando el correo de recuperación, quiza el correo ingresado no está registrado")
+        Alert.alert("Error al recuperar contraseña", "No se mando el correo de recuperación, quiza el correo ingresado no está registrado")
     } else {
-        Alert.alert("Recuperar contraseña", "Correo de recuperacion enviado")
+        Alert.alert("Recuperar contraseña", "Correo de recuperacion enviado, revise su correo por favor.")
     }
 };
 const RecuperarContrasenia = ({ navigation }) => {
