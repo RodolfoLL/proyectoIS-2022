@@ -115,7 +115,7 @@ const Login = ({navigation}) => {
             />
           }
         />
-        <Text style={styles.recuperarPassword} onPress={() => alert("ir a cambiar la contraseña")}>Olvidaste la contraseña?</Text>
+        <Text style={styles.recuperarPassword} onPress={() => navigation.navigate('Recuperar contraseña')}>Olvidaste la contraseña?</Text>
      
         <TouchableOpacity style={styles.botonLogin}
             onPress={() => iniciarSesion()}  >
