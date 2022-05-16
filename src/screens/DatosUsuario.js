@@ -15,7 +15,7 @@ const DatosUsuario = ( {navigation , props, route}) => {
       <View style={styles.container}>
       <Image
           style={styles.incono}
-          source={require("../assets/Captura.png")}
+          source={require("../assets/capt.png")}
         />
         <View style={styles.contenido}>
         <Text style={styles.title}>Nombre de Usuario</Text>

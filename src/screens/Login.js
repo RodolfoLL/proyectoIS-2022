@@ -77,7 +77,7 @@ const Login = ({navigation}) => {
       <View style={styles.container}>
         <Image
           style={styles.incono}
-          source={require("../assets/icono.png")}
+          source={require("../assets/medicate.png")}
         />
         <Text style={styles.titulo}>
           MEDICATE 
