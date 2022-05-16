@@ -224,6 +224,10 @@ const PantallaInicio = ({navigation}) => {
                             style={{ marginTop: "80%"}}/>
                     </View>
                 </ListItem>
+                <Button 
+                title="Mostrar Datos"
+                onPress={()=>navigation.navigate("Datos Usuario")}>
+               </Button>
             </View>
             }      
         />

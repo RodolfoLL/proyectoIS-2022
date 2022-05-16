@@ -21,6 +21,7 @@ import ConfiguraciónNotificación from './screens/ConfiguracionNotificación'
 import Login from './screens/Login';
 import RegistroUsuario from './screens/Registrar-Usuario';
 import RecuperarContrasenia from './screens/RecuperarContrasenia';
+import DatosUsuario from './screens/DatosUsuario';
 const HomeStackNavigator = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -123,6 +124,10 @@ export default function Navigation(){
                 options={{headerShown:false}}
             />
             <Stack.Screen name="Recuperar contraseña" component={RecuperarContrasenia}
+                options={{headerTintColor: 'white',
+                headerStyle:{ backgroundColor: "#0093B7"}}}
+            />
+            <Stack.Screen name="Datos Usuario" component={DatosUsuario}
                 options={{headerTintColor: 'white',
                 headerStyle:{ backgroundColor: "#0093B7"}}}
             />
