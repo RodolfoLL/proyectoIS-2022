@@ -4,15 +4,175 @@ import { Input,Button,Icon,Text,Overlay } from "react-native-elements";
 import {KeyboardAwareScrollView} from "react-native-keyboard-aware-scroll-view"
 import{useHeaderHeight } from "@react-navigation/elements"
 import { size } from "lodash";
-import {getAuth,updateProfile} from "firebase/auth"
+import {getAuth,updateProfile,updateEmail,updatePassword} from "firebase/auth"
 import {app} from '../../database/firebase'
 
 const EditarDatosUs= ({navigation}) =>{
-    const headerHeight = useHeaderHeight();
     const auth = getAuth(app);
     const user = auth.currentUser
-    const defaultFormValues = () => {
-        return { nombre:user.displayName,email:user.email, contraseña:"" }
+    const headerHeight = useHeaderHeight();
+    const[stiloEmail,setStiloEmail] = useState({color: 'red'})
+    const[stiloNombre,setStiloNombre] = useState({color: 'red'})
+    const[stiloContra,setStiloContra] = useState({color: 'red'})
+    const [Datos, setDatos] = useState({ nombre:user.displayName,email:user.email, contraseña:"" })
+    const [mostarContra, setmostarContra] = useState(false)
+    const [errorContra,seterrorContra]= useState("")
+    const [errorNombre,seterrorNombre] = useState("")
+    const [errorEmail,seterrorEmail] = useState("")
+
+    const [loading,setLoading] = useState(false)
+    
+    const onChange = (e, type) => {
+        setDatos({ ...Datos, [type]: e.nativeEvent.text })
+        console.log(Datos)
+    }
+    function validarCorreo(email) {
+        
+        const re = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i
+        return re.test(email) 
+    }
+    function validarContra(contra){
+        const regex = /^[0-9a-zA-Z\_]+$/
+        return regex.test(contra) 
+        
+
+    }
+    
+    const validarNom=() =>{
+        seterrorNombre("")
+        let valido = true
+        let regex = new RegExp("^[a-zA-ZÀ-ÿ ]+$");
+        let letras= new RegExp("[a-zA-Z]");
+        if(!letras.test(Datos.nombre)){
+            setStiloNombre({color: 'red'})
+            seterrorNombre("Debe llenar el nombre")
+            valido=false
+        }
+        else{
+            if(!regex.test(Datos.nombre)){
+                setStiloNombre({color: 'red'})
+                seterrorNombre("Ingrese solo letras en el nombre")
+                valido = false
+            }
+        } 
+        if(Datos.nombre.charAt(0) == " "){
+            setStiloNombre({color: 'red'})
+            seterrorNombre("el nombre no debe empezar con  espacios")
+            valido = false
+        }
+        if(Datos.nombre.charAt(2) == " " ){
+            setStiloNombre({color: 'red'})
+            seterrorNombre("el nombre no debe empezar con un espacio")
+            valido = false
+        }
+        if(Datos.nombre.length > 30){
+            setStiloNombre({color: 'red'})
+            seterrorNombre("El nombre no debe tener mas de 30 caracteres")
+            valido = false
+        }
+        return valido
+    }
+    const validarEmail = () => {
+        seterrorEmail("")
+        let valido = true
+        if(!validarCorreo(Datos.email)){
+            setStiloEmail({color: 'red'})
+            seterrorEmail("debes ingresar un correo válido")
+            valido = false
+        }
+        return valido
+    }
+    const validarCont=() =>{  
+        seterrorContra("")
+        let valido = true
+        if(size(Datos.contraseña) <= 7){
+            setStiloContra({color: 'red'})
+            seterrorContra("La contraseña debe tener 8 o más caracteres")
+            valido = false
+        }
+        else{
+            if(!validarContra(Datos.contraseña)){
+                setStiloContra({color: 'red'})
+                seterrorContra("la contraseña no debe tener caracteres especiales o espacios")
+                valido = false
+            }
+        }
+        return valido
+    }
+
+    const guardarEdit = ()=>{
+        seterrorNombre("")
+        seterrorContra("")
+        seterrorEmail("")
+        if(user.displayName != Datos.nombre || user.email != Datos.email || Datos.contraseña != ""){
+            setLoading(true)
+            if( user.displayName != Datos.nombre){
+                
+                if(!validarNom()){
+                    setLoading(false)
+                    return
+                } 
+                updateProfile(user, {
+                    displayName: Datos.nombre, 
+                  }).then(() => {
+                    setStiloNombre({color: 'green'})
+                    seterrorNombre("Nombre actualizado correctamente")
+                  }).catch((error) => {
+                    console.log(error)
+                  });
+            }
+            if( user.email != Datos.email){
+                if(!validarEmail()){
+                    setLoading(false)
+                    return
+                }
+                updateEmail(user,Datos.email).then(() => {
+                    setStiloEmail({color: 'green'})
+                    seterrorEmail("Email actualizado correctamente")
+                  }).catch(error => {
+                    const errorCode = error.code;
+                    setLoading(false)
+                    console.log(errorCode)
+                    if(errorCode == "auth/email-already-in-use"){
+                       
+                        setStiloEmail({color: 'red'})
+                        seterrorEmail("Este correo ya ha sido registrado")
+                        return
+                    }
+                    if(error.code =="auth/requires-recent-login"){
+                        Alert.alert("Error al actualizar", "por favor vuelva a iniciar sesion para intentarlo de nuevo",[
+                        {text: "ok"}
+                         ])
+                    navigation.navigate("Recordatorios")}
+                    
+                  });
+            }
+            if(Datos.contraseña != ""){
+                if(!validarCont()){
+                    setLoading(false)
+                    return
+                }
+                updatePassword(user,Datos.contraseña).then(() => {
+                    setStiloContra({color: 'green'})
+                    seterrorContra("Email actualizado correctamente")
+                  }).catch((error) => {
+                    setLoading(false)
+                    if(error.code =="auth/requires-recent-login"){Alert.alert("Error al actualizar", "por favor vuelva a iniciar sesion para intentarlo de nuevo",[
+                        {text: "ok"}
+                         ])
+                    navigation.navigate("Recordatorios")}
+                  });
+            }
+            setLoading(false)
+            
+            Alert.alert("Datos Actualizados", "todo se actualizo correctamente",[
+                {text: "ok"}
+                 ])
+            navigation.navigate("Recordatorios")
+        }
+       
+           
+        
     }
     return (
        
@@ -25,7 +185,7 @@ const EditarDatosUs= ({navigation}) =>{
             
             
              <View style={styles.container2}>
-             <Text style={styles.titulo}> REGISTRAR NUEVO USUARIO </Text>
+             <Text style={styles.titulo}> EDITAR DATOS DE USUARIO </Text>
              <Icon
                          type="material-community"
                          name={"account-circle-outline"}
@@ -41,6 +201,7 @@ const EditarDatosUs= ({navigation}) =>{
                  onChange={(e) => onChange(e, "nombre")}
                  keyboardType="default"
                  errorMessage={errorNombre}
+                 errorStyle={stiloNombre}
                  defaultValue={Datos.nombre}
              />
          <Text style = {styles.text} >Correo Electrónico</Text>
@@ -50,6 +211,7 @@ const EditarDatosUs= ({navigation}) =>{
                  onChange={(e) => onChange(e, "email")}
                  keyboardType="email-address"
                  errorMessage={errorEmail}
+                 errorStyle={stiloEmail}
                  defaultValue={Datos.email}
              />
          <Text style = {styles.text} >Contraseña</Text>
@@ -60,6 +222,7 @@ const EditarDatosUs= ({navigation}) =>{
                  secureTextEntry={!mostarContra}
                  onChange={(e) => onChange(e, "contraseña")}
                  errorMessage={errorContra}
+                 errorStyle={stiloContra}
                  defaultValue={Datos.contraseña}
                  rightIcon={
                      <Icon
@@ -72,10 +235,10 @@ const EditarDatosUs= ({navigation}) =>{
              />
          
              <Button
-                 title="REGISTRAR"
+                 title="ACTUALIZAR"
                  containerStyle={styles.btnContainer}
                  buttonStyle={styles.btn}
-                 onPress={()=> guardarUsario()}
+                 onPress={()=> guardarEdit()}
              />
             <Loading isVisible={loading} text="Actualizando cuenta..."/>
          </View>
