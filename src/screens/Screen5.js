@@ -1,8 +1,7 @@
-import React from 'react';
+import React from "react";
 import { View, Text, Button } from "react-native";
 
-
-const Login = ({navigation}) => {
+const Screen5 = () => {
     return (
         <View>
             <Text
@@ -11,12 +10,11 @@ const Login = ({navigation}) => {
                     textAlign: "center",
                     marginTop: "20%"
                 }}
-            >Login</Text>
-            <Button title="Ir a Pantalla 3" onPress={() => navigation.navigate("Drawer")}>
+            >Pantalla 2</Text>
+            <Button title="Ir a Pantalla 5">
 
             </Button>
         </View>
     );
     }
-
-export default Login;
+export default Screen5;

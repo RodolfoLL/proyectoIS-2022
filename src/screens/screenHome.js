@@ -1,9 +1,21 @@
-import { View, Text, TouchableOpacity, ScrollView, Image} from "react-native";
-import { UserContext } from "./ScreenContext";
+import { View, Text, TouchableOpacity, ScrollView, Image,Button} from "react-native";
+import { Feather } from '@expo/vector-icons';
 
-const HomeScreen = (navigation) => {
-    const {name} = UserContext.Consumer.props;
-    console.log(HomeScreen.context);
+
+
+
+const HomeScreen = ({navigation}) => {
+    navigation.setOptions({
+        headerLeft: () => (
+            <TouchableOpacity
+                onPress={() => navigation.openDrawer()}
+                style={{ paddingRight: 10 }}
+            >
+                <Feather name="menu" size={24} color="black" />
+            </TouchableOpacity>  
+        ),
+
+    })
     return (
         <ScrollView style={{backgroundColor:'#001B48'}}>
             <View style={{
@@ -17,7 +29,6 @@ const HomeScreen = (navigation) => {
             <Text style={{textAlign:'center',fontFamily:'Arial',margin:20,color:'white'}}>
                 Aplicacion para el recordatorio de medicamentos
                 para nuestros adultos mayores porque merecen ser ayudados
-                {name}
             </Text>
 
             <TouchableOpacity

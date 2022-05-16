@@ -1,28 +1,34 @@
 import React from "react";
+import { Feather } from '@expo/vector-icons';
+import { View, Text, TouchableOpacity, ScrollView, Image,Button} from "react-native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import {createDrawerNavigator} from '@react-navigation/drawer';
 import HomeScreen from "./screens/screenHome";
 import Screen2 from "./screens/screen2";
 import Screen3 from "./screens/screen3";
 import Login from "./screens/Login";
-import { UserContext } from "./screens/ScreenContext";
+import Screen4 from "./screens/Screen4";
+import Screen5 from "./screens/Screen5";
 
 const Stack = createNativeStackNavigator();
 const Stackscreen = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
+export const Drawer = createDrawerNavigator();
 
 function MyStack() {
     return (
         <Stack.Navigator
-            initialRouteName="HomeScreen"
-            screenOptions={{
-                headerShown: false
-            }}
+            initialRouteName="Inicio"
+            // screenOptions={{
+            //     headerShown: false
+            // }}
         >
             <Stack.Screen
                 name="HomeScreen"
                 component={HomeScreen}
+                
             />
             <Stack.Screen
                 name="Screen2"
@@ -31,10 +37,25 @@ function MyStack() {
             <Stack.Screen
                 name="Screen3"
                 component={Screen3}
+                
             />
+            <Stack.Screen name ="Screen4" component={Screen4}/>
         </Stack.Navigator>
-    )
+    );
 } 
+
+function Draws() {
+    return (
+        <Drawer.Navigator initialRouteName="HomeScreen"
+        >
+            <Drawer.Screen name="HomeScreen" component={Tabs} options={{headerShown:false}}/>
+            <Drawer.Screen name="Screen4" component={Screen4} options={{headerShown:false}}/>
+            <Drawer.Screen name="Screen5" component={Screen5} options={{headerShown:false}}/>
+
+        </Drawer.Navigator>
+
+    );
+}
 
 function Tabs(){
     return(
@@ -51,15 +72,12 @@ function Tabs(){
 
 export default function Navigation() {
   return (
-    <UserContext.Provider value={Login}>
     <NavigationContainer>
-        <Stackscreen.Navigator
-            initialRouteName="Login"
-        >
+        <Stackscreen.Navigator>
             <Stackscreen.Screen name = "Login" component = {Login} />
-            <Stackscreen.Screen name = "HomeScreen" component = {Tabs} />
+            <Stackscreen.Screen name = "Drawer" component = {Draws} options={{headerShown:false}}/>
+            <Stackscreen.Screen name = "Tabs" component = {Tabs} />
         </Stackscreen.Navigator>
     </NavigationContainer>
-    </UserContext.Provider>
   );
 }
