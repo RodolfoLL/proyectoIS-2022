@@ -118,6 +118,9 @@ const PantallaInicio = ({navigation}) => {
                     schedulePushNotification(nombreMed,cantidadMed);
                 }
             }
+            if(cantidadMed<dosisMed){
+                schedulePushNotification(nombreMed,cantidadMed);
+            }
             const docrefRecordatorio = doc(db,uid,recordatorioId)
             const datos = { quantity: cantidadMed}
             await updateDoc(docrefRecordatorio,datos)
