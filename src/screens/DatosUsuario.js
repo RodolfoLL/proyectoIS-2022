@@ -1,8 +1,13 @@
 import React, { useState } from "react";
 import { Text, View, StyleSheet, TextInput, ScrollView, TouchableOpacity, Alert,Image } from 'react-native';
-import { Button, CheckBox } from 'react-native-elements';
+import { getAuth} from 'firebase/auth';
+import {app} from '../../database/firebase'
 
 const DatosUsuario = ( {navigation , props, route}) => {
+  const auth = getAuth(app);
+    const user = auth.currentUser;
+    const userName = auth.currentUser.displayName
+    const emailUser = auth.currentUser.email
   return (
     <ScrollView style={styles.container}>
       <View style={styles.container}>
@@ -12,9 +17,9 @@ const DatosUsuario = ( {navigation , props, route}) => {
         />
         <View style={styles.contenido}>
         <Text style={styles.title}>Nombre de Usuario</Text>
-        <Text style={styles.title}>Usuario</Text>
+        <Text style={styles.subtitle}>{userName}</Text>
         <Text style={styles.title}>Correo Electronico</Text>
-        <Text style={styles.title}>Usuario@gmail.com</Text>
+        <Text style={styles.subtitle}>{emailUser}</Text>
         </View>
         <View style={styles.botones}>
           <TouchableOpacity
@@ -43,28 +48,22 @@ const styles = StyleSheet.create({
     paddingRight: 30,
   },
   title: {
+    fontSize: 24,
+    paddingTop: 5,
+    color: 'white',
+    textAlign: "center"
+  },
+  subtitle: {
     fontSize: 20,
     paddingTop: 5,
     color: 'white',
     textAlign: "center"
-
-  },
-  inputS: {
-    height: 40,
-    width: "100%",
-    borderColor: 'white',
-    borderWidth: 3,
-    borderRadius: 5,
-    marginTop: 20,
-    marginBottom: 20,
-    padding: 10,
-    color: 'white'
   },
   opciones: {
     margin: 20,
   },
   contenido:{
-    margin:50
+    margin:'10%'
   },
   botones: {
     alignItems: 'center',

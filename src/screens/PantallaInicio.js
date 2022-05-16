@@ -165,7 +165,6 @@ const PantallaInicio = ({navigation}) => {
         console.log("ok sin elimnar")
            } }
         ])
-        listaAgotados=[];
     }
     return (
          
