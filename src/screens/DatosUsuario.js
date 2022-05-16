@@ -72,9 +72,9 @@ const styles = StyleSheet.create({
     marginBottom: '10%',
     borderRadius: 25,
     fontSize: 20,
-    marginLeft: '25%',
+    marginLeft: '10%',
     height: 40,
-    width: 150,
+    width: 250,
   },
     incono:{
     resizeMode: 'contain',
