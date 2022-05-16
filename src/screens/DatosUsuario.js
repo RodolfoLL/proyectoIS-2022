@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Text, View, StyleSheet, TextInput, ScrollView, TouchableOpacity, Alert,Image } from 'react-native';
 import { Button, CheckBox } from 'react-native-elements';
+import {collection, addDoc,doc,setDoc} from 'firebase/firestore';
 
 const DatosUsuario = ( {navigation , props, route}) => {
   return (
@@ -8,7 +9,7 @@ const DatosUsuario = ( {navigation , props, route}) => {
       <View style={styles.container}>
       <Image
           style={styles.incono}
-          source={require("../assets/usuario.png")}
+          source={require("../assets/captura.jpg")}
         />
         <View style={styles.contenido}>
         <Text style={styles.title}>Nombre de Usuario</Text>
