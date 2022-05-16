@@ -41,6 +41,7 @@ const ConfiguraciónNotificación = (props) => {
                 setDoc(docref,datosRecordatorio)
                 .then(async function(docRef) {
                     await creadorDeNotificaciones(new Date(duracion), datosRecordatorio,uid,id, parseInt(minAnticipación))
+                    props.navigation.navigate("Recordatorios",{uid});
                 });
             });
            
@@ -51,6 +52,7 @@ const ConfiguraciónNotificación = (props) => {
                 let idRecordatorio = docRef.id+""
                 console.log("Doc ID: ", docRef.id);
                 await creadorDeNotificaciones(new Date(duracion), datosRecordatorio,uid,idRecordatorio, parseInt(minAnticipación))
+                props.navigation.navigate("Recordatorios",{uid});
             })
             .catch(function(error) {
                 console.error("Error adding document: ", error);
@@ -58,7 +60,6 @@ const ConfiguraciónNotificación = (props) => {
         }
         
         
-        props.navigation.navigate("Recordatorios",{uid});
     };
 
     return (
