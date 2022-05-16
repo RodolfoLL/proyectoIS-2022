@@ -17,7 +17,7 @@ import PantallaRegistroMed from "./screens/PantallaRegistroMed";
 import DosisEdit from './screens/DosisEdit';
 import Configuracion from './screens/Configaracion';
 import ConfiguraciónNotificación from './screens/ConfiguracionNotificación'
-
+import DatosUsuario from "./screens/EditarDatosUsusario"
 import Login from './screens/Login';
 import RegistroUsuario from './screens/Registrar-Usuario';
 const HomeStackNavigator = createNativeStackNavigator();
@@ -60,6 +60,9 @@ function MyStacks() {
             options={{headerTintColor: 'white',
             headerStyle:{ backgroundColor: "#0093B7"}}}/>
             <HomeStackNavigator.Screen name="Configurar Notificacion" component={ConfiguraciónNotificación}
+            options={{headerTintColor: 'white',
+            headerStyle:{ backgroundColor: "#0093B7"}}}/>
+            <HomeStackNavigator.Screen name="Editar datos" component={DatosUsuario}
             options={{headerTintColor: 'white',
             headerStyle:{ backgroundColor: "#0093B7"}}}/>
         </HomeStackNavigator.Navigator>

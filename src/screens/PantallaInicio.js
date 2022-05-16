@@ -177,7 +177,15 @@ const PantallaInicio = ({navigation}) => {
                     MEDICATE 
                 </Text>
             </View>
-            
+
+            <View >
+          <TouchableOpacity
+            onPress={() => navigation.navigate("Editar datos")}
+          >
+            <Text >Confg</Text>
+          </TouchableOpacity>
+        </View>
+
         <FlatList
             data={recordatorios}
             keyExtractor =  {(item) => item.id}
@@ -197,7 +205,7 @@ const PantallaInicio = ({navigation}) => {
                             <ListItem.Subtitle style={{ color: "black"}}>Duracion hasta: {item.duracion}</ListItem.Subtitle>
 
                     </ListItem.Content>
-
+                    
                     <View style={{ flexDirection: "column", height: "100%"}}>
                         <Icon type="material-community" 
                             name={"pencil-circle"} size={50} 
