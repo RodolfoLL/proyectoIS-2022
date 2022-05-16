@@ -10,20 +10,26 @@ const DatosUsuario = ( {navigation , props, route}) => {
           style={styles.incono}
           source={require("../assets/usuario.png")}
         />
-        <View>
+        <View style={styles.contenido}>
         <Text style={styles.title}>Nombre de Usuario</Text>
         <Text style={styles.title}>Usuario</Text>
         <Text style={styles.title}>Correo Electronico</Text>
         <Text style={styles.title}>Usuario@gmail.com</Text>
         </View>
-      <Button
-       title="Actualizar Cuenta"
-       onPress={alert("Actualizar Cuenta")}>
-      </Button>
-      <Button
-      title="Eliminar Cuenta"
-      onPress={alert("Eliminar Cuenta")}>
-      </Button>
+        <View style={styles.botones}>
+          <TouchableOpacity
+            onPress={() => console.log("Actualizar Cuenta")}
+          >
+            <Text style={styles.title}>Actualizar Cuenta</Text>
+          </TouchableOpacity>
+        </View>
+        <View style={styles.botones}>
+          <TouchableOpacity
+            onPress={() => console.log("Eliminar Cuenta")}
+          >
+            <Text style={styles.title}>Eliminar Cuenta</Text>
+          </TouchableOpacity>
+        </View>
       </View>
     </ScrollView>
   );
@@ -39,7 +45,8 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 20,
     paddingTop: 5,
-    color: 'white'
+    color: 'white',
+    textAlign: "center"
 
   },
   inputS: {
@@ -56,21 +63,25 @@ const styles = StyleSheet.create({
   opciones: {
     margin: 20,
   },
+  contenido:{
+    margin:50
+  },
   botones: {
     alignItems: 'center',
     backgroundColor: '#0093B7',
-    marginBottom: '15%',
+    marginBottom: '10%',
     borderRadius: 25,
     fontSize: 20,
     marginLeft: '25%',
-    height: 35,
+    height: 40,
     width: 150,
   },
     incono:{
     resizeMode: 'contain',
     width: "80%",
     alignSelf:"center",
-    maxHeight: "10%"
-  }
+    maxHeight: "10%",
+    paddingBottom:40
+    }
 });
 export default DatosUsuario;
