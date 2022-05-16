@@ -11,11 +11,15 @@ import Screen3 from "./screens/screen3";
 import Login from "./screens/Login";
 import Screen4 from "./screens/Screen4";
 import Screen5 from "./screens/Screen5";
+import CustomDrawerContent from "./Componentes/customDrawer";
+
 
 const Stack = createNativeStackNavigator();
 const Stackscreen = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
-export const Drawer = createDrawerNavigator();
+const Drawer = createDrawerNavigator();
+const Stacks = createNativeStackNavigator();
+
 
 function MyStack() {
     return (
@@ -39,18 +43,26 @@ function MyStack() {
                 component={Screen3}
                 
             />
-            <Stack.Screen name ="Screen4" component={Screen4}/>
+            <Stackscreen.Screen name = "Screen4" component = {Screen4} options={{}} />
+            <Stackscreen.Screen name = "Screen5" component = {Screen5} />
         </Stack.Navigator>
     );
 } 
-
+function Nstacks(){
+    return(
+        <Stacks.Navigator >
+            <Stackscreen.Screen name = "Screen4" component = {Screen4} options={{}} />
+            <Stackscreen.Screen name = "Screen5" component = {Screen5} />
+        </Stacks.Navigator>
+    )
+}
 function Draws() {
     return (
-        <Drawer.Navigator initialRouteName="HomeScreen"
+        <Drawer.Navigator drawerContent={props => <CustomDrawerContent {...props} />}
         >
             <Drawer.Screen name="HomeScreen" component={Tabs} options={{headerShown:false}}/>
-            <Drawer.Screen name="Screen4" component={Screen4} options={{headerShown:false}}/>
-            <Drawer.Screen name="Screen5" component={Screen5} options={{headerShown:false}}/>
+            <Drawer.Screen name="Screen4" component={Nstacks} options ={{headerShown:false}}/>
+            {/* <Drawer.Screen name="Screen5" component={Screen5} options={{headerShown:false}}/> */}
 
         </Drawer.Navigator>
 
@@ -77,6 +89,8 @@ export default function Navigation() {
             <Stackscreen.Screen name = "Login" component = {Login} />
             <Stackscreen.Screen name = "Drawer" component = {Draws} options={{headerShown:false}}/>
             <Stackscreen.Screen name = "Tabs" component = {Tabs} />
+            <Stackscreen.Screen name = "Screen4" component = {Screen4} />
+            <Stackscreen.Screen name = "Screen5" component = {Screen5} />
         </Stackscreen.Navigator>
     </NavigationContainer>
   );

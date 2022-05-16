@@ -1,7 +1,19 @@
 import React from "react";
-import { View, Text, Button } from "react-native";
+import { View, Text, Button,TouchableOpacity } from "react-native";
+import { Ionicons } from '@expo/vector-icons'; 
 
-const Screen4 = () => {
+const Screen4 = ({navigation}) => {
+    navigation.setOptions({
+        headerLeft: () => (
+            <TouchableOpacity
+                onPress={() => navigation.goBack("HomeScreen")}
+                style={{ paddingRight: 10 }}
+            >
+                <Ionicons name="arrow-back" size={24} color="black" />
+            </TouchableOpacity>  
+        ),
+
+    })
     return (
         <View>
             <Text
@@ -10,8 +22,8 @@ const Screen4 = () => {
                     textAlign: "center",
                     marginTop: "20%"
                 }}
-            >Pantalla 2</Text>
-            <Button title="Ir a Pantalla 4">
+            >Pantalla 4</Text>
+            <Button title="Ir a Pantalla 5" onPress={()=>navigation.navigate("Screen5")}>
 
             </Button>
         </View>
