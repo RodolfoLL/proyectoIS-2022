@@ -11,6 +11,8 @@ import {registerForPushNotificationsAsync, eliminarRecordatorioNotif} from './No
 import { getAuth} from 'firebase/auth';
 import {app} from '../../database/firebase'
 import * as Notifications from 'expo-notifications'
+import { Feather } from '@expo/vector-icons';
+import { DrawerActions } from "@react-navigation/native";
 import { obetenerDatosRecordatorios } from "../functions/notificacionFunciones";
 import { async } from "@firebase/util";
 let c=0;
@@ -21,7 +23,7 @@ const verificarFechas=(a)=>{
     hoy.setHours(0,0,0,0)
     fechHoy=(hoy.getTime())
 }
-const PantallaInicio = ({navigation}) => {
+const PantallaInicio = ({navigation,props}) => {
     const auth = getAuth(app);
     const user = auth.currentUser;
     const uid = user.uid;
@@ -57,10 +59,17 @@ const PantallaInicio = ({navigation}) => {
                     lineHeight:16
                 }}
             >{'añadir'}</Text>
-        </TouchableOpacity>)}
+        </TouchableOpacity>),
+        headerLeft: () => (
+            <TouchableOpacity
+                onPress={() => navigation.openDrawer()}
+                style={{ paddingRight: 10 }}
+            >
+                <Feather name="menu" size={24} color="white" />
+            </TouchableOpacity>  
+        ),
     
-        
-    );
+    });
       const backAction = () => {
         Alert.alert('Salir', 'Seguro quieres salir de la aplicacion?', [
           {
