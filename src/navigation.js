@@ -60,8 +60,8 @@ function Draws() {
     return (
         <Drawer.Navigator drawerContent={props => <CustomDrawerContent {...props} />}
         >
-            <Drawer.Screen name="HomeScreen" component={Tabs} options={{headerShown:false,swipeEnabled:false}}/>
-            <Drawer.Screen name="Screen4" component={Nstacks} options ={{headerShown:false}}/>
+            <Drawer.Screen name="HomeScreen" component={Tabs} options={{headerShown:false,swipeEnabled:false,drawerLabel:()=>null,title:undefined,drawerIcon:()=>null,drawerActiveBackgroundColor:'white',drawerStyle:'white'}}/>
+            <Drawer.Screen name="Screen4" component={Nstacks} options ={{headerShown:false,swipeEnabled:false}}/>
             {/* <Drawer.Screen name="Screen5" component={Screen5} options={{headerShown:false}}/> */}
 
         </Drawer.Navigator>
