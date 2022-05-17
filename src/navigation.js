@@ -60,7 +60,7 @@ function Draws() {
     return (
         <Drawer.Navigator drawerContent={props => <CustomDrawerContent {...props} />}
         >
-            <Drawer.Screen name="HomeScreen" component={Tabs} options={{headerShown:false}}/>
+            <Drawer.Screen name="HomeScreen" component={Tabs} options={{headerShown:false,swipeEnabled:false}}/>
             <Drawer.Screen name="Screen4" component={Nstacks} options ={{headerShown:false}}/>
             {/* <Drawer.Screen name="Screen5" component={Screen5} options={{headerShown:false}}/> */}
 
@@ -89,8 +89,8 @@ export default function Navigation() {
             <Stackscreen.Screen name = "Login" component = {Login} />
             <Stackscreen.Screen name = "Drawer" component = {Draws} options={{headerShown:false}}/>
             <Stackscreen.Screen name = "Tabs" component = {Tabs} />
-            <Stackscreen.Screen name = "Screen4" component = {Screen4} />
-            <Stackscreen.Screen name = "Screen5" component = {Screen5} />
+            {/* <Stackscreen.Screen name = "Screen4" component = {Screen4} />
+            <Stackscreen.Screen name = "Screen5" component = {Screen5} /> */}
         </Stackscreen.Navigator>
     </NavigationContainer>
   );
