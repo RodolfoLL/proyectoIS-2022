@@ -42,39 +42,31 @@ const PantallaInicio = ({navigation}) => {
         console.log(objetoFuente.fontSize)
         console.log("===========================")
 
-        fuenteTemporal.fontSize = objetoFuente.fontSize-5;
-        fuenteTemporalTitulo.fontSize = objetoFuente.fontSize+30;
-        subtituloTemporal.fontSize = objetoFuente.fontSize+5;
-
-        cambiarFuente(objetoFuente.fontSize)
-        
-    }
-
-    const cambiarFuente = (tamanio) =>{
         const fuenteTemporal = {...fuente};
         const fuenteTemporalTitulo = {...fuenteTitulo};
         const subtituloTemporal = {...fuenteSubTitulo};
-        const altoTarjetaTemporal = {...altoTarjeta};
-        if(tamanio === 20){
-            fuenteTemporal.fontSize = objetoFuente.fontSize-5;
-            fuenteTemporalTitulo.fontSize = objetoFuente.fontSize+30;
-            subtituloTemporal.fontSize = objetoFuente.fontSize+5;
-            altoTarjetaTemporal.height = tamanio+105
-        }else if(tamanio === 25){
-            fuenteTemporal.fontSize = objetoFuente.fontSize-5;
-            fuenteTemporalTitulo.fontSize = objetoFuente.fontSize+30;
-            subtituloTemporal.fontSize = objetoFuente.fontSize+5;
-            altoTarjetaTemporal.height = tamanio+195
-        }else if(tamanio === 30){
-            fuenteTemporal.fontSize = objetoFuente.fontSize-5;
-            fuenteTemporalTitulo.fontSize = objetoFuente.fontSize+30;
-            subtituloTemporal.fontSize = objetoFuente.fontSize+5;
-            altoTarjetaTemporal.height = tamanio+280
-        }
-        
+
+        fuenteTemporal.fontSize = objetoFuente.fontSize-5; //15px 20px 25px
+        fuenteTemporalTitulo.fontSize = objetoFuente.fontSize+20; //40px 45px 50px
+        subtituloTemporal.fontSize = objetoFuente.fontSize+3; //23px 28px 33px
+
         setFuente(fuenteTemporal);
         setFuenteTitulo(fuenteTemporalTitulo);
         setSubFuenteTitulo(subtituloTemporal)
+        cambiarTamanioTarjeta(objetoFuente.fontSize)
+        
+    }
+
+    const cambiarTamanioTarjeta = (tamanio) =>{
+        const altoTarjetaTemporal = {...altoTarjeta};
+        if(tamanio === 20){
+            altoTarjetaTemporal.height = tamanio+105
+        }else if(tamanio === 25){
+            altoTarjetaTemporal.height = tamanio+195
+        }else if(tamanio === 30){
+            altoTarjetaTemporal.height = tamanio+280
+        }
+        
         setAltoTarjeta(altoTarjetaTemporal)
     }
 
