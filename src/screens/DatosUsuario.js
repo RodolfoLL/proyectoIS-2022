@@ -6,6 +6,9 @@ import { getAuth} from 'firebase/auth';
 import {app} from '../../database/firebase'
 
 const DatosUsuario = ( {navigation , props, route}) => {
+
+  
+
   const auth = getAuth(app);
     const user = auth.currentUser;
     const userName = auth.currentUser.displayName
