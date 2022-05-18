@@ -145,83 +145,27 @@ const RegistroUsuario= ({route,navigation}) =>{
 
         updateProfile(auth.currentUser, {
             displayName: Datos.nombre, 
-          }).then(() => {
+          }).then(async () => {
 
-            //console.log("ENTRO=================")
-            //guardarFuente()
             let  datosFuente  =  {
-                id: usuario.user.uid,
                 fontSize : 20
             }
-            addDoc ( collection ( db ,  'Fuentes') , datosFuente)
+            //await addDoc ( collection ( db ,  'Fuentes') , datosFuente)
             console.log("DOCUMENTO=============")
-            console.log("Document written with ID: ", docRef.id);
-
-            //const  miDoc  =  doc ( db , 'FuentesN' , 'documento' ) ;
-            //const  docdata  =  {
-            //'fontSize' : "12"
-            //}
-            //setDoc ( miDoc , docdata )
-            //console.log("set=============")
-            //console.log("Document written with ID: ", miDoc);
-            //guardarFuente()
+            await setDoc(doc(db, "Fuentes", usuario.user.uid), datosFuente);
 
             signOutUser()
+
           }).catch((error) => {
             console.log("nombre--- ups")
           });
         
-        console.log("UID: =============")
-        console.log(usuario.user.uid)  
-        
-            /*const  miDoc  =  doc ( db , 'Fuentes' , 'documento' ) ;
-            const  docdata  =  {
-            'nombre' : " lópez " ,
-            'nombre' : " lopezrodo " ,
-            'padre' : "12"
-            }
-            setDoc ( miDoc , docdata )*/
-            
-        
-        
-        
-         //var datoFuente = {fuente: {fontSize: 20}}
-        //const  miDoc  =  doc ( db , uid, 'Fuente de letra' ) ;
-        //setDoc ( miDoc , datoFuente )*/  
-        //let  datosRecordatorio  =  {
-        //    fontSize : 20
-        //}
-        //addDoc ( collection ( db ,  'Fuentes') , datosRecordatorio)
-        
-        //const  miDoc  =  doc ( db , usuario.user.uid, 'Fuente de letra' ) ;
-        //setDoc ( miDoc , datoFuente )
-        
-
         navigation.navigate("Login")
         setLoading(false)
         Alert.alert("Cuenta creada", "Ya puedes acceder",[
             {text: "OK" ,onPress: () =>{ console.log("ok a Login")} }
              ])
     }
-
-    //const guardarFuente = ()=>{
-        /*setDoc(doc(db, "Fuentes", "documento"), {
-            name: "jose"
-        });*/
-        /*let  datosRecordatorio  =  {
-            fontSize : 20
-        }
-        addDoc ( collection ( db ,  'Fuentes3') , datosRecordatorio)
-
-        //addDoc ( colección ( db ,  'Fuentes' ) ,  datosRecordatorio )
-        /*const  miDoc  =  doc ( db , 'Fuentes' , 'documento' ) ;
-            const  docdata  =  {
-            'nombre' : " lópez " ,
-            'nombre' : " lopezrodo " ,
-            'padre' : "12"
-            }
-            setDoc ( miDoc , docdata )*/
-    //}
 
     return (
        

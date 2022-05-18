@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { View, Text, StyleSheet, TouchableOpacity} from 'react-native'
 import { doc, setDoc } from 'firebase/firestore';
 import {db} from '../../database/firebase'
-import {collection, addDoc} from 'firebase/firestore';
+import {collection, addDoc,query, where, getDocs } from 'firebase/firestore';
 
 const TamañoDeFuente = (props) => {
 
@@ -21,12 +21,25 @@ const TamañoDeFuente = (props) => {
         setFuenteTitulo(fuenteTemporalTitulo);
     }
 
-    const guardarFuente = () =>{
+    const guardarFuente = async() =>{
         /*var datoFuente = {fuente: fuente}
         const  miDoc  =  doc ( db , uid, 'Fuente de letra' ) ;
         setDoc ( miDoc , datoFuente )*/
+        console.log(uid)
+        // Create a reference to the cities collection
+        const citiesRef = collection(db, "Fuentes");
 
-        props.navigation.navigate("Recordatorios",{fuente});
+        // Create a query against the collection.
+        const q = query(citiesRef, where("id", "==", uid));
+        console.log("==========================")
+        const querySnapshot = await getDocs(q);
+        querySnapshot.forEach((doc) => {
+        // doc.data() is never undefined for query doc snapshots
+        console.log(doc.id, " => ", doc.data());
+        });
+        console.log("==========================")
+
+        props.navigation.navigate("Recordatorios");
     }
 
     return(
