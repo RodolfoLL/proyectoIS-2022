@@ -22,7 +22,6 @@ import DosisEdit from './screens/DosisEdit';
 import Configuracion from './screens/Configaracion';
 import ConfiguraciónNotificación from './screens/ConfiguracionNotificación'
 import CustomDrawerContent from './Componentes/CustomDrawer';
-import Perfil from './screens/Perfil';
 import Settings from './screens/Settings';
 
 import Login from './screens/Login';
