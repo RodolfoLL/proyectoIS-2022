@@ -12,11 +12,11 @@ const TamañoDeFuente = (props) => {
     const [fuente,setFuente] = useState({fontSize: 20})
     const [fuenteTitulo,setFuenteTitulo] = useState({fontSize: 30})
 
-    const cambiarFuente = (tamaño) =>{
+    const cambiarFuente = (tamanio) =>{
         const fuenteTemporal = {...fuente};
         const fuenteTemporalTitulo = {...fuenteTitulo};
-        fuenteTemporal.fontSize = tamaño;
-        fuenteTemporalTitulo.fontSize = tamaño+10;
+        fuenteTemporal.fontSize = tamanio;
+        fuenteTemporalTitulo.fontSize = tamanio+10;
         setFuente(fuenteTemporal);
         setFuenteTitulo(fuenteTemporalTitulo);
     }

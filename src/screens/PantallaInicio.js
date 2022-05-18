@@ -3,7 +3,7 @@ import { View, Text, TouchableOpacity, ScrollView, Image, SafeAreaView,Alert,Fla
 import image from '../assets/medicate.png'
 import {db} from '../../database/firebase'
 import { StatusBar } from 'expo-status-bar';
-import { collection, query, where, getDocs ,doc, deleteDoc,updateDoc, onSnapshot} from "firebase/firestore";
+import { collection, query, where, getDoc ,doc, deleteDoc,updateDoc, onSnapshot} from "firebase/firestore";
 import { render } from "react-dom";
 import { ListItem ,Icon} from 'react-native-elements';
 import { Usuario } from "./Login";
@@ -22,10 +22,62 @@ const verificarFechas=(a)=>{
     fechHoy=(hoy.getTime())
 }
 const PantallaInicio = ({navigation}) => {
+
+    const [fuente,setFuente] = useState({fontSize: 20})
+    const [fuenteTitulo,setFuenteTitulo] = useState({fontSize: 30})
+    const [fuenteSubTitulo,setSubFuenteTitulo] = useState({fontSize: 25})
+    const [altoTarjeta,setAltoTarjeta] = useState({height: 125})
+
     const auth = getAuth(app);
     const user = auth.currentUser;
     const uid = user.uid;
     console.log(uid);
+
+    const actualizarFuente = async() =>{
+        console.log("FUENTE===========================")
+        const docRef = doc(db, "Fuentes",uid);
+        const docSnap = await getDoc(docRef);
+        console.log(docSnap.data().fontSize)
+        const objetoFuente = docSnap.data().fontSize
+        console.log(objetoFuente.fontSize)
+        console.log("===========================")
+
+        fuenteTemporal.fontSize = objetoFuente.fontSize-5;
+        fuenteTemporalTitulo.fontSize = objetoFuente.fontSize+30;
+        subtituloTemporal.fontSize = objetoFuente.fontSize+5;
+
+        cambiarFuente(objetoFuente.fontSize)
+        
+    }
+
+    const cambiarFuente = (tamanio) =>{
+        const fuenteTemporal = {...fuente};
+        const fuenteTemporalTitulo = {...fuenteTitulo};
+        const subtituloTemporal = {...fuenteSubTitulo};
+        const altoTarjetaTemporal = {...altoTarjeta};
+        if(tamanio === 20){
+            fuenteTemporal.fontSize = objetoFuente.fontSize-5;
+            fuenteTemporalTitulo.fontSize = objetoFuente.fontSize+30;
+            subtituloTemporal.fontSize = objetoFuente.fontSize+5;
+            altoTarjetaTemporal.height = tamanio+105
+        }else if(tamanio === 25){
+            fuenteTemporal.fontSize = objetoFuente.fontSize-5;
+            fuenteTemporalTitulo.fontSize = objetoFuente.fontSize+30;
+            subtituloTemporal.fontSize = objetoFuente.fontSize+5;
+            altoTarjetaTemporal.height = tamanio+195
+        }else if(tamanio === 30){
+            fuenteTemporal.fontSize = objetoFuente.fontSize-5;
+            fuenteTemporalTitulo.fontSize = objetoFuente.fontSize+30;
+            subtituloTemporal.fontSize = objetoFuente.fontSize+5;
+            altoTarjetaTemporal.height = tamanio+280
+        }
+        
+        setFuente(fuenteTemporal);
+        setFuenteTitulo(fuenteTemporalTitulo);
+        setSubFuenteTitulo(subtituloTemporal)
+        setAltoTarjeta(altoTarjetaTemporal)
+    }
+
     navigation.setOptions({ 
     headerRight: () => (
         <TouchableOpacity
@@ -76,6 +128,17 @@ const PantallaInicio = ({navigation}) => {
     const [recordatorios, setRecordatorios] = useState([]);
     console.log(recordatorios)
     useEffect( () =>{
+        
+
+        onSnapshot(doc(db, "Fuentes", uid), (doc) => {
+            console.log("Current data: ", doc.data());
+            actualizarFuente()
+            console.log("===========================")
+            console.log(fuente)
+            console.log(fuenteTitulo)
+            console.log("===========================")
+        });
+
         onSnapshot(collection(db,uid), (snapshot) =>{
             setRecordatorios(snapshot.docs.map((doc) => ({...doc.data(),id: doc.id})).sort((a,b) => {
                 if(a.nombreMed > b.nombreMed){
@@ -173,7 +236,7 @@ const PantallaInicio = ({navigation}) => {
                 marginTop: "5%"
                 
                 }}>
-                <Text style={{ fontSize: 50, color: 'white', fontWeight: 'bold' }}>
+                <Text style={[{color: 'white', fontWeight: 'bold' },fuenteTitulo]}>
                     MEDICATE 
                 </Text>
                 <TouchableOpacity style={{backgroundColor: "red"}}
@@ -190,15 +253,15 @@ const PantallaInicio = ({navigation}) => {
             <View style={{width: "90%", marginHorizontal: "5%", marginBottom: "5%"}}>
                 <ListItem key={item.id}>
                             
-                    <ListItem.Content style={{width: "100%", height:125}}>
+                    <ListItem.Content style={[{width: "100%"},altoTarjeta]}>
              
-                        <ListItem.Title style={{ color: "black", fontSize: 25, fontWeight: "bold"}}>{item.nombreMed}</ListItem.Title>
+                        <ListItem.Title style={[{ color: "black", fontWeight: "bold"},fuenteSubTitulo]}>{item.nombreMed}</ListItem.Title>
               
-                            <ListItem.Subtitle style={{ color: "black"}}>Tipo de administracion: {item.tipoAdm}</ListItem.Subtitle>
-                            <ListItem.Subtitle style={{ color: "black"}}>Dosis: {item.dose}</ListItem.Subtitle>
-                            <ListItem.Subtitle style={{ color: "black"}}>Cantidad de medicamentos: {item.quantity}</ListItem.Subtitle>
-                            <ListItem.Subtitle style={{ color: "black"}}>Hora: {item.hora.toString()}</ListItem.Subtitle>
-                            <ListItem.Subtitle style={{ color: "black"}}>Duracion hasta: {item.duracion}</ListItem.Subtitle>
+                            <ListItem.Subtitle style={[{ color: "black"},fuente]}>Tipo de administracion: {item.tipoAdm}</ListItem.Subtitle>
+                            <ListItem.Subtitle style={[{ color: "black"},fuente]}>Dosis: {item.dose}</ListItem.Subtitle>
+                            <ListItem.Subtitle style={[{ color: "black"},fuente]}>Cantidad de medicamentos: {item.quantity}</ListItem.Subtitle>
+                            <ListItem.Subtitle style={[{ color: "black"},fuente]}>Hora: {item.hora.toString()}</ListItem.Subtitle>
+                            <ListItem.Subtitle style={[{ color: "black"},fuente]}>Duracion hasta: {item.duracion}</ListItem.Subtitle>
 
                     </ListItem.Content>
 
