@@ -22,11 +22,7 @@ const TamañoDeFuente = (props) => {
     }
 
     const guardarFuente = async() =>{
-        /*var datoFuente = {fuente: fuente}
-        const  miDoc  =  doc ( db , uid, 'Fuente de letra' ) ;
-        setDoc ( miDoc , datoFuente )*/
-        console.log(uid)
-        // Create a reference to the cities collection
+        /*// Create a reference to the cities collection
         const citiesRef = collection(db, "Fuentes");
 
         // Create a query against the collection.
@@ -36,8 +32,22 @@ const TamañoDeFuente = (props) => {
         querySnapshot.forEach((doc) => {
         // doc.data() is never undefined for query doc snapshots
         console.log(doc.id, " => ", doc.data());
+            const docref = doc(db,"Fuentes",doc.id)
+            console.log(docref)
+            console.log(datos);
+            await setDoc(docref,datos)
         });
+        console.log("==========================")*/
         console.log("==========================")
+        console.log(uid)
+        let  datosFuente  =  {
+            fontSize : fuente
+        }
+
+        const docref = doc(db,"Fuentes",uid)
+        //console.log(docref)
+        //console.log(datos);
+        await setDoc(docref,datosFuente)
 
         props.navigation.navigate("Recordatorios");
     }
