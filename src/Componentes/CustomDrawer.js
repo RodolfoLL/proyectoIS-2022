@@ -7,6 +7,7 @@ import {
 import {
   DrawerContentScrollView,
   DrawerItemList,
+  DrawerItem
 } from '@react-navigation/drawer';
 import { AntDesign } from '@expo/vector-icons'; 
 

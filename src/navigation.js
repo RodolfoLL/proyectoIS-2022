@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{useState} from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import {createDrawerNavigator} from '@react-navigation/drawer';
@@ -105,8 +105,9 @@ function Config(){
 }
 
 function Draws(){
+    const [show,setShow] = useState(true);
     return(
-        <Drawer.Navigator drawerContent={props => <CustomDrawerContent {...props} />} screenOptions={{drawerLabelStyle: {
+        <Drawer.Navigator drawerContent={props => <CustomDrawerContent setShow={setShow} {...props} />} screenOptions={{drawerLabelStyle: {
             marginLeft: -25,
             fontSize: 15,
             color: 'white',
