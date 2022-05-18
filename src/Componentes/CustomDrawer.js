@@ -16,10 +16,19 @@ function CustomDrawerContent(props) {
     <DrawerContentScrollView {...props} style={{backgroundColor:"#0093B7"}}>
       <TouchableOpacity
         onPress={() => props.navigation.closeDrawer()}
+        style={{
+            width: 30,
+            height: 30,
+            borderRadius: 50,
+            backgroundColor:'#40AEC9',
+            borderColor:'#000000' ,
+            justifyContent: "center",
+            left:"85%"
+        }}
       >
-        <AntDesign name="close" size={24} color="white" />
+        <AntDesign name="close" size={30} color="white" />
       </TouchableOpacity>
-      <DrawerItemList {...props}/>
+      <DrawerItemList {...props} />
     </DrawerContentScrollView>
   );
 }

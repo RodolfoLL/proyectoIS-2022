@@ -5,7 +5,9 @@ import {createDrawerNavigator} from '@react-navigation/drawer';
 import {getFocusedRouteNameFromRoute, NavigationContainer, TabRouter} from '@react-navigation/native';
 import { FontAwesome } from '@expo/vector-icons'; 
 import {Icon} from 'react-native-elements';
-import { MaterialIcons } from '@expo/vector-icons'; 
+import { MaterialIcons } from '@expo/vector-icons';
+import { EvilIcons } from '@expo/vector-icons'; 
+import { SimpleLineIcons } from '@expo/vector-icons'; 
 import RegistroMedEdit from "./screens/RegistroMedEdit"
 import DuracionTratamiento from './screens/DuracionTratamiento'
 import FechaFinal from './screens/FechaFinal'
@@ -20,6 +22,8 @@ import DosisEdit from './screens/DosisEdit';
 import Configuracion from './screens/Configaracion';
 import ConfiguraciónNotificación from './screens/ConfiguracionNotificación'
 import CustomDrawerContent from './Componentes/CustomDrawer';
+import Perfil from './screens/Perfil';
+import Settings from './screens/Settings';
 
 import Login from './screens/Login';
 import RegistroUsuario from './screens/Registrar-Usuario';
@@ -28,7 +32,8 @@ const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
 const Stacks = createNativeStackNavigator();
-
+const PerfilStack = createNativeStackNavigator();
+const SettingsStack = createNativeStackNavigator();
 
 function MyStacks() {
     
@@ -80,6 +85,24 @@ function Nstacks(){
     );
 }
 
+function Profile(){
+    return(
+        <PerfilStack.Navigator>
+            <PerfilStack.Screen name = "Perfil" component={Perfil}
+            options={{headerTintColor: 'white',
+            headerStyle:{ backgroundColor: "#0093B7"}}}/>
+        </PerfilStack.Navigator>
+    );
+}
+function Config(){
+    return(
+        <SettingsStack.Navigator>
+            <SettingsStack.Screen name = "Configuraciones" component={Settings}
+            options={{headerTintColor: 'white',
+            headerStyle:{ backgroundColor: "#0093B7"}}}/>
+        </SettingsStack.Navigator>
+    );
+}
 
 function Draws(){
     return(
@@ -89,9 +112,16 @@ function Draws(){
             color: 'white',
           },}} >
             <Drawer.Screen name="PantallaInicio" component={MyTabs} options={{headerShown:false,swipeEnabled:false,drawerLabel:()=>null,title:undefined,drawerIcon:()=>null,drawerActiveBackgroundColor:'#0093B7',drawerStyle:'#0093B7'}} />
+            <Drawer.Screen name="Administrar Cuenta" component={Profile} options ={{drawerIcon:()=>(
+                <EvilIcons name="user" size={24} color="white" />
+            ),headerShown:false,swipeEnabled:false}} />
+            <Drawer.Screen name="Configuraciones" component={Config} options ={{drawerIcon:()=>(
+                <SimpleLineIcons name="settings" size={24} color="white" />
+            ),headerShown:false,swipeEnabled:false}} />
             <Drawer.Screen name="Cerrar Sesion" component={Nstacks} options ={{drawerIcon:()=>(
                 <MaterialIcons name="logout" size={24} color="white" />
             ),headerShown:false,swipeEnabled:false}} />
+            
         </Drawer.Navigator>
     );
 }
