@@ -127,7 +127,7 @@ export default function Navigation(){
                 options={{headerTintColor: 'white',
                 headerStyle:{ backgroundColor: "#0093B7"}}}
             />
-            <Stack.Screen name="Datos Usuario" component={DatosUsuario}
+            <Stack.Screen name="Administrar Cuenta" component={DatosUsuario}
                 options={{headerTintColor: 'white',
                 headerStyle:{ backgroundColor: "#0093B7"}}}
             />

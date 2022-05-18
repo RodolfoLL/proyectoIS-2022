@@ -228,7 +228,7 @@ const PantallaInicio = ({navigation}) => {
                 </ListItem>
                 <Button 
                 title="Mostrar Datos"
-                onPress={()=>navigation.navigate("Datos Usuario")}>
+                onPress={()=>navigation.navigate("Administrar Cuenta")}>
                </Button>
             </View>
             }      
