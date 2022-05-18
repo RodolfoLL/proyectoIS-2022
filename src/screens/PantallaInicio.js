@@ -27,6 +27,7 @@ const PantallaInicio = ({navigation}) => {
     const [fuenteTitulo,setFuenteTitulo] = useState({fontSize: 30})
     const [fuenteSubTitulo,setSubFuenteTitulo] = useState({fontSize: 25})
     const [altoTarjeta,setAltoTarjeta] = useState({height: 125})
+    const [fuenteBaseDatos,setFuenteBaseDatos] = useState({fontSize: 20})
 
     const auth = getAuth(app);
     const user = auth.currentUser;
@@ -39,6 +40,8 @@ const PantallaInicio = ({navigation}) => {
         const docSnap = await getDoc(docRef);
         console.log(docSnap.data().fontSize)
         const objetoFuente = docSnap.data().fontSize
+        setFuenteBaseDatos(objetoFuente)
+
         console.log(objetoFuente.fontSize)
         console.log("===========================")
 
@@ -73,7 +76,7 @@ const PantallaInicio = ({navigation}) => {
     navigation.setOptions({ 
     headerRight: () => (
         <TouchableOpacity
-            onPress={() => navigation.navigate("Registro de Medicamento",{uid:uid})}
+            onPress={() => navigation.navigate("Registro de Medicamento",{uid:uid, fuenteNuevo:fuenteBaseDatos})}
             style={{
                 width: 100,
                 height: 40,
