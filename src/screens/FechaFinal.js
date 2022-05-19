@@ -115,7 +115,8 @@ const FechaFinal = (props) => {
                item: item,
                hora: props.route.params.hora,
                duracion: props.route.params.duracion,
-               editar:true
+               editar:true,
+               fuenteNuevo: fuenteNuevo
             }
         } else{
             var datosRecordatorio = {
@@ -144,7 +145,8 @@ const FechaFinal = (props) => {
                 item: item,
                 hora:hora,
                 duracion: duracion,
-                editar:editar
+                editar:editar,
+                fuenteNuevo: fuenteNuevo
             }
             let fechaActual = new Date()
             let fecha = fechaActual.getDate()+'/'+fechaActual.getMonth() +'/'+ fechaActual.getFullYear()

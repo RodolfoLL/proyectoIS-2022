@@ -53,7 +53,8 @@ const FrecuenciaScreen = (props) => {
       item: item,
       hora: props.route.params.hora,
       duracion: props.route.params.duracion,
-      editar:true
+      editar:true,
+      fuenteNuevo: fuenteNuevo  
     }
   }
   else{

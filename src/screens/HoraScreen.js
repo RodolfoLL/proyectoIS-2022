@@ -92,7 +92,8 @@ const HoraScreen=(props)=>{
                     item: item,
                     hora:hora,
                     duracion: props.route.params.duracion,
-                    editar:editar
+                    editar:editar,
+                    fuenteNuevo: fuenteNuevo  
                 }
 
             }
