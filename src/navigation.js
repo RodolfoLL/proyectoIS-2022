@@ -1,9 +1,13 @@
 import React from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import {createDrawerNavigator} from '@react-navigation/drawer';
 import {getFocusedRouteNameFromRoute, NavigationContainer, TabRouter} from '@react-navigation/native';
 import { FontAwesome } from '@expo/vector-icons'; 
 import {Icon} from 'react-native-elements';
+import { MaterialIcons } from '@expo/vector-icons';
+import { EvilIcons } from '@expo/vector-icons'; 
+import { SimpleLineIcons } from '@expo/vector-icons'; 
 import RegistroMedEdit from "./screens/RegistroMedEdit"
 import DuracionTratamiento from './screens/DuracionTratamiento'
 import FechaFinal from './screens/FechaFinal'
@@ -17,14 +21,21 @@ import PantallaRegistroMed from "./screens/PantallaRegistroMed";
 import DosisEdit from './screens/DosisEdit';
 import Configuracion from './screens/Configaracion';
 import ConfiguraciónNotificación from './screens/ConfiguracionNotificación'
+import CustomDrawerContent from './Componentes/CustomDrawer';
+import Settings from './screens/Settings';
 
 import Login from './screens/Login';
 import RegistroUsuario from './screens/Registrar-Usuario';
 import TamañoDeFuente from './screens/TamañoDeFuente';
+import RecuperarContrasenia from './screens/RecuperarContrasenia';
+import DatosUsuario from './screens/DatosUsuario';
 const HomeStackNavigator = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
-
+const Drawer = createDrawerNavigator();
+const Stacks = createNativeStackNavigator();
+const PerfilStack = createNativeStackNavigator();
+const SettingsStack = createNativeStackNavigator();
 
 function MyStacks() {
     
@@ -70,8 +81,56 @@ function MyStacks() {
         </HomeStackNavigator.Navigator>
     );
 }
+function Nstacks(){
+    return(
+        <Stacks.Navigator>
+            <Stacks.Screen name = 'Cerrar Sesion' component={Configuracion} 
+            options={{headerTintColor: 'white',
+            headerStyle:{ backgroundColor: "#0093B7"}}}/>
+        </Stacks.Navigator>
+    );
+}
 
+function Profile(){
+    return(
+        <PerfilStack.Navigator>
+            <PerfilStack.Screen name = "Administrar Cuenta" component={DatosUsuario}
+            options={{headerTintColor: 'white',
+            headerStyle:{ backgroundColor: "#0093B7"}}}/>
+        </PerfilStack.Navigator>
+    );
+}
+function Config(){
+    return(
+        <SettingsStack.Navigator>
+            <SettingsStack.Screen name = "Configuraciones" component={Settings}
+            options={{headerTintColor: 'white',
+            headerStyle:{ backgroundColor: "#0093B7"}}}/>
+        </SettingsStack.Navigator>
+    );
+}
 
+function Draws(){
+    return(
+        <Drawer.Navigator drawerContent={props => <CustomDrawerContent {...props} />} screenOptions={{drawerLabelStyle: {
+            marginLeft: -25,
+            fontSize: 15,
+            color: 'white',
+          },}} >
+            <Drawer.Screen name="PantallaInicio" component={MyTabs} options={{headerShown:false,swipeEnabled:false,drawerLabel:()=>null,title:undefined,drawerIcon:()=>null,drawerActiveBackgroundColor:'#0093B7',drawerStyle:'#0093B7'}} />
+            <Drawer.Screen name="Administrar Cuenta" component={Profile} options ={{drawerIcon:()=>(
+                <EvilIcons name="user" size={24} color="white" />
+            ),headerShown:false,swipeEnabled:false}} />
+            <Drawer.Screen name="Configuraciones" component={Config} options ={{drawerIcon:()=>(
+                <SimpleLineIcons name="settings" size={24} color="white" />
+            ),headerShown:false,swipeEnabled:false}} />
+            <Drawer.Screen name="Cerrar Sesion" component={Nstacks} options ={{drawerIcon:()=>(
+                <MaterialIcons name="logout" size={24} color="white" />
+            ),headerShown:false,swipeEnabled:false}} />
+            
+        </Drawer.Navigator>
+    );
+}
 
 function MyTabs() {
     return(
@@ -99,14 +158,14 @@ function MyTabs() {
                 ),
                 headerShown:false,}}
             />
-            <Tab.Screen 
+            {/* <Tab.Screen 
                 name="Cerrar" 
                 component={Configuracion}
                 options ={{tabBarLabel:'Cerrar',tabBarIcon:({color,size})=>(
                     <FontAwesome name="sign-out" size={size} color={color} />
                 ),
                 headerStyle:{ backgroundColor: "#0093B7" },}}
-            /> 
+            />  */}
                          
         </Tab.Navigator>
     );
@@ -123,10 +182,20 @@ export default function Navigation(){
             <Stack.Screen name="Registro Usuario" component={RegistroUsuario}
                 options={{headerTintColor: 'white',
                 headerStyle:{ backgroundColor: "#0093B7"}}}/>
-            <Stack.Screen name="Medicate" component={MyTabs}
+            <Stack.Screen name="Drawer" component={Draws} options={{headerShown:false}}/>
+            {/* <Stack.Screen name="Medicate" component={MyTabs}
                 options={{headerShown:false}}
             />
+            <Stack.Screen name="Recuperar contraseña" component={RecuperarContrasenia}
+                options={{headerTintColor: 'white',
+                headerStyle:{ backgroundColor: "#0093B7"}}}
+            />
+            <Stack.Screen name="Administrar Cuenta" component={DatosUsuario}
+                options={{headerTintColor: 'white',
+                headerStyle:{ backgroundColor: "#0093B7"}}}
+            />
             
+             */}
             </Stack.Navigator>
         </NavigationContainer>
     );
