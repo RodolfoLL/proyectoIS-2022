@@ -105,7 +105,8 @@ const HoraScreen=(props)=>{
                         quantity:quantity,
                         item: item,
                         hora:hora,
-                        editar:editar
+                        editar:editar,
+                        fuenteNuevo: fuenteNuevo
                     }
             }
             
