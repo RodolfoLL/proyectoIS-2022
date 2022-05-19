@@ -46,7 +46,7 @@ const DatosUsuario = ( {navigation , props, route}) => {
         </View>
         <View style={styles.botones}>
           <TouchableOpacity
-            onPress={() => console.log("Eliminar Cuenta")}
+            onPress={() => navigation.navigate("Eliminar Cuenta")}
           >
             <Text style={styles.title}>Eliminar Cuenta</Text>
           </TouchableOpacity>
