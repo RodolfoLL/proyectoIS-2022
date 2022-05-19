@@ -1,6 +1,6 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet, TouchableOpacity} from 'react-native'
-import { doc, setDoc } from 'firebase/firestore';
+import { doc, setDoc, onSnapshot, getDoc } from 'firebase/firestore';
 import {db} from '../../database/firebase'
 import {app} from '../../database/firebase'
 import { getAuth} from 'firebase/auth';
@@ -8,13 +8,35 @@ import {Ionicons} from '@expo/vector-icons';
 
 const TamañoDeFuente = ({navigation}) => {
 
+    const [fuente,setFuente] = useState({fontSize: 20})
+    const [fuenteTitulo,setFuenteTitulo] = useState({fontSize: 30})
+    const [fuenteBaseDatos,setFuenteBaseDatos] = useState({fontSize: 20})
+
     const auth = getAuth(app);
     const user = auth.currentUser;
     const uid = user.uid;
     console.log("identificador "+uid)
 
-    const [fuente,setFuente] = useState({fontSize: 20})
-    const [fuenteTitulo,setFuenteTitulo] = useState({fontSize: 30})
+    useEffect( () =>{
+        onSnapshot(doc(db, "Fuentes", uid), (doc) => {
+            console.log("Current data: ", doc.data());
+            actualizarFuente()
+            console.log("===========================")
+            console.log(fuente)
+            console.log(fuenteTitulo)
+            console.log("===========================")
+        });
+    },[]
+    ); 
+    
+    const actualizarFuente = async() =>{
+        console.log("FUENTE===========================")
+        const docRef = doc(db, "Fuentes",uid);
+        const docSnap = await getDoc(docRef);
+        console.log(docSnap.data().fontSize)
+        
+        cambiarFuente(docSnap.data().fontSize.fontSize)
+    }
 
     const cambiarFuente = (tamanio) =>{
         const fuenteTemporal = {...fuente};
@@ -26,22 +48,6 @@ const TamañoDeFuente = ({navigation}) => {
     }
 
     const guardarFuente = async() =>{
-        /*// Create a reference to the cities collection
-        const citiesRef = collection(db, "Fuentes");
-
-        // Create a query against the collection.
-        const q = query(citiesRef, where("id", "==", uid));
-        console.log("==========================")
-        const querySnapshot = await getDocs(q);
-        querySnapshot.forEach((doc) => {
-        // doc.data() is never undefined for query doc snapshots
-        console.log(doc.id, " => ", doc.data());
-            const docref = doc(db,"Fuentes",doc.id)
-            console.log(docref)
-            console.log(datos);
-            await setDoc(docref,datos)
-        });
-        console.log("==========================")*/
         console.log("==========================")
         console.log(uid)
         let  datosFuente  =  {
@@ -49,8 +55,6 @@ const TamañoDeFuente = ({navigation}) => {
         }
 
         const docref = doc(db,"Fuentes",uid)
-        //console.log(docref)
-        //console.log(datos);
         await setDoc(docref,datosFuente)
 
         navigation.navigate("Recordatorios");
@@ -120,7 +124,7 @@ const styles = StyleSheet.create({
     subtitle:{
         color: '#fff',
         marginBottom: 15,
-        right: "20%"
+        right: "15%"
     },
     boton:{
         backgroundColor: "#0093B7",
