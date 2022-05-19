@@ -23,11 +23,13 @@ import Configuracion from './screens/Configaracion';
 import ConfiguraciónNotificación from './screens/ConfiguracionNotificación'
 import CustomDrawerContent from './Componentes/CustomDrawer';
 import Settings from './screens/Settings';
+import EliminarCuenta from './screens/EliminarCuenta';
 
 import Login from './screens/Login';
 import RegistroUsuario from './screens/Registrar-Usuario';
 import RecuperarContrasenia from './screens/RecuperarContrasenia';
 import DatosUsuario from './screens/DatosUsuario';
+
 const HomeStackNavigator = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -194,4 +196,5 @@ export default function Navigation(){
             </Stack.Navigator>
         </NavigationContainer>
     );
+
 }
