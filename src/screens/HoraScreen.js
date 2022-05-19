@@ -1,11 +1,35 @@
-import React, {useState} from 'react'
+import React, { useState, useEffect } from "react";
 import { View, Text,StyleSheet,TouchableOpacity,Alert} from 'react-native'
 import DateTimePicker from '@react-native-community/datetimepicker';
 
-
-
 const HoraScreen=(props)=>{
-    const { uid,nombreMed,tipoAdm,dose,quantity,item,editar } = props.route.params;
+    const [fuente,setFuente] = useState({fontSize: 20})
+    const [fuenteTitulo,setFuenteTitulo] = useState({fontSize: 30})
+    const [anchoBoton,setAnchoBoton] = useState({width:"55%"})
+
+    const { uid,nombreMed,tipoAdm,dose,quantity,item,editar,fuenteNuevo } = props.route.params;
+    useEffect( () =>{
+        let fuenteTemporalTitulo = {
+            fontSize: fuenteNuevo.fontSize+3
+        }
+        setFuente(fuenteNuevo)
+        setFuenteTitulo(fuenteTemporalTitulo)
+        cambiarAnchoBoton(fuenteNuevo.fontSize)
+      },[]
+    );
+
+    const cambiarAnchoBoton = (tamanio)=>{
+        const anchoBotonTemporal = {...anchoBoton};
+        if(tamanio === 20){
+            anchoBotonTemporal.width = "55%"
+        }else if(tamanio === 25){
+            anchoBotonTemporal.width = "65%"
+        }else if(tamanio === 30){
+            anchoBotonTemporal.width = "75%"
+        }
+        setAnchoBoton(anchoBotonTemporal)
+    }
+
     console.log(props.route.params)
     if (editar){
         let hora = props.route.params.hora
@@ -106,9 +130,10 @@ const HoraScreen=(props)=>{
     }
       return (
         <View style={styles.container}>
-            <Text style={styles.texto}>Horas a establecer: {contador}</Text>
-            <Text style={styles.texto}>{'('+datos +")"}</Text>
+            <Text style={[styles.texto,fuenteTitulo]}>Horas a establecer: {contador}</Text>
+            <Text style={[styles.texto,fuenteTitulo]}>{'('+datos +")"}</Text>
                 <TouchableOpacity
+                    style={[styles.boton,anchoBoton]}
                     onPress={()=> {
                         if(editar && !presionado){
                             setPresionado(true)
@@ -119,24 +144,21 @@ const HoraScreen=(props)=>{
 
                 }}
                 >
-                    <View style={styles.buttonTime}>
-                        <Text style={styles.texto}>Hora</Text>
-                    </View>
+                    <Text style={[styles.texto,fuente]}>Hora</Text>
                 </TouchableOpacity>
 
                 <TouchableOpacity
+                    style={[styles.boton,anchoBoton]}
                     onPress={()=>guardarHora(datos)}
                 >
-                    <View style={styles.buttonTime}>
-                        <Text style={styles.texto}>Continuar</Text>
-                    </View>
+                    <Text style={[styles.texto,fuente]}>Continuar</Text>
                 </TouchableOpacity>
+
                 <TouchableOpacity
+                    style={[styles.boton,anchoBoton]}
                     onPress={()=>RestablecerHoras(datos)}
                 >
-                    <View style={styles.buttonTime}>
-                        <Text style={styles.texto}>Restablecer Horas</Text>
-                    </View>
+                    <Text style={[styles.texto,fuente]}>Restablecer Horas</Text>
                 </TouchableOpacity>
              {show && (
                 <DateTimePicker
@@ -146,6 +168,7 @@ const HoraScreen=(props)=>{
                 is24Hour={true}
                 display='default'
                 onChange={onChange}
+                style={fuente}
                  />
             )}
         </View>
@@ -161,32 +184,17 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
       },
-    buttonTime:{
+    boton:{
         backgroundColor: '#0093B7',
         borderRadius:25,
-        width:200,
-        height:32,
-        marginVertical:10,
-    },
-    buttonCont:{
-        backgroundColor:'#0093B7',
-        borderRadius:25,
-        width:150,
-        height:35,
-        marginVertical:20,
-        top:5,
-        padding:2
+        //width:"55%",
+        marginVertical:"3%",
+        paddingVertical: "1%"
     },
     texto:{
         color:'white',
         fontFamily:'sans-serif',
-        fontSize:20,
+        //fontSize:20,
         textAlign:'center'  
-    },
-    buttonCancel:{
-        backgroundColor:'#0093B7',
-        borderRadius:25,
-        width:150,
-        height:35,
-    },
+    }
 })

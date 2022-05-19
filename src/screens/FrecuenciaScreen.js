@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { View,Text,StyleSheet,TouchableOpacity,FlatList} from 'react-native';
 
-
-
 const FrecuenciaScreen = (props) => {
 
   const [fuente,setFuente] = useState({fontSize: 20})
@@ -44,7 +42,7 @@ const FrecuenciaScreen = (props) => {
   }
   
   const guardarFrecuencia = (item)=>{
-if (editar){
+  if (editar){
    var datosRecordatorio = { 
       uid: uid,
       id: props.route.params.id,
@@ -65,7 +63,8 @@ if (editar){
       tipoAdm: tipoAdm,
       dose: dose,
       quantity:quantity,
-      item: item  
+      item: item,
+      fuenteNuevo: fuenteNuevo  
     }}
     props.navigation.navigate('Establecer horas',datosRecordatorio)
   }
