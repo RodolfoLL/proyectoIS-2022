@@ -1,11 +1,15 @@
-import React,{useState} from 'react';
+import React, { useState, useEffect } from "react";
 import { View,Text,StyleSheet,TouchableOpacity,FlatList} from 'react-native';
 
 
 
 const FrecuenciaScreen = (props) => {
+
+  const [fuente,setFuente] = useState({fontSize: 20})
+  const [fuenteTitulo,setFuenteTitulo] = useState({fontSize: 30})
+  const [tamanioBoton,setTamanioBoton] = useState({marginVertical: "10%"})
   
-  const { uid,nombreMed,tipoAdm,dose,quantity,editar } = props.route.params;
+  const { uid,nombreMed,tipoAdm,dose,quantity,editar,fuenteNuevo} = props.route.params;
     
   const [numeroFrecuencia, setnumeroFrecuencia] = useState([
     {title:"Una vez al dia",frecuencia:1,key:1},
@@ -17,6 +21,27 @@ const FrecuenciaScreen = (props) => {
   ]);
   // setnumeroFrecuencia([...numeroFrecuencia,dosis,cantidadMed,hora])
   
+  useEffect( () =>{
+    let fuenteTemporalTitulo = {
+        fontSize: fuenteNuevo.fontSize+3
+    }
+    setFuente(fuenteNuevo)
+    setFuenteTitulo(fuenteTemporalTitulo)
+    cambiarEstiloBoton(fuenteNuevo.fontSize)
+  },[]
+  );
+
+  const cambiarEstiloBoton = (tamanio)=>{
+    const tamanioBotonTemporal = {...tamanioBoton};
+    if(tamanio === 20){
+      tamanioBotonTemporal.marginVertical = "10%"
+    }else if(tamanio === 25){
+      tamanioBotonTemporal.marginVertical = "7%"
+    }else if(tamanio === 30){
+      tamanioBotonTemporal.marginVertical = "4%"
+    }
+      setTamanioBoton(tamanioBotonTemporal)
+  }
   
   const guardarFrecuencia = (item)=>{
 if (editar){
@@ -47,13 +72,13 @@ if (editar){
 
   return (
     <View style ={styles.contain}>
-        <Text style={styles.texto}>{"¿Con que frecuencia toma el\n"+"medicamento?"}</Text>
+        <Text style={[styles.texto,fuenteTitulo]}>{"¿Con que frecuencia toma el\n"+"medicamento?"}</Text>
           <FlatList data={numeroFrecuencia} renderItem={({ item }) => (
           <TouchableOpacity
               onPress={() => guardarFrecuencia(item.frecuencia)}
           >
-            <View style={styles.button}>
-              <Text style={styles.texto}>{ item.title }</Text>
+            <View style={[styles.button,tamanioBoton]}>
+              <Text style={[styles.texto,fuente]}>{ item.title }</Text>
             </View>
         </TouchableOpacity>
       )} />
@@ -73,40 +98,15 @@ const styles = StyleSheet.create({
   texto:{
     color:'white',
     fontFamily:'sans-serif',
-    fontSize:20,
-    textAlign:'center'  
-},
+    //fontSize:20,
+    textAlign:'center',
+    paddingHorizontal: "1%"  
+  },
   button:{
     backgroundColor:'#0093B7',
     borderRadius:25,
-    width:200,
-    height:32,
-    marginVertical:20,
-    padding:2
-},
+    //marginVertical:"10%",
+    padding: "2%"
+  },
 
 })
-
-
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     backgroundColor: '#001B48',
-//     alignItems: 'center',
-//     justifyContent: 'center',
-//   },
-//   texto:{
-//     color:'white',
-//     fontFamily:'sans-serif',
-//     fontSize:20,
-//     textAlign:'center'  
-//   },
-//   buttonDate:{
-//     alignItems:'center',
-//     width: 200,
-//     height:32,
-//     backgroundColor: '#0093B7',
-//     borderRadius:25,
-//     bottom:10,
-// },
-// });

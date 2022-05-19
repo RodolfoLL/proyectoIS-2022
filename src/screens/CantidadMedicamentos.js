@@ -73,7 +73,8 @@ const CantidadMedicamentos = ({ route, navigation }) => {
                 tipoAdm: tipoAdm,
                 dose: selectDose,
                 quantity: selectQuantity,
-                editar:false
+                editar:false,
+                fuenteNuevo: fuenteNuevo
             })
          } else{
             Alert.alert("Dosis de medicamento","La dosis es mayor a la cantidad de medicamentos que tienes")
