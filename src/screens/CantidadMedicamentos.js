@@ -48,10 +48,6 @@ const CantidadMedicamentos = ({ route, navigation }) => {
       },[]
     );
 
-    console.log("======================")
-    console.log(fuente)
-    console.log(fuenteTitulo)
-
     if (tipoAdm == "Via Oral") { tipoDosis = "Comprimido"; }
     if (tipoAdm == "Via Intramuscular" ||
         tipoAdm == "Via Parenteral") { tipoDosis = "Inyección"; }
