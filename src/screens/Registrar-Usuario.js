@@ -6,6 +6,11 @@ import{useHeaderHeight } from "@react-navigation/elements"
 import { size } from "lodash";
 import {getAuth,createUserWithEmailAndPassword,updateProfile} from "firebase/auth"
 import {app} from '../../database/firebase'
+
+import { doc, setDoc } from 'firebase/firestore';
+import {db} from '../../database/firebase'
+import {collection, addDoc} from 'firebase/firestore';
+
 const RegistroUsuario= ({route,navigation}) =>{
      let {height, width} = Dimensions.get('window');
     const [Datos, setDatos] = useState(defaultFormValues())
@@ -124,26 +129,44 @@ const RegistroUsuario= ({route,navigation}) =>{
         }
         setLoading(true)
         const usuario = await registrarUsuario(Datos.email,Datos.contraseña)
+        console.log("====================================================")
+        //console.log(usuario)
+
         if (!usuario.statusResponse) {
             setLoading(false)
             seterrorEmail(usuario.error)
             return
         }
+
+        /*let  datosFuente  =  {
+            fontSize : 20
+        }
+        addDoc ( collection ( db ,  'Fuentes3') , datosFuente)*/
+
         updateProfile(auth.currentUser, {
             displayName: Datos.nombre, 
-          }).then(() => {
+          }).then(async () => {
+
+            let  datosFuente  =  {
+                fontSize : 20
+            }
+            //await addDoc ( collection ( db ,  'Fuentes') , datosFuente)
+            console.log("DOCUMENTO=============")
+            await setDoc(doc(db, "Fuentes", usuario.user.uid), datosFuente);
+
             signOutUser()
+
           }).catch((error) => {
             console.log("nombre--- ups")
-          });    
+          });
+        
         navigation.navigate("Login")
         setLoading(false)
         Alert.alert("Cuenta creada", "Ya puedes acceder",[
             {text: "OK" ,onPress: () =>{ console.log("ok a Login")} }
              ])
-    
-        
     }
+
     return (
        
        <KeyboardAwareScrollView

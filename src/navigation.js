@@ -26,6 +26,7 @@ import Settings from './screens/Settings';
 
 import Login from './screens/Login';
 import RegistroUsuario from './screens/Registrar-Usuario';
+//import TamañoDeFuente from './screens/TamañoDeFuente';
 import RecuperarContrasenia from './screens/RecuperarContrasenia';
 import DatosUsuario from './screens/DatosUsuario';
 const HomeStackNavigator = createNativeStackNavigator();

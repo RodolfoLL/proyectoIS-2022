@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { Text, View, StyleSheet, Button, TextInput, ScrollView,Alert } from 'react-native';
+import React, { useState, useEffect } from "react";
+import { Text, View, StyleSheet, TouchableOpacity, TextInput, ScrollView,Alert } from 'react-native';
 import { CheckBox, Switch } from 'react-native-elements';
 
 
@@ -8,9 +8,20 @@ var tipo = '';
 let regex = new RegExp("^[a-zA-ZÀ-ÿ ]+$");
 let letras= new RegExp("[a-zA-Z]");
 const RegistroEdit =({route,navigation}) => {
+    const [fuente,setFuente] = useState({fontSize: 20})
+    const [fuenteTitulo,setFuenteTitulo] = useState({fontSize: 30})
     const parametros  = route.params
+    const {fuenteNuevo}  = route.params
     
-    
+    useEffect( () =>{
+      let fuenteTemporal = {
+        fontSize: fuenteNuevo.fontSize-5
+      }
+      setFuente(fuenteTemporal)
+      setFuenteTitulo(fuenteNuevo)
+    },[]
+    );
+
     const verificar = (text, tipo) => {
       if (!editado){
         tipo = parametros.tipoAdm
@@ -35,8 +46,8 @@ const RegistroEdit =({route,navigation}) => {
               item: parametros.item,
               hora: parametros.hora,
               duracion: parametros.duracion,
-              editar:true
-
+              editar:true,
+              fuenteNuevo: fuenteNuevo
             })
         } else {
           Alert.alert("Nombre del Medicamento","Ingresar solo letras en el nombre")
@@ -130,31 +141,37 @@ const RegistroEdit =({route,navigation}) => {
       container: {
         flex: 1,
         backgroundColor: '#001B48',
-        paddingLeft: 20,
-        paddingRight: 30,
+        paddingHorizontal: '3%'
       },
       title: {
-        fontSize: 20,
-        paddingTop: 10,
+        paddingTop: 5,
         color: 'white'
+    
       },
       inputS: {
-        height: 40,
         width: "100%",
         borderColor: 'white',
         borderWidth: 3,
         borderRadius: 5,
-        marginTop: 20,
-        marginBottom: 20,
-        padding: 10,
+        marginTop: 10,
+        marginHorizontal: '1%',
+        marginBottom: 10,
+        paddingHorizontal: 10,
+        paddingVertical:2,
         color: 'white'
       },
       opciones: {
         margin: 20,
       },
       botones: {
-        padding: 7,
-        fontSize: 20
+        alignItems: 'center',
+        backgroundColor: '#0093B7',
+        marginBottom: '15%',
+        borderRadius: 25,
+        fontSize: 20,
+        marginLeft: '25%',
+        height: '6%',
+        width: '50%',
       }
     });
   
@@ -165,12 +182,12 @@ const RegistroEdit =({route,navigation}) => {
       <ScrollView style={styles.container}>
          
         <View style={styles.container}>
-          <Text style={styles.title}>Nombre del  Medicamento</Text>
-          <TextInput style={styles.inputS}
+          <Text style={[styles.title,fuenteTitulo]}>Nombre del Medicamento</Text>
+          <TextInput style={[styles.inputS,fuente]}
             value={nombre}
             onChangeText={text => setNombre(text)}
           />
-          <Text style={styles.title}>Tipo de administracion</Text>
+          <Text style={[styles.title,fuenteTitulo]}>Tipo de administracion</Text>
           <View style={styles.opciones}>
             {}
             <CheckBox
@@ -190,6 +207,7 @@ const RegistroEdit =({route,navigation}) => {
 
               }
               }
+              textStyle = {fuente}
             />
             <CheckBox
               title='Via Intramuscular'
@@ -204,6 +222,7 @@ const RegistroEdit =({route,navigation}) => {
                 setEditado();
               }
               }
+              textStyle = {fuente}
             />
             <CheckBox
               title='Via Inalatoria'
@@ -220,6 +239,7 @@ const RegistroEdit =({route,navigation}) => {
                 setEditado();
               }
               }
+              textStyle = {fuente}
             />
             <CheckBox
               title='Via Nasal'
@@ -236,6 +256,7 @@ const RegistroEdit =({route,navigation}) => {
                 setEditado();
               }
               }
+              textStyle = {fuente}
   
             />
             <CheckBox
@@ -253,6 +274,7 @@ const RegistroEdit =({route,navigation}) => {
                 setEditado();
               }
               }
+              textStyle = {fuente}
             />
             <CheckBox
               title='Via Oftalmologica'
@@ -269,6 +291,7 @@ const RegistroEdit =({route,navigation}) => {
                 setEditado();
               }
               }
+              textStyle = {fuente}
             />
             <CheckBox
               title='Via Parenteral'
@@ -285,14 +308,15 @@ const RegistroEdit =({route,navigation}) => {
                 setEditado();
               }
               }
+              textStyle = {fuente}
             />
           </View>
           <View style={styles.botones}>
-            <Button
-              title="Continuar"
-              color="#0093B7"
+            <TouchableOpacity
               onPress={() => verificar(nombre, tipo)}
-            />
+            >
+              <Text style={[styles.title,fuenteTitulo]}>Continuar</Text>
+            </TouchableOpacity>
           </View>
         </View>
       </ScrollView>
