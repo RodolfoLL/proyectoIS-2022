@@ -12,18 +12,13 @@ const PantallaRegistroMed = ( {navigation , props, route}) => {
 
   console.log("ENTRO=========")
   const {uid,fuenteNuevo} = route.params;
-  console.log(fuenteNuevo)
-  //const fuenteTemporal = {...fuente};
-  //fuenteTemporal.fontSize = fuenteNuevo;
-  //setFuente(fuenteNuevo)
+  
   useEffect( () =>{
     let fuenteTemporal = {
       fontSize: fuenteNuevo.fontSize-5
     }
     setFuente(fuenteTemporal)
     setFuenteTitulo(fuenteNuevo)
-    console.log("Fuente============")
-    console.log(fuente)
   },[]
   );
 
@@ -39,7 +34,8 @@ const PantallaRegistroMed = ( {navigation , props, route}) => {
           {
             uid: uid,
             nombreMed: text,
-            tipoAdm: tipo
+            tipoAdm: tipo,
+            fuenteNuevo: fuenteNuevo
           })
       } else {
         Alert.alert("Nombre del Medicamento","Ingresar solo letras en el nombre")
@@ -241,8 +237,9 @@ const styles = StyleSheet.create({
     borderColor: 'white',
     borderWidth: 3,
     borderRadius: 5,
-    marginTop: 20,
+    marginTop: 10,
     marginHorizontal: '1%',
+    marginBottom: 10,
     padding: 10,
     color: 'white'
   },
