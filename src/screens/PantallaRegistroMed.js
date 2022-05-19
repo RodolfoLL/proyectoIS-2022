@@ -59,7 +59,7 @@ const PantallaRegistroMed = ( {navigation , props, route}) => {
         <Text style={[styles.title,fuenteTitulo]}>Nombre del Medicamento</Text>
         <TextInput {...props} 
                       editable 
-                        maxLength={25} style={styles.inputS}
+                        maxLength={25} style={[styles.inputS,fuente]}
           value={nombre}
           onChangeText={text => setNombre(text)}
         />
@@ -232,7 +232,6 @@ const styles = StyleSheet.create({
 
   },
   inputS: {
-    height: 40,
     width: "100%",
     borderColor: 'white',
     borderWidth: 3,
@@ -240,7 +239,8 @@ const styles = StyleSheet.create({
     marginTop: 10,
     marginHorizontal: '1%',
     marginBottom: 10,
-    padding: 10,
+    paddingHorizontal: 10,
+    paddingVertical:2,
     color: 'white'
   },
   opciones: {

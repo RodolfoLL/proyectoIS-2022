@@ -274,7 +274,7 @@ const PantallaInicio = ({navigation}) => {
                                 item: item.item,
                                 hora: item.hora,
                                 duracion: item.duracion,
-
+                                fuenteNuevo: fuenteBaseDatos
                             })}
 
                             style={{ marginTop: "0%"}}/>
