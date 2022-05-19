@@ -54,7 +54,8 @@ const DuracionTratamiento = (props) => {
                 item: item,
                 hora:hora,
                 duracion: duracion,
-                editar:editar
+                editar:editar,
+                fuenteNuevo: fuenteNuevo
             }
         }
         props.navigation.navigate("Configurar Notificacion",datosRecordatorio);
