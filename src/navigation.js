@@ -26,7 +26,7 @@ import Settings from './screens/Settings';
 
 import Login from './screens/Login';
 import RegistroUsuario from './screens/Registrar-Usuario';
-import TamañoDeFuente from './screens/TamañoDeFuente';
+//import TamañoDeFuente from './screens/TamañoDeFuente';
 import RecuperarContrasenia from './screens/RecuperarContrasenia';
 import DatosUsuario from './screens/DatosUsuario';
 const HomeStackNavigator = createNativeStackNavigator();
@@ -44,10 +44,6 @@ function MyStacks() {
         <HomeStackNavigator.Navigator initialRouteName='Medicate'
             >
             <HomeStackNavigator.Screen name="Recordatorios" component={PantallaInicio}
-            options={{headerTintColor: 'white',
-            headerStyle:{ backgroundColor: "#0093B7"}}}/>
-
-            <HomeStackNavigator.Screen name="Tamaño de Fuente" component={TamañoDeFuente}
             options={{headerTintColor: 'white',
             headerStyle:{ backgroundColor: "#0093B7"}}}/>
              

@@ -245,10 +245,6 @@ const PantallaInicio = ({navigation}) => {
                 <Text style={[{color: 'white', fontWeight: 'bold' },fuenteTitulo]}>
                     MEDICATE 
                 </Text>
-                <TouchableOpacity style={{backgroundColor: "red"}}
-                    onPress={() => navigation.navigate("Tamaño de Fuente",{uid:uid})}>
-                    <Text>Configuraciones</Text>
-                </TouchableOpacity>
             </View>
             
         <FlatList
