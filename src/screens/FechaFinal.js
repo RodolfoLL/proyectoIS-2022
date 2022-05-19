@@ -1,10 +1,13 @@
-import React, {useState} from 'react'
+import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet,TouchableOpacity,Alert} from 'react-native'
 import  DateTimePicker  from '@react-native-community/datetimepicker'
 import { doc, setDoc,collection, addDoc} from 'firebase/firestore';
 import {db} from '../../database/firebase'
 
 const FechaFinal = (props) => {
+    const [fuente,setFuente] = useState({fontSize: 20})
+    const [fuenteTitulo,setFuenteTitulo] = useState({fontSize: 30})
+
     const {editar} = props.route.params;
     if (editar){
         let {duracion} = props.route.params
@@ -27,7 +30,7 @@ const FechaFinal = (props) => {
 
             let fechaTemporal = new Date(currentDate)
             let fechaActual = new Date()
-            let fecha = (fechaTemporal.getMonth()+1) +'/'+ fechaTemporal.getDate()+'/'+ fechaTemporal.getFullYear()
+            let fecha =   fechaTemporal.getDate()+'/'+(fechaTemporal.getMonth()+1) +'/'+ fechaTemporal.getFullYear()
 
             if(fechaTemporal.toDateString() === fechaActual.toDateString()){
                 if(validarHora()){
@@ -49,7 +52,16 @@ const FechaFinal = (props) => {
         setMode(currentMode);
     };
 
-    const { uid,nombreMed,tipoAdm,dose,quantity,item,hora } = props.route.params;
+    const { uid,nombreMed,tipoAdm,dose,quantity,item,hora,fuenteNuevo } = props.route.params;
+
+    useEffect( () =>{
+        let fuenteTemporalTitulo = {
+            fontSize: fuenteNuevo.fontSize+5
+        }
+        setFuente(fuenteNuevo)
+        setFuenteTitulo(fuenteTemporalTitulo)
+      },[]
+    );
 
     const validarHora = () =>{
         /*let horaCompletoActual = new Date().toTimeString().substring(0,5);
@@ -112,7 +124,8 @@ const FechaFinal = (props) => {
                 tipoAdm: tipoAdm,
                 dose: dose,
                 quantity:quantity,
-                item: item
+                item: item,
+                fuenteNuevo: fuenteNuevo
             }
         }
         props.navigation.navigate('Establecer horas',datosRecordatorio)
@@ -134,7 +147,7 @@ const FechaFinal = (props) => {
                 editar:editar
             }
             let fechaActual = new Date()
-            let fecha = fechaActual.getMonth()+ +'/'+fechaActual.getDate()+'/'+ fechaActual.getFullYear()
+            let fecha = fechaActual.getDate()+'/'+fechaActual.getMonth() +'/'+ fechaActual.getFullYear()
             if(textDate === fecha){
                 if(validarHora()){
                     console.log("SE GUARDO")
@@ -158,7 +171,8 @@ const FechaFinal = (props) => {
                     quantity:quantity,
                     item: item,
                     hora:hora,
-                    duracion: duracion
+                    duracion: duracion,
+                    fuenteNuevo: fuenteNuevo
                 }
                 props.navigation.navigate("Configurar Notificacion",datosRecordatorio);
 
@@ -177,17 +191,17 @@ const FechaFinal = (props) => {
     return(
         <View style={styles.container}>
             <View style={[styles.box, styles.box1]}>
-                <Text style={styles.title}>Establecer la fecha final</Text>
+                <Text style={[styles.title,fuenteTitulo]}>Establecer la fecha final</Text>
             </View>
 
             <View style={[styles.box, styles.box2]}>
 
                 <TouchableOpacity style={styles.boton}
                     onPress={() => showMode('date') } >
-                    <Text style={styles.textBoton}>Mostrar Calendario</Text>
+                    <Text style={[styles.textBoton,fuente]}>Mostrar Calendario</Text>
                 </TouchableOpacity>
 
-                <Text style={styles.fecha}>Fecha Escogida: {textDate}</Text>
+                <Text style={[styles.fecha,fuente]}>Fecha Escogida: {textDate}</Text>
 
                 {show && (
                     <DateTimePicker
@@ -206,7 +220,7 @@ const FechaFinal = (props) => {
             <View style={[styles.box, styles.box3]}>
                 <TouchableOpacity style={styles.boton}
                     onPress={() => guardarDuracion(textDate)}  >
-                    <Text style={styles.textBoton}>Guardar</Text>
+                    <Text style={[styles.textBoton,fuente]}>Guardar</Text>
                 </TouchableOpacity>
             </View>
         </View>
@@ -223,35 +237,37 @@ const styles = StyleSheet.create({
     },
     box1: {
         flex: 1,
-        paddingTop: 50
+        paddingTop: 50,
+        alignItems: "center"
     },
     box2: {
-        flex: 2
-  
+        flex: 2,
+        alignItems: "center"
     },
     box3: {
         flex: 1
     },
     title:{
-        fontSize: 25,
+        //fontSize: 25,
         color: '#fff'
     },
     boton:{
         backgroundColor: "#0093B7",
         borderRadius: 25,
         marginBottom: 20,
-        padding: 12,
+        paddingHorizontal: "10%",
+        paddingVertical: 7,
         alignItems: 'center',
-        width: 230
+        width: "90%"
     },
     textBoton:{
-        fontSize: 20,
+        //fontSize: 20,
         color: "#fff"
     },
 
     fecha:{
         color: "#fff",
-        fontSize: 18
+        //fontSize: 18
     }
 
 });
