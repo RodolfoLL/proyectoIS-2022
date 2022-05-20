@@ -94,6 +94,9 @@ function Profile(){
             <PerfilStack.Screen name = "Administrar Cuenta" component={DatosUsuario}
             options={{headerTintColor: 'white',
             headerStyle:{ backgroundColor: "#0093B7"}}}/>
+            <PerfilStack.Screen name = "Eliminar Cuenta" component={EliminarCuenta}
+            options={{headerTintColor: 'white',
+            headerStyle:{ backgroundColor: "#0093B7"}}}/>
         </PerfilStack.Navigator>
     );
 }

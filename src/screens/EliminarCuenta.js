@@ -1,13 +1,14 @@
 import { useState } from "react";
-import { View,StyleSheet,ActivityIndicator,Dimensions,Platform,Alert } from "react-native";
+import { View,StyleSheet,TouchableOpacity,ActivityIndicator,Dimensions,Platform,Alert,Image } from "react-native";
 import { Input,Button,Icon,Text,Overlay } from "react-native-elements";
 import {KeyboardAwareScrollView} from "react-native-keyboard-aware-scroll-view"
 import{useHeaderHeight } from "@react-navigation/elements"
 import { size } from "lodash";
-import {getAuth,updateProfile,updateEmail,updatePassword, deleteUser} from "firebase/auth"
+import {getAuth,updateProfile,updateEmail,updatePassword, deleteUser, signInWithEmailAndPassword} from "firebase/auth"
 import {app} from '../../database/firebase'
 import { collection, query, where, getDocs ,doc, deleteDoc,updateDoc, onSnapshot} from "firebase/firestore"
 import {db} from '../../database/firebase'
+import { Ionicons } from '@expo/vector-icons'; 
 //import { deleteUser } from "firebase/auth";
 
 const EliminarCuenta = ({navigation}) =>{
@@ -16,60 +17,64 @@ const EliminarCuenta = ({navigation}) =>{
     const [password, setPassword] = useState("")
     const [errorContra,seterrorContra]= useState("")
 
-    const auth = getAuth(app);
-    auth.onAuthStateChanged(user => {
-      if(user){
-        navigation.navigate('Drawer');
-      }
-    });
+    const auth = getAuth();
+    const user = auth.currentUser;
+    const email = user.email;
 
    function validarContra(contra){
         const regex = /^[0-9a-zA-Z\_]+$/
         return regex.test(contra) 
-        
-
     }
-    /*const ElimCuenta = ()=>{
-        seterrorContra("")
-       console.log(password)
-             if(!validarContra(Datos.contraseña)){
-                        seterrorContra("la contraseña no debe tener caracteres especiales o espacios")
-                        valido = false
-             }
-                    deleteUser(user).then(() => {
-                        setPassword("")
-                    console.log("UID:  "+ user.uid)
-                    
-                    navigation.navigate("Drawer");
-
-             }).catch(error => { 
-                        const errorCode = error.code;
-                        const errorMessage = error.message;
-                        
-                        if(password !== ""){
-                        if(errorCode == "auth/wrong-password"){
-                            
-                            seterrorContra("Contraseña incorrecta")
-                        }else{
-                           
-                            seterrorEmail("Correo no registrado")
-                        }
-                        }else{
-                        seterrorContra("No se ingreso contraseña")
-                        }
-                        
-                    })
-    }*/
-
-    
-
-     
+    async function inicioSesion(){
+        let respuesta = {estado: true}
+        await signInWithEmailAndPassword(auth, email, password)
+        .then(credencial =>{console.log("Se inició sesion")})
+        .catch(errorr => {
+          respuesta.estado = false
+          
+        })
+        return respuesta;
+      }
+      const ElimCuenta = async()=>{
+          seterrorContra("")
+         console.log(password)
+               if(!validarContra(password)){
+                          seterrorContra("Contrasña Incorecta")
+               }else {
+                const resultInicioSesion = await inicioSesion()
+                const estaReautenticado = resultInicioSesion.estado
+                 if(estaReautenticado){
+                  deleteUser(user)
+                  .then(() => {
+                      // setPassword("")
+                  console.log(user)
+                  
+                  navigation.navigate("Login");
+  
+                  })
+                  .catch(error => { 
+                    console.log(error)
+                      const errorCode = error.code;
+                      const errorMessage = error.message;
+                      
+                      
+                      
+                  }
+                  )
+                 }
+               }
+      }
    return (
-    <KeyboardAwareScrollView>
+    <KeyboardAwareScrollView style={styles.container}>
       <View style={styles.container}>
-       
-        <Text style={styles.titulo}>  Eliminar Cuenta </Text>      
-        <Text style={styles.text}> Contraseña</Text>
+     
+        <Text style={styles.titulo}>  Eliminar Cuenta </Text>    
+         <Image
+          style={styles.incono}
+          source={require("../assets/capt.png")}
+        />
+
+        <Text style={styles.text}> Contraseña Actual</Text>
 
         <Input style={styles.text}
           containerStyle={styles.input}
@@ -88,7 +93,7 @@ const EliminarCuenta = ({navigation}) =>{
             }
         />
         <Text style={styles.recuperarPassword} onPress={() => navigation.navigate('Recuperar contraseña')}>Olvidaste la contraseña?</Text>
-        <TouchableOpacity style={styles.botonEliminar}       onPress={() =>     ElimCuenta()}>
+        <TouchableOpacity style={styles.botonEliminar}       onPress={() => ElimCuenta()}>
             <Text style={styles.textEliminar}>   ELIMINAR  </Text>
         </TouchableOpacity>
       </View>
@@ -97,12 +102,12 @@ const EliminarCuenta = ({navigation}) =>{
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: '#001B48',
-    paddingLeft: 35,
-    paddingRight: 35,
-    color: 'white'
-  },
+  flex: 1,
+        backgroundColor: '#001B48',
+        paddingLeft: 15,
+        paddingRight: 15,
+      },
+   
   incono:{
     resizeMode: 'contain',
     width: "90%",
@@ -111,9 +116,10 @@ const styles = StyleSheet.create({
   },
   titulo:{
     color: "white",
-    fontSize: 40,
+    fontSize: 30,
+    marginTop: 15,
     alignSelf: "center",
-    marginBottom: "12%",
+    marginBottom: "15%",
     fontWeight: 'bold'
   },
   text:{
@@ -153,7 +159,12 @@ const styles = StyleSheet.create({
   textEliminar:{
     color: "white",
     fontSize: 23
-  }
+  },incono:{
+    resizeMode: 'contain',
+    alignSelf:"center",
+    maxHeight: "20%",
+    marginTop: -5
+    }
 });
 
 export default EliminarCuenta;
