@@ -6,7 +6,6 @@ import { doc, setDoc, onSnapshot, getDoc } from 'firebase/firestore';
 import {db} from '../../database/firebase'
 import {app} from '../../database/firebase'
 import { getAuth} from 'firebase/auth';
-import {Ionicons} from '@expo/vector-icons';
 
 const TamañoDeFuente = ({navigation}) => {
 
