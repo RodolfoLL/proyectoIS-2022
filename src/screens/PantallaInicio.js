@@ -58,7 +58,7 @@ const PantallaInicio = ({navigation,props}) => {
                     color: "white",
                     lineHeight:16
                 }}
-            >{'añadir'}</Text>
+            >{'Añadir'}</Text>
         </TouchableOpacity>),
         headerLeft: () => (
             <TouchableOpacity
