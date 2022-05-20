@@ -3,7 +3,7 @@ import { View, Text, TouchableOpacity, ScrollView, Image, SafeAreaView,Alert,Fla
 import image from '../assets/medicate.png'
 import {db} from '../../database/firebase'
 import { StatusBar } from 'expo-status-bar';
-import { collection, query, where, getDocs ,doc, deleteDoc,updateDoc, onSnapshot} from "firebase/firestore";
+import { collection, query, where, getDoc ,doc, deleteDoc,updateDoc, onSnapshot} from "firebase/firestore";
 import { render } from "react-dom";
 import { ListItem ,Icon} from 'react-native-elements';
 import { Usuario } from "./Login";
@@ -24,15 +24,62 @@ const verificarFechas=(a)=>{
     hoy.setHours(0,0,0,0)
     fechHoy=(hoy.getTime())
 }
-const PantallaInicio = ({navigation,props}) => {
+const PantallaInicio = ({navigation}) => {
+
+    const [fuente,setFuente] = useState({fontSize: 20})
+    const [fuenteTitulo,setFuenteTitulo] = useState({fontSize: 30})
+    const [fuenteSubTitulo,setSubFuenteTitulo] = useState({fontSize: 25})
+    const [altoTarjeta,setAltoTarjeta] = useState({height: 125})
+    const [fuenteBaseDatos,setFuenteBaseDatos] = useState({fontSize: 20})
+
     const auth = getAuth(app);
     const user = auth.currentUser;
     const uid = user.uid;
     console.log(uid);
+
+    const actualizarFuente = async() =>{
+        console.log("FUENTE===========================")
+        const docRef = doc(db, "Fuentes",uid);
+        const docSnap = await getDoc(docRef);
+        console.log(docSnap.data().fontSize)
+        const objetoFuente = docSnap.data().fontSize
+        setFuenteBaseDatos(objetoFuente)
+
+        console.log(objetoFuente.fontSize)
+        console.log("===========================")
+
+        const fuenteTemporal = {...fuente};
+        const fuenteTemporalTitulo = {...fuenteTitulo};
+        const subtituloTemporal = {...fuenteSubTitulo};
+
+        fuenteTemporal.fontSize = objetoFuente.fontSize-5; //15px 20px 25px
+        fuenteTemporalTitulo.fontSize = objetoFuente.fontSize+20; //40px 45px 50px
+        subtituloTemporal.fontSize = objetoFuente.fontSize+3; //23px 28px 33px
+
+        setFuente(fuenteTemporal);
+        setFuenteTitulo(fuenteTemporalTitulo);
+        setSubFuenteTitulo(subtituloTemporal)
+        cambiarTamanioTarjeta(objetoFuente.fontSize)
+        
+    }
+
+    const cambiarTamanioTarjeta = (tamanio) =>{
+        const altoTarjetaTemporal = {...altoTarjeta};
+        if(tamanio === 20){
+            altoTarjetaTemporal.height = tamanio+105
+        }else if(tamanio === 25){
+            altoTarjetaTemporal.height = tamanio+195
+        }else if(tamanio === 30){
+            altoTarjetaTemporal.height = tamanio+280
+        }
+        
+        setAltoTarjeta(altoTarjetaTemporal)
+    }
+
     navigation.setOptions({ 
     headerRight: () => (
         <TouchableOpacity
-            onPress={() => navigation.navigate("Registro de Medicamento",{uid:uid})}
+            onPress={() => navigation.navigate("Registro de Medicamento",{uid:uid, fuenteNuevo:fuenteBaseDatos})}
             style={{
                 width: 100,
                 height: 40,
@@ -86,6 +133,17 @@ const PantallaInicio = ({navigation,props}) => {
     const [recordatorios, setRecordatorios] = useState([]);
     console.log(recordatorios)
     useEffect( () =>{
+        
+
+        onSnapshot(doc(db, "Fuentes", uid), (doc) => {
+            console.log("Current data: ", doc.data());
+            actualizarFuente()
+            console.log("===========================")
+            console.log(fuente)
+            console.log(fuenteTitulo)
+            console.log("===========================")
+        });
+
         onSnapshot(collection(db,uid), (snapshot) =>{
             setRecordatorios(snapshot.docs.map((doc) => ({...doc.data(),id: doc.id})).sort((a,b) => {
                 if(a.nombreMed > b.nombreMed){
@@ -127,6 +185,9 @@ const PantallaInicio = ({navigation,props}) => {
                 if(cantidadMan>sig){
                     schedulePushNotification(nombreMed,cantidadMed);
                 }
+            }
+            if(cantidadMed<dosisMed){
+                schedulePushNotification(nombreMed,cantidadMed);
             }
             const docrefRecordatorio = doc(db,uid,recordatorioId)
             const datos = { quantity: cantidadMed}
@@ -172,7 +233,6 @@ const PantallaInicio = ({navigation,props}) => {
         console.log("ok sin elimnar")
            } }
         ])
-        listaAgotados=[];
     }
     return (
          
@@ -183,7 +243,7 @@ const PantallaInicio = ({navigation,props}) => {
                 marginTop: "5%"
                 
                 }}>
-                <Text style={{ fontSize: 50, color: 'white', fontWeight: 'bold' }}>
+                <Text style={[{color: 'white', fontWeight: 'bold' },fuenteTitulo]}>
                     MEDICATE 
                 </Text>
             </View>
@@ -196,15 +256,15 @@ const PantallaInicio = ({navigation,props}) => {
             <View style={{width: "90%", marginHorizontal: "5%", marginBottom: "5%"}}>
                 <ListItem key={item.id}>
                             
-                    <ListItem.Content style={{width: "100%", height:125}}>
+                    <ListItem.Content style={[{width: "100%"},altoTarjeta]}>
              
-                        <ListItem.Title style={{ color: "black", fontSize: 25, fontWeight: "bold"}}>{item.nombreMed}</ListItem.Title>
+                        <ListItem.Title style={[{ color: "black", fontWeight: "bold"},fuenteSubTitulo]}>{item.nombreMed}</ListItem.Title>
               
-                            <ListItem.Subtitle style={{ color: "black"}}>Tipo de administracion: {item.tipoAdm}</ListItem.Subtitle>
-                            <ListItem.Subtitle style={{ color: "black"}}>Dosis: {item.dose}</ListItem.Subtitle>
-                            <ListItem.Subtitle style={{ color: "black"}}>Cantidad de medicamentos: {item.quantity}</ListItem.Subtitle>
-                            <ListItem.Subtitle style={{ color: "black"}}>Hora: {item.hora.toString()}</ListItem.Subtitle>
-                            <ListItem.Subtitle style={{ color: "black"}}>Duracion hasta: {item.duracion}</ListItem.Subtitle>
+                            <ListItem.Subtitle style={[{ color: "black"},fuente]}>Tipo de administracion: {item.tipoAdm}</ListItem.Subtitle>
+                            <ListItem.Subtitle style={[{ color: "black"},fuente]}>Dosis: {item.dose}</ListItem.Subtitle>
+                            <ListItem.Subtitle style={[{ color: "black"},fuente]}>Cantidad de medicamentos: {item.quantity}</ListItem.Subtitle>
+                            <ListItem.Subtitle style={[{ color: "black"},fuente]}>Hora: {item.hora.toString()}</ListItem.Subtitle>
+                            <ListItem.Subtitle style={[{ color: "black"},fuente]}>Duracion hasta: {item.duracion}</ListItem.Subtitle>
 
                     </ListItem.Content>
 
@@ -222,7 +282,7 @@ const PantallaInicio = ({navigation,props}) => {
                                 item: item.item,
                                 hora: item.hora,
                                 duracion: item.duracion,
-
+                                fuenteNuevo: fuenteBaseDatos
                             })}
 
                             style={{ marginTop: "0%"}}/>

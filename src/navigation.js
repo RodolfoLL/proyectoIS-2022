@@ -21,12 +21,14 @@ import DosisEdit from './screens/DosisEdit';
 import Configuracion from './screens/Configaracion';
 import ConfiguraciónNotificación from './screens/ConfiguracionNotificación'
 import CustomDrawerContent from './Componentes/CustomDrawer';
-import Perfil from './screens/Perfil';
-import Settings from './screens/Settings';
+import TamañoDeFuente from './screens/Settings';
 import PantallaPrueba from './screens/PantallaPrueba';
 
 import Login from './screens/Login';
 import RegistroUsuario from './screens/Registrar-Usuario';
+//import TamañoDeFuente from './screens/TamañoDeFuente';
+import RecuperarContrasenia from './screens/RecuperarContrasenia';
+import DatosUsuario from './screens/DatosUsuario';
 const HomeStackNavigator = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -88,7 +90,7 @@ function Nstacks(){
 function Profile(){
     return(
         <PerfilStack.Navigator>
-            <PerfilStack.Screen name = "Cuenta" component={Perfil}
+            <PerfilStack.Screen name = "Administrar Cuenta" component={DatosUsuario}
             options={{headerTintColor: 'white',
             headerStyle:{ backgroundColor: "#0093B7"},headerShown:true}}/>
             <PerfilStack.Screen name = "Prueba" component={PantallaPrueba}
@@ -100,7 +102,7 @@ function Profile(){
 function Config(){
     return(
         <SettingsStack.Navigator>
-            <SettingsStack.Screen name = "Configuraciones" component={Settings}
+            <SettingsStack.Screen name = "Configuraciones" component={TamañoDeFuente}
             options={{headerTintColor: 'white',
             headerStyle:{ backgroundColor: "#0093B7"},headerShown:true}}/>
         </SettingsStack.Navigator>
@@ -181,9 +183,11 @@ export default function Navigation(){
                 headerStyle:{ backgroundColor: "#0093B7"}}}/>
             
             <Stack.Screen name="Drawer" component={Draws} options={{headerShown:false}}/>
-            {/* <Stack.Screen name="Medicate" component={MyTabs}
-                options={{headerShown:false}}
-            /> */}
+            <Stack.Screen name="Recuperar contraseña" component={RecuperarContrasenia}
+                options={{headerTintColor: 'white',
+                headerStyle:{ backgroundColor: "#0093B7"}}}
+            />
+           
             </Stack.Navigator>
         </NavigationContainer>
     );

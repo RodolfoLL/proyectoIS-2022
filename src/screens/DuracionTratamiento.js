@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet, TouchableOpacity} from 'react-native'
 import { doc, setDoc } from 'firebase/firestore';
 import {db} from '../../database/firebase'
@@ -6,12 +6,24 @@ import {db} from '../../database/firebase'
 
 const DuracionTratamiento = (props) => {
 
-    const { uid,nombreMed,tipoAdm,dose,quantity,item,hora,editar } = props.route.params;
+    const [fuente,setFuente] = useState({fontSize: 20})
+    const [fuenteTitulo,setFuenteTitulo] = useState({fontSize: 30})
+
+    const { uid,nombreMed,tipoAdm,dose,quantity,item,hora,editar,fuenteNuevo } = props.route.params;
+
+    useEffect( () =>{
+        let fuenteTemporalTitulo = {
+            fontSize: fuenteNuevo.fontSize+5
+        }
+        setFuente(fuenteNuevo)
+        setFuenteTitulo(fuenteTemporalTitulo)
+      },[]
+    );
     
     const guardarDuracion = async (nDias)=>{
         let fechaActual = new Date()
         let fechaTemporal = new Date(fechaActual.getFullYear(),fechaActual.getMonth(),fechaActual.getDate()+nDias)
-        let duracion = (fechaTemporal.getMonth()+1) + '/'+fechaTemporal.getDate() + '/'+ fechaTemporal.getFullYear() 
+        let duracion = fechaTemporal.getDate() + '/'+(fechaTemporal.getMonth()+1) + '/'+ fechaTemporal.getFullYear() 
         let datosRecordatorio = {}
         if (editar){
             console.log("Entra a editar la duración del tratamiento")
@@ -26,7 +38,8 @@ const DuracionTratamiento = (props) => {
                 item: item,
                 hora:hora,
                 duracion: duracion,
-                editar:editar
+                editar:editar,
+                fuenteNuevo: fuenteNuevo
             }
 
             
@@ -42,7 +55,8 @@ const DuracionTratamiento = (props) => {
                 item: item,
                 hora:hora,
                 duracion: duracion,
-                editar:editar
+                editar:editar,
+                fuenteNuevo: fuenteNuevo
             }
         }
         props.navigation.navigate("Configurar Notificacion",datosRecordatorio);
@@ -59,29 +73,29 @@ const DuracionTratamiento = (props) => {
     return(
         <View style={styles.container}>
             <View style={[styles.box, styles.box1]}>
-                <Text style={styles.title}>¿Cuanto dura el tratamiento?</Text>
+                <Text style={[styles.title,fuenteTitulo]}>¿Cuanto dura el tratamiento?</Text>
             </View>
 
             <View style={[styles.box, styles.box2]}>
                 <TouchableOpacity style={styles.boton}
                     onPress={() => guardarDuracion(5)} >
-                    <Text style={styles.textBoton}>5 dias</Text>
+                    <Text style={[styles.textBoton,fuente]}>5 dias</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.boton}
                     onPress={() => guardarDuracion(10)}  >
-                    <Text style={styles.textBoton}>10 dias</Text>
+                    <Text style={[styles.textBoton,fuente]}>10 dias</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.boton}
                     onPress={() => guardarDuracion(7)}  >
-                    <Text style={styles.textBoton}>1 semana</Text>
+                    <Text style={[styles.textBoton,fuente]}>1 semana</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.boton}
                     onPress={() => guardarDuracion(30)}  >
-                    <Text style={styles.textBoton}>30 dias</Text>
+                    <Text style={[styles.textBoton,fuente]}>30 dias</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.boton}
                     onPress={() => {props.navigation.navigate('FechaFinal', props.route.params)}}  >
-                    <Text style={styles.textBoton}>Establecer la fecha final</Text>
+                    <Text style={[styles.textBoton,fuente]}>Establecer la fecha final</Text>
                 </TouchableOpacity>
             </View>
         </View>
@@ -99,24 +113,25 @@ const styles = StyleSheet.create({
     },
     box1: {
         flex: 1,
-        paddingTop: 50,
+        paddingTop: 50
     },
     box2: {
-        flex: 6
+        flex: 5
     },
     title:{
-        fontSize: 25,
+        //fontSize: 25,
         color: '#fff'
     },
     boton:{
         backgroundColor: "#0093B7",
         borderRadius:25,
         marginBottom: 20,
-        padding: 10,
-  alignItems: 'center'
+        paddingHorizontal: 5,
+        paddingVertical: 10,
+        alignItems: 'center'
     },
     textBoton:{
-        fontSize: 20,
+        //fontSize: 20,
         color: "#fff"
     }
 });
