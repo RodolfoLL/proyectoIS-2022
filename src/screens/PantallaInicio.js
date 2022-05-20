@@ -41,39 +41,29 @@ const PantallaInicio = ({navigation}) => {
         console.log("FUENTE===========================")
         const docRef = doc(db, "Fuentes",uid);
         const docSnap = await getDoc(docRef);
-        console.log("LLEGO AQUI===========================")
         console.log(docSnap.data().fontSize)
-        console.log("LLEGO AQUI1===========================")
-        const objetoFuente = docSnap.data().fontSize
+        const valorFuenteBD = docSnap.data().fontSize
+        let objetoFuente = {fontSize: valorFuenteBD}
         setFuenteBaseDatos(objetoFuente)
 
-        console.log("LLEGO AQUI2===========================")
-        console.log(objetoFuente)
-        console.log("===========================")
+        console.log(valorFuenteBD)
 
         const fuenteTemporal = {...fuente};
         const fuenteTemporalTitulo = {...fuenteTitulo};
         const subtituloTemporal = {...fuenteSubTitulo};
 
         
-        fuenteTemporal.fontSize = objetoFuente-5; //15px 20px 25px
-        console.log("FONT SIZE 1===========================")
-        console.log(objetoFuente-5)
-        fuenteTemporalTitulo.fontSize = objetoFuente+20; //40px 45px 50px
-        console.log("FONT SIZE 2===========================")
-        console.log(objetoFuente+20)
-        subtituloTemporal.fontSize = objetoFuente+3; //23px 28px 33px
+        fuenteTemporal.fontSize = valorFuenteBD-5; //15px 20px 25px
+        console.log(valorFuenteBD-5)
+        fuenteTemporalTitulo.fontSize = valorFuenteBD+20; //40px 45px 50px
+        console.log(valorFuenteBD+20)
+        subtituloTemporal.fontSize = valorFuenteBD+3; //23px 28px 33px
 
-        console.log("LLEGO AQUI3===========================")
         setFuente(fuenteTemporal);
-        console.log("LLEGO AQUI4===========================")
         console.log(fuenteTemporalTitulo)
         setFuenteTitulo(fuenteTemporalTitulo);
-        console.log("LLEGO AQUI5===========================")
         setSubFuenteTitulo(subtituloTemporal)
-        console.log("LLEGO AQUI6===========================")
         cambiarTamanioTarjeta(objetoFuente.fontSize)
-        console.log("LLEGO AQUI7===========================")
         
     }
 
