@@ -105,7 +105,6 @@ const EditarDatosUs= ({navigation}) =>{
         seterrorNombre("")
         seterrorContra("")
         seterrorEmail("")
-        const errores = 0
         if(user.displayName != Datos.nombre || user.email != Datos.email || Datos.contraseña != ""){
             
             if( user.displayName != Datos.nombre){
@@ -183,7 +182,7 @@ const EditarDatosUs= ({navigation}) =>{
                     seterrorContra("contraseña actualizado correctamente")
                     setLoading(false)
                     if(user.displayName == Datos.nombre && user.email == Datos.email){
-                        Alert.alert("Datos Actulizados", "Se actualizo la contraseña",[
+                        Alert.alert("Datos Actulizados", "Se actualizaron todos los datos",[
                             {text: "ok"}
                              ])
                         navigation.navigate("Administrar Cuenta") 
@@ -203,6 +202,7 @@ const EditarDatosUs= ({navigation}) =>{
                  
               }
               setLoading(false)
+              
             }
             else{
                 Alert.alert("Sin cambios", "No se hizo ninguna actualizacion",[
