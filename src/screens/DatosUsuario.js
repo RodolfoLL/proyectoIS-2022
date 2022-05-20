@@ -19,8 +19,8 @@ const DatosUsuario = ( {navigation , props, route}) => {
     ),
 
 })
-
-  const auth = getAuth(app);
+   
+    const auth = getAuth(app);
     const user = auth.currentUser;
     const userName = auth.currentUser.displayName
     const emailUser = auth.currentUser.email
@@ -39,14 +39,15 @@ const DatosUsuario = ( {navigation , props, route}) => {
         </View>
         <View style={styles.botones}>
           <TouchableOpacity
-            onPress={() => console.log("Actualizar Cuenta")}
-          >
+            onPress={() => navigation.navigate("verificar Contraseña",{Tipo:"Actualizar"})}
+          > 
+          
             <Text style={styles.title}>Actualizar Cuenta</Text>
           </TouchableOpacity>
         </View>
         <View style={styles.botones}>
           <TouchableOpacity
-            onPress={() => console.log("Eliminar Cuenta")}
+            onPress={() => navigation.navigate("verificar Contraseña", {Tipo:"Eliminar"})}
           >
             <Text style={styles.title}>Eliminar Cuenta</Text>
           </TouchableOpacity>

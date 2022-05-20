@@ -22,13 +22,14 @@ import Configuracion from './screens/Configaracion';
 import ConfiguraciónNotificación from './screens/ConfiguracionNotificación'
 import CustomDrawerContent from './Componentes/CustomDrawer';
 import TamañoDeFuente from './screens/Settings';
-import PantallaPrueba from './screens/PantallaPrueba';
+import verificarContraseña from './screens/verificarContraseña';
 
 import Login from './screens/Login';
 import RegistroUsuario from './screens/Registrar-Usuario';
 //import TamañoDeFuente from './screens/TamañoDeFuente';
 import RecuperarContrasenia from './screens/RecuperarContrasenia';
 import DatosUsuario from './screens/DatosUsuario';
+
 const HomeStackNavigator = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -92,10 +93,10 @@ function Profile(){
         <PerfilStack.Navigator>
             <PerfilStack.Screen name = "Administrar Cuenta" component={DatosUsuario}
             options={{headerTintColor: 'white',
-            headerStyle:{ backgroundColor: "#0093B7"},headerShown:true}}/>
-            <PerfilStack.Screen name = "Prueba" component={PantallaPrueba}
+            headerStyle:{ backgroundColor: "#0093B7"}}}/>
+            <PerfilStack.Screen name = "verificar Contraseña" component={verificarContraseña}
             options={{headerTintColor: 'white',
-            headerStyle:{ backgroundColor: "#0093B7"},headerShown:true}}/>
+            headerStyle:{ backgroundColor: "#0093B7"}}}/>
         </PerfilStack.Navigator>
     );
 }
@@ -191,4 +192,5 @@ export default function Navigation(){
             </Stack.Navigator>
         </NavigationContainer>
     );
+
 }

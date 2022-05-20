@@ -248,6 +248,7 @@ const PantallaInicio = ({navigation}) => {
                 </Text>
             </View>
             
+           
         <FlatList
             data={recordatorios}
             keyExtractor =  {(item) => item.id}
