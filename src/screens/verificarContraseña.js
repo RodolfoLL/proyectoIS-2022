@@ -75,7 +75,7 @@ const verificarContraseña = ({ navigation, route }) => {
             }
             )
         } else {
-          navigation.navigate("Administrar Cuenta");
+          navigation.navigate("Editar datos");
         }
 
       }else{

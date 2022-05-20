@@ -24,6 +24,7 @@ import CustomDrawerContent from './Componentes/CustomDrawer';
 import TamañoDeFuente from './screens/Settings';
 import verificarContraseña from './screens/verificarContraseña';
 
+import EditarDatosUs from "./screens/EditarDatosUsusario"
 import Login from './screens/Login';
 import RegistroUsuario from './screens/Registrar-Usuario';
 //import TamañoDeFuente from './screens/TamañoDeFuente';
@@ -95,6 +96,9 @@ function Profile(){
             options={{headerTintColor: 'white',
             headerStyle:{ backgroundColor: "#0093B7"}}}/>
             <PerfilStack.Screen name = "verificar Contraseña" component={verificarContraseña}
+            options={{headerTintColor: 'white',
+            headerStyle:{ backgroundColor: "#0093B7"}}}/>
+             <PerfilStack.Screen name="Editar datos" component={EditarDatosUs}
             options={{headerTintColor: 'white',
             headerStyle:{ backgroundColor: "#0093B7"}}}/>
         </PerfilStack.Navigator>
