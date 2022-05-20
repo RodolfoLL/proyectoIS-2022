@@ -11,7 +11,7 @@ import {db} from '../../database/firebase'
 import { Ionicons } from '@expo/vector-icons'; 
 //import { deleteUser } from "firebase/auth";
 
-const EliminarCuenta = ({navigation}) =>{
+const verificarContraseña = ({navigation, route}) =>{
     
     const [mostarContra, setmostarContra] = useState(false)
     const [password, setPassword] = useState("")
@@ -20,6 +20,18 @@ const EliminarCuenta = ({navigation}) =>{
     const auth = getAuth();
     const user = auth.currentUser;
     const email = user.email;
+    const {Tipo} = route.params;
+
+    let nombreBoton = "";
+     if(Tipo == "Actualizar"){
+       navigation.setOptions({title: 'Editar Datos del Usuario'})
+       nombreBoton = "Actualizar"
+
+     }else{
+       nombreBoton ="Eliminar"
+       navigation.setOptions({title: 'Eliminar Cuenta'})
+     }
+     
 
    function validarContra(contra){
         const regex = /^[0-9a-zA-Z\_]+$/
@@ -35,7 +47,7 @@ const EliminarCuenta = ({navigation}) =>{
         })
         return respuesta;
       }
-      const ElimCuenta = async()=>{
+      const verificarContraseña = async()=>{
           seterrorContra("")
          console.log(password)
                if(!validarContra(password)){
@@ -44,23 +56,25 @@ const EliminarCuenta = ({navigation}) =>{
                 const resultInicioSesion = await inicioSesion()
                 const estaReautenticado = resultInicioSesion.estado
                  if(estaReautenticado){
-                  deleteUser(user)
-                  .then(() => {
-                      // setPassword("")
-                  console.log(user)
+                   if(Tipo == "Eliminar"){
+                    deleteUser(user)
+                    .then(() => {                   
+                    console.log(user)
+              
+                    navigation.navigate("Login");
+    
+                    })
+                    .catch(error => { 
+                      console.log(error)
+                        const errorCode = error.code;
+                        const errorMessage = error.message;
+    
+                    }
+                    )
+                   }else{
+                    navigation.navigate("Administrar Cuenta");
+                   }
                   
-                  navigation.navigate("Login");
-  
-                  })
-                  .catch(error => { 
-                    console.log(error)
-                      const errorCode = error.code;
-                      const errorMessage = error.message;
-                      
-                      
-                      
-                  }
-                  )
                  }
                }
       }
@@ -68,7 +82,7 @@ const EliminarCuenta = ({navigation}) =>{
     <KeyboardAwareScrollView style={styles.container}>
       <View style={styles.container}>
      
-        <Text style={styles.titulo}>  Eliminar Cuenta </Text>    
+       
          <Image
           style={styles.incono}
           source={require("../assets/capt.png")}
@@ -92,9 +106,9 @@ const EliminarCuenta = ({navigation}) =>{
             />
             }
         />
-        <Text style={styles.recuperarPassword} onPress={() => navigation.navigate('Recuperar contraseña')}>Olvidaste la contraseña?</Text>
-        <TouchableOpacity style={styles.botonEliminar}       onPress={() => ElimCuenta()}>
-            <Text style={styles.textEliminar}>   ELIMINAR  </Text>
+        
+        <TouchableOpacity style={styles.botonEliminar}       onPress={() => verificarContraseña()}>
+            <Text style={styles.textEliminar}> {nombreBoton}</Text>
         </TouchableOpacity>
       </View>
     </KeyboardAwareScrollView>
@@ -154,17 +168,19 @@ const styles = StyleSheet.create({
     paddingHorizontal: "5%",
     alignItems: "center",
     borderRadius: 15,
+    marginTop: 30,
     alignSelf: "center"
   },
   textEliminar:{
     color: "white",
-    fontSize: 23
+    fontSize: 23,
+    
   },incono:{
     resizeMode: 'contain',
     alignSelf:"center",
     maxHeight: "20%",
-    marginTop: -5
+    marginTop: 30
     }
 });
 
-export default EliminarCuenta;
+export default verificarContraseña;
