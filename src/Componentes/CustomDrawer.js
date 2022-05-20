@@ -1,5 +1,7 @@
 import React,{useEffect} from 'react';
 import {
+  Image,
+  ImageBackground,
   View,
   Text,
   TouchableOpacity,
@@ -15,7 +17,8 @@ import { AntDesign } from '@expo/vector-icons';
 function CustomDrawerContent(props){
   
   return (
-    <DrawerContentScrollView {...props} style={{backgroundColor:"#0093B7"}}>
+    <View style={{flex:1}}>
+    <DrawerContentScrollView {...props} style ={{backgroundColor:"#0093B7"}}contentContainerStyle={{backgroundColor:"#0093B7"}}>
       <TouchableOpacity
         onPress={() => props.navigation.closeDrawer()}
         style={{
@@ -28,10 +31,32 @@ function CustomDrawerContent(props){
             left:"85%"
         }}
       >
-        <AntDesign name="close" size={30} color="white" />
+      <AntDesign name="close" size={30} color="white" />
       </TouchableOpacity>
-      <DrawerItemList {...props} />
+      <ImageBackground
+          // source={require('../assets/images/menu-bg.jpeg')}
+          style={{padding: 20}}>
+          <Image
+            source={require('../assets/icono.png')}
+            style={{height: 150, width: 150, borderRadius: 40, marginBottom: 10,marginLeft:"17%"}}
+          />
+          <Text
+            style={{
+              color: '#fff',
+              fontSize: 25,
+              fontWeight: 'bold',
+              marginBottom: 5,
+              marginLeft:"22%"
+            }}>
+            MEDICATE
+          </Text>
+        </ImageBackground>
+
+      <View style={{flex: 1, backgroundColor: '#0093B7', paddingTop: 10}}>
+          <DrawerItemList {...props} />
+      </View>
     </DrawerContentScrollView>
+    </View>
   );
 }
 export default CustomDrawerContent;
