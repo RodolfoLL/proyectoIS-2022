@@ -20,9 +20,9 @@ const EditarDatosUs= ({navigation}) =>{
     const [errorContra,seterrorContra]= useState("")
     const [errorNombre,seterrorNombre] = useState("")
     const [errorEmail,seterrorEmail] = useState("")
-
+ 
     const [loading,setLoading] = useState(false)
-    
+        
     const onChange = (e, type) => {
         setDatos({ ...Datos, [type]: e.nativeEvent.text })
         console.log(Datos)
@@ -105,6 +105,7 @@ const EditarDatosUs= ({navigation}) =>{
         seterrorNombre("")
         seterrorContra("")
         seterrorEmail("")
+        const errores = 0
         if(user.displayName != Datos.nombre || user.email != Datos.email || Datos.contraseña != ""){
             
             if( user.displayName != Datos.nombre){
@@ -211,8 +212,8 @@ const EditarDatosUs= ({navigation}) =>{
             }
            
        
-           
-        
+       
+       
     }
     return (
        

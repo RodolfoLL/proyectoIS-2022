@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react";
 import { Button, View, ScrollView, Text,TouchableOpacity, Alert } from "react-native";
 import { Picker } from '@react-native-picker/picker'
 import { StyleSheet } from "react-native";
@@ -28,7 +28,25 @@ const CantidadMedicamentos = ({ route, navigation }) => {
     let tipoDosis = ""
     const [selectDose, setselectDose] = useState("1");
     const [selectQuantity, setselectQuantity] = useState("1");
-    let { uid,nombreMed, tipoAdm } = route.params;
+
+    const [fuente,setFuente] = useState({fontSize: 20})
+    const [fuenteTitulo,setFuenteTitulo] = useState({fontSize: 30})
+    const [fuenteSubTitulo,setSubFuenteTitulo] = useState({fontSize: 25})
+
+    let { uid,nombreMed, tipoAdm, fuenteNuevo} = route.params;
+
+    useEffect( () =>{
+        let fuenteTemporal = {
+          fontSize: fuenteNuevo.fontSize
+        }
+        let fuenteTemporalTitulo = {
+            fontSize: fuenteNuevo.fontSize+5
+        }
+        setFuente(fuenteTemporal)
+        setFuenteTitulo(fuenteTemporalTitulo)
+
+      },[]
+    );
 
     if (tipoAdm == "Via Oral") { tipoDosis = "Comprimido"; }
     if (tipoAdm == "Via Intramuscular" ||
@@ -51,7 +69,8 @@ const CantidadMedicamentos = ({ route, navigation }) => {
                 tipoAdm: tipoAdm,
                 dose: selectDose,
                 quantity: selectQuantity,
-                editar:false
+                editar:false,
+                fuenteNuevo: fuenteNuevo
             })
          } else{
             Alert.alert("Dosis de medicamento","La dosis es mayor a la cantidad de medicamentos que tienes")
@@ -64,7 +83,7 @@ const CantidadMedicamentos = ({ route, navigation }) => {
             <View style={STYLE_GROUP.container}>
                 <View style={STYLE_GROUP.containerItem}>
                     <View style={STYLE_GROUP.text}>
-                        <Text style={STYLE_GROUP.text}>{'Dosis:'}</Text>
+                        <Text style={[STYLE_GROUP.text,fuenteTitulo]}>{'Dosis:'}</Text>
                     </View>
                     <View style={STYLE_GROUP.viewPicker}>
                         <Picker
@@ -76,7 +95,7 @@ const CantidadMedicamentos = ({ route, navigation }) => {
                                 arregloItemDosis.map((item, key) => {
                                     return (<Picker.Item
                                         key={key}
-                                        style={STYLE_GROUP.pickerItem}
+                                        style={fuente}
                                         label={item}
                                         value={key + 1} />
                                     )
@@ -88,7 +107,7 @@ const CantidadMedicamentos = ({ route, navigation }) => {
 
                 <View style={STYLE_GROUP.containerItem}>
                     <View>
-                        <Text style={STYLE_GROUP.text}>{' Cantidad de Medicamentos:'}</Text>
+                        <Text style={[STYLE_GROUP.text,fuenteTitulo]}>{' Cantidad de Medicamentos:'}</Text>
                     </View>
                     <View style={STYLE_GROUP.viewPicker}>
                         <Picker
@@ -101,7 +120,7 @@ const CantidadMedicamentos = ({ route, navigation }) => {
                                 arregloCantidadMed.map((item, key) => {
                                     return (<Picker.Item
                                         key={key}
-                                        style={STYLE_GROUP.pickerItem}
+                                        style={fuente}
                                         label={'' + (key + 1)}
                                         value={key + 1} />)
                                 })
@@ -116,7 +135,7 @@ const CantidadMedicamentos = ({ route, navigation }) => {
                     onPress={()=>guardarCantidad()}
                 >
                     <View style={STYLE_GROUP.button}>
-                        <Text style={STYLE_GROUP.texto}>Continuar</Text>
+                        <Text style={[STYLE_GROUP.texto,fuenteTitulo]}>Continuar</Text>
                     </View>
                 </TouchableOpacity>
         </ScrollView>
@@ -158,32 +177,30 @@ const STYLE_GROUP = StyleSheet.create(
         {
             flex: 1,
             color: "#FFFFFF",
-            fontSize: 25,
+            //fontSize: 25,
             marginBottom: 10
         },
         picker: {
             flex: 1,
-            height: 50,
+            height: "5%",
             color: "#000000",
-
         },
         pickerItem: {
             flex: 1,
             color: "#000000",
-            fontSize: 24
-
+            //fontSize: 24
         },
         button:{
             alignSelf:'center',
             backgroundColor:'#0093B7',
             borderRadius:25,
-            width:150,
-            height:35,
+            width:"50%",
+            paddingVertical: 5
         },
         texto:{
             color:'white',
             fontFamily:'sans-serif',
-            fontSize:20,
+            //fontSize:20,
             textAlign:'center'  
         },
 

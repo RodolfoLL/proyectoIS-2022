@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Text, View, StyleSheet, TextInput, ScrollView, TouchableOpacity, Alert } from 'react-native';
 import { CheckBox } from 'react-native-elements';
 
@@ -6,8 +6,22 @@ var tipo = '';
 let regex = new RegExp("^[a-zA-ZÀ-ÿ ]+$");
 let letras= new RegExp("[a-zA-Z]");
 const PantallaRegistroMed = ( {navigation , props, route}) => {
-  console.log("ENTRO")
-  const {uid} = route.params;
+  const [fuente,setFuente] = useState({fontSize: 20})
+  const [fuenteTitulo,setFuenteTitulo] = useState({fontSize: 30})
+  const [fuenteSubTitulo,setSubFuenteTitulo] = useState({fontSize: 25})
+
+  console.log("ENTRO=========")
+  const {uid,fuenteNuevo} = route.params;
+  
+  useEffect( () =>{
+    let fuenteTemporal = {
+      fontSize: fuenteNuevo.fontSize-5
+    }
+    setFuente(fuenteTemporal)
+    setFuenteTitulo(fuenteNuevo)
+  },[]
+  );
+
   const verificar = (text, tipo) => { 
     if (text != '' && tipo !== '') {
       if (!letras.test(text)) {
@@ -20,7 +34,8 @@ const PantallaRegistroMed = ( {navigation , props, route}) => {
           {
             uid: uid,
             nombreMed: text,
-            tipoAdm: tipo
+            tipoAdm: tipo,
+            fuenteNuevo: fuenteNuevo
           })
       } else {
         Alert.alert("Nombre del Medicamento","Ingresar solo letras en el nombre")
@@ -41,14 +56,14 @@ const PantallaRegistroMed = ( {navigation , props, route}) => {
   return (
     <ScrollView style={styles.container}>
       <View style={styles.container}>
-        <Text style={styles.title}>Nombre del Medicamento</Text>
+        <Text style={[styles.title,fuenteTitulo]}>Nombre del Medicamento</Text>
         <TextInput {...props} 
                       editable 
-                        maxLength={25} style={styles.inputS}
+                        maxLength={25} style={[styles.inputS,fuente]}
           value={nombre}
           onChangeText={text => setNombre(text)}
         />
-        <Text style={styles.title}>Tipo de administracion</Text>
+        <Text style={[styles.title,fuenteTitulo]}>Tipo de administracion</Text>
         <View style={styles.opciones}>
           <CheckBox
             title='Via Oral'
@@ -64,6 +79,7 @@ const PantallaRegistroMed = ( {navigation , props, route}) => {
               setcheckedParetal(false)
             }
             }
+            textStyle = {fuente}
           />
           <CheckBox
             title='Via Intramuscular'
@@ -77,6 +93,7 @@ const PantallaRegistroMed = ( {navigation , props, route}) => {
               setcheckedTopica(false)
             }
             }
+            textStyle = {fuente}
           />
           <CheckBox
             title='Via Inalatoria'
@@ -92,6 +109,7 @@ const PantallaRegistroMed = ( {navigation , props, route}) => {
               setcheckedParetal(false)
             }
             }
+            textStyle = {fuente}
           />
           <CheckBox
             title='Via Nasal'
@@ -107,7 +125,7 @@ const PantallaRegistroMed = ( {navigation , props, route}) => {
               setcheckedParetal(false)
             }
             }
-
+            textStyle = {fuente}
           />
           <CheckBox
             title='Via Topica'
@@ -123,6 +141,7 @@ const PantallaRegistroMed = ( {navigation , props, route}) => {
               setcheckedParetal(false)
             }
             }
+            textStyle = {fuente}
           />
           <CheckBox
             title='Via Oftalmologica'
@@ -138,6 +157,7 @@ const PantallaRegistroMed = ( {navigation , props, route}) => {
               setcheckedParetal(false)
             }
             }
+            textStyle = {fuente}
           />
           <CheckBox
             title='Via Parenteral'
@@ -153,13 +173,14 @@ const PantallaRegistroMed = ( {navigation , props, route}) => {
               setcheckedParetal(true)
             }
             }
+            textStyle = {fuente}
           />
         </View>
         <View style={styles.botones}>
           <TouchableOpacity
             onPress={() => verificar(nombre, tipo)}
           >
-            <Text style={styles.title}>Continuar</Text>
+            <Text style={[styles.title,fuenteTitulo]}>Continuar</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -203,24 +224,23 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#001B48',
-    paddingLeft: 20,
-    paddingRight: 30,
+    paddingHorizontal: '3%'
   },
   title: {
-    fontSize: 20,
     paddingTop: 5,
     color: 'white'
 
   },
   inputS: {
-    height: 40,
     width: "100%",
     borderColor: 'white',
     borderWidth: 3,
     borderRadius: 5,
-    marginTop: 20,
-    marginBottom: 20,
-    padding: 10,
+    marginTop: 10,
+    marginHorizontal: '1%',
+    marginBottom: 10,
+    paddingHorizontal: 10,
+    paddingVertical:2,
     color: 'white'
   },
   opciones: {
@@ -233,8 +253,8 @@ const styles = StyleSheet.create({
     borderRadius: 25,
     fontSize: 20,
     marginLeft: '25%',
-    height: 35,
-    width: 150,
+    height: '6%',
+    width: '50%',
   }
 });
 export default PantallaRegistroMed;

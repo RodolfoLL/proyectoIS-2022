@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, TextInput, StyleSheet, Button,TouchableOpacity, Image,Text, Alert} from 'react-native';
 import { getAuth,signOut} from 'firebase/auth';
+import { Feather } from '@expo/vector-icons';
 import {app} from '../../database/firebase'
 
 
@@ -15,6 +16,17 @@ const Configuracion =({navigation})=>{
             console.log(e);
         }
     }
+    navigation.setOptions({
+        headerLeft: () => (
+            <TouchableOpacity
+                onPress={() => navigation.openDrawer()}
+                style={{ paddingRight: 10 }}
+            >
+                <Feather name="menu" size={24} color="white" />
+            </TouchableOpacity>  
+        ),
+
+    })
     return(
         <View style = {style.container}>
             <TouchableOpacity

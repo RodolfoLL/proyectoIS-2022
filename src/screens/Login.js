@@ -15,7 +15,7 @@ const Login = ({navigation}) => {
     const auth = getAuth(app);
     auth.onAuthStateChanged(user => {
       if(user){
-        navigation.navigate('Medicate');
+        navigation.navigate('Drawer');
       }
     });
     const iniciarSesion = () => {
@@ -29,12 +29,12 @@ const Login = ({navigation}) => {
           console.log('Signed in!')
           const user = userCredential.user;
           console.log("UID:  "+ user.uid)
-          navigation.navigate("Medicate");
+          navigation.navigate("Drawer");
           setEmail("")
           setPassword("")
           console.log("UID:  "+ user.uid)
          
-          navigation.navigate("Medicate");
+          navigation.navigate("Drawer");
         })
         .catch(error => {
           const errorCode = error.code;
@@ -77,7 +77,7 @@ const Login = ({navigation}) => {
       <View style={styles.container}>
         <Image
           style={styles.incono}
-          source={require("../assets/icono.png")}
+          source={require("../assets/medicate.png")}
         />
         <Text style={styles.titulo}>
           MEDICATE 
@@ -115,7 +115,7 @@ const Login = ({navigation}) => {
             />
           }
         />
-        <Text style={styles.recuperarPassword} onPress={() => alert("ir a cambiar la contraseña")}>Olvidaste la contraseña?</Text>
+        <Text style={styles.recuperarPassword} onPress={() => navigation.navigate('Recuperar contraseña')}>Olvidaste la contraseña?</Text>
      
         <TouchableOpacity style={styles.botonLogin}
             onPress={() => iniciarSesion()}  >

@@ -104,23 +104,23 @@ const guardarNotificaciones = async (userId,recordatorioId,notificacionId) => {
   }
 //recordatorio = {item.id, notificaciones}
 const obetenerDatosRecordatorios = async (userId, recordatorioId) => {
-try {
-    userId = userId + "";
-    const jsonValue = await AsyncStorage.getItem(userId);
-    let recordatorios = {};
     let recordatoriosIds = {};
-    // var res = jsonValue != null ? JSON.parse(jsonValue) : {};
-    if(jsonValue != null){
-        recordatorios = JSON.parse(jsonValue);
-        recordatoriosIds = recordatorios["usersId"][userId]["recordatoriosId"]
+    try {
+        userId = userId + "";
+        const jsonValue = await AsyncStorage.getItem(userId);
+        let recordatorios = {};
+        // var res = jsonValue != null ? JSON.parse(jsonValue) : {};
+        if(jsonValue != null){
+            recordatorios = JSON.parse(jsonValue);
+            recordatoriosIds = recordatorios["usersId"][userId]["recordatoriosId"]
+        }
+        console.log(JSON.stringify(recordatorios))
+        // alert(JSON.stringify(res));
+    } catch(e) {
+        console.log("No se pudo obtener las notiicaiones del almacenamiento por :"+e)
+        // error reading value
     }
-    console.log(JSON.stringify(recordatorios))
     return recordatoriosIds
-    // alert(JSON.stringify(res));
-} catch(e) {
-    console.log("No se pudo obtener las notiicaiones del almacenamiento por :"+e)
-    // error reading value
-}
 }
 
 export { parseHorasMinutos, crearFechasNotificación, obetenerDatosRecordatorios, guardarNotificaciones, eliminarRecordatorioStorage};
