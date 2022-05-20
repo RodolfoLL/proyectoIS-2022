@@ -1,24 +1,23 @@
 import React from 'react';
 import {View,Text,TouchableOpacity} from 'react-native';
-import { Feather } from '@expo/vector-icons';
-
-const Perfil = ({navigation})=>{
+import { Ionicons } from '@expo/vector-icons'; 
+const PantallaPrueba = ({navigation})=>{
     navigation.setOptions({
         headerLeft: () => (
             <TouchableOpacity
-                onPress={() => navigation.openDrawer()}
+                onPress={() => navigation.goBack("HomeScreen")}
                 style={{ paddingRight: 10 }}
             >
-                <Feather name="menu" size={24} color="white" />
+                <Ionicons name="arrow-back" size={24} color="white" />
             </TouchableOpacity>  
         ),
 
     })
     return(
         <View>
-            <Text>Perfil</Text>
+            <Text>Prueba</Text>
             <TouchableOpacity
-                onPress={() => navigation.navigate('Prueba')}
+                onPress={() => navigation.navigate('PantallaInicio')}
             >
                 <Text>Tocame</Text>
             </TouchableOpacity>
@@ -26,4 +25,4 @@ const Perfil = ({navigation})=>{
     );
 }
 
-export default Perfil;
+export default PantallaPrueba;

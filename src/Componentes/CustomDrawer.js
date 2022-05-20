@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{useEffect} from 'react';
 import {
   View,
   Text,
@@ -12,7 +12,8 @@ import {
 import { AntDesign } from '@expo/vector-icons'; 
 
 
-function CustomDrawerContent(props) {
+function CustomDrawerContent(props){
+  
   return (
     <DrawerContentScrollView {...props} style={{backgroundColor:"#0093B7"}}>
       <TouchableOpacity
@@ -20,7 +21,7 @@ function CustomDrawerContent(props) {
         style={{
             width: 30,
             height: 30,
-            borderRadius: 50,
+            borderRadius: 100,
             backgroundColor:'#40AEC9',
             borderColor:'#000000' ,
             justifyContent: "center",

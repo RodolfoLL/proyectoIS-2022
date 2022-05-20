@@ -15,6 +15,7 @@ import { Feather } from '@expo/vector-icons';
 import { DrawerActions } from "@react-navigation/native";
 import { obetenerDatosRecordatorios } from "../functions/notificacionFunciones";
 import { async } from "@firebase/util";
+import { MaterialIcons } from '@expo/vector-icons'; 
 let c=0;
 
 const verificarFechas=(a)=>{
@@ -50,7 +51,7 @@ const PantallaInicio = ({navigation,props}) => {
                     paddingBottom:0,
                     lineHeight:24
                 }}
-            >{'+'}</Text>
+            >{<MaterialIcons name="add-alarm" size={22} color="white" />}</Text>
             <Text
                 style={{
                     fontSize: 17,
@@ -58,7 +59,7 @@ const PantallaInicio = ({navigation,props}) => {
                     color: "white",
                     lineHeight:16
                 }}
-            >{'añadir'}</Text>
+            >{'Añadir'}</Text>
         </TouchableOpacity>),
         headerLeft: () => (
             <TouchableOpacity

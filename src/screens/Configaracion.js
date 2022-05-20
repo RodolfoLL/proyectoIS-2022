@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, TextInput, StyleSheet, Button,TouchableOpacity, Image,Text, Alert} from 'react-native';
 import { getAuth,signOut} from 'firebase/auth';
-import { Ionicons } from '@expo/vector-icons'; 
+import { Feather } from '@expo/vector-icons';
 import {app} from '../../database/firebase'
 
 
@@ -19,10 +19,10 @@ const Configuracion =({navigation})=>{
     navigation.setOptions({
         headerLeft: () => (
             <TouchableOpacity
-                onPress={() => navigation.goBack("HomeScreen")}
+                onPress={() => navigation.openDrawer()}
                 style={{ paddingRight: 10 }}
             >
-                <Ionicons name="arrow-back" size={24} color="white" />
+                <Feather name="menu" size={24} color="white" />
             </TouchableOpacity>  
         ),
 
