@@ -15,6 +15,7 @@ import { Feather } from '@expo/vector-icons';
 import { DrawerActions } from "@react-navigation/native";
 import { obetenerDatosRecordatorios } from "../functions/notificacionFunciones";
 import { async } from "@firebase/util";
+import { MaterialIcons } from '@expo/vector-icons'; 
 let c=0;
 
 const verificarFechas=(a)=>{
@@ -41,21 +42,25 @@ const PantallaInicio = ({navigation}) => {
         const docRef = doc(db, "Fuentes",uid);
         const docSnap = await getDoc(docRef);
         console.log(docSnap.data().fontSize)
-        const objetoFuente = docSnap.data().fontSize
+        const valorFuenteBD = docSnap.data().fontSize
+        let objetoFuente = {fontSize: valorFuenteBD}
         setFuenteBaseDatos(objetoFuente)
 
-        console.log(objetoFuente.fontSize)
-        console.log("===========================")
+        console.log(valorFuenteBD)
 
         const fuenteTemporal = {...fuente};
         const fuenteTemporalTitulo = {...fuenteTitulo};
         const subtituloTemporal = {...fuenteSubTitulo};
 
-        fuenteTemporal.fontSize = objetoFuente.fontSize-5; //15px 20px 25px
-        fuenteTemporalTitulo.fontSize = objetoFuente.fontSize+20; //40px 45px 50px
-        subtituloTemporal.fontSize = objetoFuente.fontSize+3; //23px 28px 33px
+        
+        fuenteTemporal.fontSize = valorFuenteBD-5; //15px 20px 25px
+        console.log(valorFuenteBD-5)
+        fuenteTemporalTitulo.fontSize = valorFuenteBD+20; //40px 45px 50px
+        console.log(valorFuenteBD+20)
+        subtituloTemporal.fontSize = valorFuenteBD+3; //23px 28px 33px
 
         setFuente(fuenteTemporal);
+        console.log(fuenteTemporalTitulo)
         setFuenteTitulo(fuenteTemporalTitulo);
         setSubFuenteTitulo(subtituloTemporal)
         cambiarTamanioTarjeta(objetoFuente.fontSize)
@@ -97,7 +102,7 @@ const PantallaInicio = ({navigation}) => {
                     paddingBottom:0,
                     lineHeight:24
                 }}
-            >{'+'}</Text>
+            >{<MaterialIcons name="add-alarm" size={22} color="white" />}</Text>
             <Text
                 style={{
                     fontSize: 17,
@@ -105,7 +110,7 @@ const PantallaInicio = ({navigation}) => {
                     color: "white",
                     lineHeight:16
                 }}
-            >{'añadir'}</Text>
+            >{'Añadir'}</Text>
         </TouchableOpacity>),
         headerLeft: () => (
             <TouchableOpacity
@@ -247,6 +252,7 @@ const PantallaInicio = ({navigation}) => {
                 </Text>
             </View>
             
+           
         <FlatList
             data={recordatorios}
             keyExtractor =  {(item) => item.id}
@@ -266,7 +272,7 @@ const PantallaInicio = ({navigation}) => {
                             <ListItem.Subtitle style={[{ color: "black"},fuente]}>Duracion hasta: {item.duracion}</ListItem.Subtitle>
 
                     </ListItem.Content>
-
+                    
                     <View style={{ flexDirection: "column", height: "100%"}}>
                         <Icon type="material-community" 
                             name={"pencil-circle"} size={50} 

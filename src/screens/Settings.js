@@ -1,10 +1,11 @@
+
+import { Feather } from '@expo/vector-icons';
 import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet, TouchableOpacity} from 'react-native'
 import { doc, setDoc, onSnapshot, getDoc } from 'firebase/firestore';
 import {db} from '../../database/firebase'
 import {app} from '../../database/firebase'
 import { getAuth} from 'firebase/auth';
-import {Ionicons} from '@expo/vector-icons';
 
 const TamañoDeFuente = ({navigation}) => {
 
@@ -34,8 +35,7 @@ const TamañoDeFuente = ({navigation}) => {
         const docRef = doc(db, "Fuentes",uid);
         const docSnap = await getDoc(docRef);
         console.log(docSnap.data().fontSize)
-        
-        cambiarFuente(docSnap.data().fontSize.fontSize)
+        cambiarFuente(docSnap.data().fontSize)
     }
 
     const cambiarFuente = (tamanio) =>{
@@ -51,7 +51,7 @@ const TamañoDeFuente = ({navigation}) => {
         console.log("==========================")
         console.log(uid)
         let  datosFuente  =  {
-            fontSize : fuente
+            fontSize : fuente.fontSize
         }
 
         const docref = doc(db,"Fuentes",uid)
@@ -63,10 +63,10 @@ const TamañoDeFuente = ({navigation}) => {
     navigation.setOptions({
         headerLeft: () => (
             <TouchableOpacity
-                onPress={() => navigation.goBack("HomeScreen")}
+                onPress={() => navigation.openDrawer()}
                 style={{ paddingRight: 10 }}
             >
-                <Ionicons name="arrow-back" size={24} color="white" />
+                <Feather name="menu" size={24} color="white" />
             </TouchableOpacity>  
         ),
 

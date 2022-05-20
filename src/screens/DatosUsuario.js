@@ -4,23 +4,23 @@ import { Button, CheckBox } from 'react-native-elements';
 import {collection, addDoc,doc,setDoc} from 'firebase/firestore';
 import { getAuth} from 'firebase/auth';
 import {app} from '../../database/firebase'
-import { Ionicons } from '@expo/vector-icons'; 
+import { Feather } from '@expo/vector-icons';
 
 const DatosUsuario = ( {navigation , props, route}) => {
 
   navigation.setOptions({
     headerLeft: () => (
         <TouchableOpacity
-            onPress={() => navigation.goBack("HomeScreen")}
+            onPress={() => navigation.openDrawer()}
             style={{ paddingRight: 10 }}
         >
-            <Ionicons name="arrow-back" size={24} color="white" />
+            <Feather name="menu" size={24} color="white" />
         </TouchableOpacity>  
     ),
 
 })
-
-  const auth = getAuth(app);
+   
+    const auth = getAuth(app);
     const user = auth.currentUser;
     const userName = auth.currentUser.displayName
     const emailUser = auth.currentUser.email
@@ -39,14 +39,15 @@ const DatosUsuario = ( {navigation , props, route}) => {
         </View>
         <View style={styles.botones}>
           <TouchableOpacity
-            onPress={() => console.log("Actualizar Cuenta")}
-          >
+            onPress={() => navigation.navigate("verificar Contraseña",{Tipo:"Actualizar"})}
+          > 
+          
             <Text style={styles.title}>Actualizar Cuenta</Text>
           </TouchableOpacity>
         </View>
         <View style={styles.botones}>
           <TouchableOpacity
-            onPress={() => console.log("Eliminar Cuenta")}
+            onPress={() => navigation.navigate("verificar Contraseña", {Tipo:"Eliminar"})}
           >
             <Text style={styles.title}>Eliminar Cuenta</Text>
           </TouchableOpacity>
