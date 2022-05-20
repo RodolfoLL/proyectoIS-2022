@@ -36,9 +36,9 @@ const ConfiguraciónNotificación = (props) => {
             }
             const docref = doc(db,uid,id)
             //console.log(datos);
-            eliminarRecordatorioNotif(uid, id)
-            .then(data=>{
-                setDoc(docref,datosRecordatorio)
+            await eliminarRecordatorioNotif(uid, id)
+            .then(async data=>{
+                await setDoc(docref,datosRecordatorio)
                 .then(async function(docRef) {
                     await creadorDeNotificaciones(new Date(duracion), datosRecordatorio,uid,id, parseInt(minAnticipación))
                     props.navigation.navigate("Recordatorios",{uid});
