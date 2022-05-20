@@ -105,18 +105,20 @@ const EditarDatosUs= ({navigation}) =>{
         seterrorContra("")
         seterrorEmail("")
         if(user.displayName != Datos.nombre || user.email != Datos.email || Datos.contraseña != ""){
-            setLoading(true)
+            
             if( user.displayName != Datos.nombre){
                 
                 if(!validarNom()){
                     setLoading(false)
                     return
                 } 
+                setLoading(true)
                 updateProfile(user, {
                     displayName: Datos.nombre, 
                   }).then(() => {
                     setStiloNombre({color: 'green'})
                     seterrorNombre("Nombre actualizado correctamente")
+                    setLoading(false)
                   }).catch((error) => {
                     console.log(error)
                   });
@@ -126,9 +128,11 @@ const EditarDatosUs= ({navigation}) =>{
                     setLoading(false)
                     return
                 }
+                setLoading(true)
                 updateEmail(user,Datos.email).then(() => {
                     setStiloEmail({color: 'green'})
                     seterrorEmail("Email actualizado correctamente")
+                    setLoading(false)
                   }).catch(error => {
                     const errorCode = error.code;
                     setLoading(false)
@@ -137,14 +141,16 @@ const EditarDatosUs= ({navigation}) =>{
                        
                         setStiloEmail({color: 'red'})
                         seterrorEmail("Este correo ya ha sido registrado")
+                        setLoading(false)
                         return
                     }
                     if(error.code =="auth/requires-recent-login"){
+                        setLoading(false)
                         Alert.alert("Error al actualizar", "por favor vuelva a iniciar sesion para intentarlo de nuevo",[
                         {text: "ok"}
                          ])
                     navigation.navigate("Recordatorios")}
-                    
+                    return
                   });
             }
             if(Datos.contraseña != ""){
@@ -152,24 +158,29 @@ const EditarDatosUs= ({navigation}) =>{
                     setLoading(false)
                     return
                 }
+                setLoading(true)
                 updatePassword(user,Datos.contraseña).then(() => {
                     setStiloContra({color: 'green'})
-                    seterrorContra("Email actualizado correctamente")
+                    seterrorContra("contraseña actualizado correctamente")
+                    setLoading(false)
                   }).catch((error) => {
                     setLoading(false)
                     if(error.code =="auth/requires-recent-login"){Alert.alert("Error al actualizar", "por favor vuelva a iniciar sesion para intentarlo de nuevo",[
                         {text: "ok"}
                          ])
                     navigation.navigate("Recordatorios")}
+                    return
                   });
+                  setLoading(false)
+              }
             }
-            setLoading(false)
-            
-            Alert.alert("Datos Actualizados", "todo se actualizo correctamente",[
-                {text: "ok"}
-                 ])
-            navigation.navigate("Recordatorios")
-        }
+            else{
+                Alert.alert("Sin cambios", "No se hizo ninguna actualizacion",[
+                    {text: "ok"}
+                     ])
+                navigation.navigate("Recordatorios") 
+            }
+           
        
            
         
