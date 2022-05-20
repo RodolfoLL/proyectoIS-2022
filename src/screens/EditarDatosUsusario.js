@@ -124,7 +124,7 @@ const EditarDatosUs= ({navigation}) =>{
                             {text: "ok"}
                              ])
                         console.log("entro nom")
-                        navigation.navigate("Recordatorios") 
+                        navigation.navigate("Administrar Cuenta") 
                         return
                     }
                   }).catch((error) => {
@@ -148,7 +148,7 @@ const EditarDatosUs= ({navigation}) =>{
                             {text: "ok"}
                              ])
                              console.log("entro email")
-                        navigation.navigate("Recordatorios") 
+                        navigation.navigate("Administrar Cuenta") 
                         return
                     }
                   }).catch(error => {
@@ -169,7 +169,7 @@ const EditarDatosUs= ({navigation}) =>{
                         Alert.alert("Error al actualizar", "por favor vuelva a iniciar sesion para intentarlo de nuevo",[
                         {text: "ok"}
                          ])
-                    navigation.navigate("Recordatorios")}
+                    navigation.navigate("Administrar Cuenta")}
                     return
                   });
                 }
@@ -186,7 +186,7 @@ const EditarDatosUs= ({navigation}) =>{
                         Alert.alert("Datos Actulizados", "Se actualizo la contraseña",[
                             {text: "ok"}
                              ])
-                        navigation.navigate("Recordatorios") 
+                        navigation.navigate("Administrar Cuenta") 
                         return
                     }
                   }).catch((error) => {
@@ -195,7 +195,7 @@ const EditarDatosUs= ({navigation}) =>{
                         Alert.alert("Error al actualizar", "por favor vuelva a iniciar sesion para intentarlo de nuevo",[
                         {text: "ok"}
                          ])
-                    navigation.navigate("Recordatorios")}
+                    navigation.navigate("Administrar Cuenta")}
                     return
                   });
                 }
@@ -208,7 +208,7 @@ const EditarDatosUs= ({navigation}) =>{
                 Alert.alert("Sin cambios", "No se hizo ninguna actualizacion",[
                     {text: "ok"}
                      ])
-                navigation.navigate("Recordatorios") 
+                navigation.navigate("Administrar Cuenta") 
             }
            
        

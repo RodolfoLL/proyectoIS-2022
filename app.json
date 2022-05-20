@@ -3,7 +3,7 @@
     "name": "Medicate",
     "slug": "MedicateRecordatorio",
     "version": "1.2.3",
-    "orientation":"portrait",
+    "orientation": "portrait",
     "icon": "./src/assets/medicate.png",
     "splash": {
       "image": "./src/assets/splash.png",
