@@ -22,6 +22,8 @@ const verificarContraseña = ({navigation, route}) =>{
     const email = user.email;
     const {Tipo} = route.params;
 
+   
+
     let nombreBoton = "";
      if(Tipo == "Actualizar"){
        navigation.setOptions({title: 'Editar Datos del Usuario'})
@@ -32,7 +34,6 @@ const verificarContraseña = ({navigation, route}) =>{
        navigation.setOptions({title: 'Eliminar Cuenta'})
      }
      
-
    function validarContra(contra){
         const regex = /^[0-9a-zA-Z\_]+$/
         return regex.test(contra) 
@@ -42,8 +43,7 @@ const verificarContraseña = ({navigation, route}) =>{
         await signInWithEmailAndPassword(auth, email, password)
         .then(credencial =>{console.log("Se inició sesion")})
         .catch(errorr => {
-          respuesta.estado = false
-          
+          respuesta.estado = false         
         })
         return respuesta;
       }
@@ -60,9 +60,12 @@ const verificarContraseña = ({navigation, route}) =>{
                     deleteUser(user)
                     .then(() => {                   
                     console.log(user)
-              
+                    
                     navigation.navigate("Login");
-    
+                   
+                      Alert.alert("Cuenta Eliminada ", "La cuenta fue eliminada corrcetamnete",[
+                          {text: "OK" ,onPress: () =>{ console.log("ok a Login")} }
+                          ])
                     })
                     .catch(error => { 
                       console.log(error)
