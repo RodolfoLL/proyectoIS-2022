@@ -35,8 +35,7 @@ const TamañoDeFuente = ({navigation}) => {
         const docRef = doc(db, "Fuentes",uid);
         const docSnap = await getDoc(docRef);
         console.log(docSnap.data().fontSize)
-        
-        cambiarFuente(docSnap.data().fontSize.fontSize)
+        cambiarFuente(docSnap.data().fontSize)
     }
 
     const cambiarFuente = (tamanio) =>{
@@ -52,7 +51,7 @@ const TamañoDeFuente = ({navigation}) => {
         console.log("==========================")
         console.log(uid)
         let  datosFuente  =  {
-            fontSize : fuente
+            fontSize : fuente.fontSize
         }
 
         const docref = doc(db,"Fuentes",uid)
