@@ -19,9 +19,9 @@ const EditarDatosUs= ({navigation}) =>{
     const [errorContra,seterrorContra]= useState("")
     const [errorNombre,seterrorNombre] = useState("")
     const [errorEmail,seterrorEmail] = useState("")
-
+ 
     const [loading,setLoading] = useState(false)
-    
+        
     const onChange = (e, type) => {
         setDatos({ ...Datos, [type]: e.nativeEvent.text })
         console.log(Datos)
@@ -104,21 +104,29 @@ const EditarDatosUs= ({navigation}) =>{
         seterrorNombre("")
         seterrorContra("")
         seterrorEmail("")
+        const errores = 0
         if(user.displayName != Datos.nombre || user.email != Datos.email || Datos.contraseña != ""){
-            setLoading(true)
+            
             if( user.displayName != Datos.nombre){
                 
                 if(!validarNom()){
+                    
                     setLoading(false)
                     return
                 } 
+
+                setLoading(true)
                 updateProfile(user, {
                     displayName: Datos.nombre, 
                   }).then(() => {
                     setStiloNombre({color: 'green'})
                     seterrorNombre("Nombre actualizado correctamente")
+                    setLoading(false)
                   }).catch((error) => {
-                    console.log(error)
+                    setStiloNombre({color: 'red'})
+                    seterrorNombre("Error al actualizar nombre")
+                    errores = 1
+                    setLoading(false)
                   });
             }
             if( user.email != Datos.email){
@@ -126,6 +134,7 @@ const EditarDatosUs= ({navigation}) =>{
                     setLoading(false)
                     return
                 }
+                setLoading(true)
                 updateEmail(user,Datos.email).then(() => {
                     setStiloEmail({color: 'green'})
                     seterrorEmail("Email actualizado correctamente")
@@ -137,13 +146,21 @@ const EditarDatosUs= ({navigation}) =>{
                        
                         setStiloEmail({color: 'red'})
                         seterrorEmail("Este correo ya ha sido registrado")
+                        Alert.alert("Error al actualizar", "email ya registrado",[
+                            {text: "ok"}
+                             ])
+                        Datos.email = auth.currentUser.email
+                        errores =1
+                        setLoading(false)
                         return
                     }
                     if(error.code =="auth/requires-recent-login"){
+                        setLoading(false)
+                        errores = 1
                         Alert.alert("Error al actualizar", "por favor vuelva a iniciar sesion para intentarlo de nuevo",[
                         {text: "ok"}
                          ])
-                    navigation.navigate("Recordatorios")}
+                    navigation.navigate("Administrar Cuenta")}
                     
                   });
             }
@@ -152,27 +169,38 @@ const EditarDatosUs= ({navigation}) =>{
                     setLoading(false)
                     return
                 }
+                setLoading(true)
                 updatePassword(user,Datos.contraseña).then(() => {
                     setStiloContra({color: 'green'})
-                    seterrorContra("Email actualizado correctamente")
+                    seterrorContra("contraseña actualizado correctamente")
+                    setLoading(false)
                   }).catch((error) => {
+                    errores = 1
                     setLoading(false)
                     if(error.code =="auth/requires-recent-login"){Alert.alert("Error al actualizar", "por favor vuelva a iniciar sesion para intentarlo de nuevo",[
                         {text: "ok"}
                          ])
-                    navigation.navigate("Recordatorios")}
+                    navigation.navigate("Administrar Cuenta")}
                   });
             }
             setLoading(false)
-            
+         if(errores == 0){
             Alert.alert("Datos Actualizados", "todo se actualizo correctamente",[
                 {text: "ok"}
                  ])
-            navigation.navigate("Recordatorios")
+            navigation.navigate("Administrar Cuenta")
+           } 
+            
+        }
+        else{
+            Alert.alert("Sin cambios", "No se hizo ninguna actualizacion",[
+                {text: "ok"}
+                 ])
+            
         }
        
-           
-        
+       
+       
     }
     return (
        
