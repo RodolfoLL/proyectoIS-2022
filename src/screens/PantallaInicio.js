@@ -42,21 +42,25 @@ const PantallaInicio = ({navigation}) => {
         const docRef = doc(db, "Fuentes",uid);
         const docSnap = await getDoc(docRef);
         console.log(docSnap.data().fontSize)
-        const objetoFuente = docSnap.data().fontSize
+        const valorFuenteBD = docSnap.data().fontSize
+        let objetoFuente = {fontSize: valorFuenteBD}
         setFuenteBaseDatos(objetoFuente)
 
-        console.log(objetoFuente.fontSize)
-        console.log("===========================")
+        console.log(valorFuenteBD)
 
         const fuenteTemporal = {...fuente};
         const fuenteTemporalTitulo = {...fuenteTitulo};
         const subtituloTemporal = {...fuenteSubTitulo};
 
-        fuenteTemporal.fontSize = objetoFuente.fontSize-5; //15px 20px 25px
-        fuenteTemporalTitulo.fontSize = objetoFuente.fontSize+20; //40px 45px 50px
-        subtituloTemporal.fontSize = objetoFuente.fontSize+3; //23px 28px 33px
+        
+        fuenteTemporal.fontSize = valorFuenteBD-5; //15px 20px 25px
+        console.log(valorFuenteBD-5)
+        fuenteTemporalTitulo.fontSize = valorFuenteBD+20; //40px 45px 50px
+        console.log(valorFuenteBD+20)
+        subtituloTemporal.fontSize = valorFuenteBD+3; //23px 28px 33px
 
         setFuente(fuenteTemporal);
+        console.log(fuenteTemporalTitulo)
         setFuenteTitulo(fuenteTemporalTitulo);
         setSubFuenteTitulo(subtituloTemporal)
         cambiarTamanioTarjeta(objetoFuente.fontSize)
