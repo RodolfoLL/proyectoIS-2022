@@ -16,14 +16,35 @@ const verificarContraseña = ({ navigation, route }) => {
   const [mostarContra, setmostarContra] = useState(false)
   const [password, setPassword] = useState("")
   const [errorContra, seterrorContra] = useState("")
-
+  const [loading,setLoading] = useState(false)
   const auth = getAuth();
   const user = auth.currentUser;
-  const email = user.email;
+  let email ="";
+  if(user != null){email = user.email;}
+  
   const { Tipo } = route.params;
 
 
-
+  function Loading({ isVisible, text }) {
+    return (
+        <Overlay
+            isVisible={isVisible}
+            windowBackgoundColor="rgba(0,0,0,0.5)"
+            overlayBackgroundColor="transparent"
+            overlayStyle={styles.overlay}
+        >
+            <View style={styles.view}>
+                <ActivityIndicator
+                    size="large"
+                    color="#442484"
+                />
+                {
+                    text && <Text style={styles.text2}>{text}</Text>
+                }
+            </View>
+        </Overlay>
+    )
+}
   let nombreBoton = "";
   if (Tipo == "Actualizar") {
     navigation.setOptions({ title: 'Editar Datos del Usuario' })
@@ -50,6 +71,7 @@ const verificarContraseña = ({ navigation, route }) => {
   const verificarContraseña = async () => {
     seterrorContra("")
     console.log(password)
+    setLoading(true)
     if (!validarContra(password)) {
       seterrorContra("La contraseña no debe tener caracteres especiales o espacios")
     } else {
@@ -59,6 +81,7 @@ const verificarContraseña = ({ navigation, route }) => {
         if (Tipo == "Eliminar") {
           deleteUser(user)
             .then(() => {
+              setLoading(false)
               console.log(user)
 
               navigation.navigate("Login");
@@ -68,6 +91,7 @@ const verificarContraseña = ({ navigation, route }) => {
               ])
             })
             .catch(error => {
+              setLoading(false)
               console.log(error)
               const errorCode = error.code;
               const errorMessage = error.message;
@@ -75,6 +99,7 @@ const verificarContraseña = ({ navigation, route }) => {
             }
             )
         } else {
+          setLoading(false)
           navigation.navigate("Editar datos");
         }
 
@@ -117,6 +142,7 @@ const verificarContraseña = ({ navigation, route }) => {
         <TouchableOpacity style={styles.botonEliminar} onPress={() => verificarContraseña()}>
           <Text style={styles.textEliminar}> {nombreBoton}</Text>
         </TouchableOpacity>
+        <Loading isVisible={loading} text="Eliminando cuenta..."/>
       </View>
     </KeyboardAwareScrollView>
   )
