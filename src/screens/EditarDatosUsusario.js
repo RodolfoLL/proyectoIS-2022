@@ -194,6 +194,7 @@ const EditarDatosUs= ({navigation}) =>{
                  ])
                  console.log("llllllllllllllllllllllllllllllll")
                  console.log(Datos.nombre);
+                 console.log(Datos.email)
             navigation.navigate("Administrar Cuenta",
             {
               nombre:Datos.nombre,

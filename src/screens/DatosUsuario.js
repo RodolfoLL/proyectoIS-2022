@@ -13,14 +13,15 @@ const DatosUsuario = ( {navigation,props,route}) => {
   const [emailUser,setEmail] = useState(auth.currentUser.email)
   let n=userName;
   let c=emailUser;
+  console.log("-----------------------------")
   console.log(n);
   console.log(c);
   if(route.params!=null){
-  console.log("::::::::::::::::::::::::::::")
-  n=route.params.nombre
-  c=route.params.correo
-  console.log(n);
-  console.log(c);
+    console.log("::::::::::::::::::::::::::::")
+    n=route.params.nombre
+    c=route.params.email
+    console.log(n);
+    console.log(c);
   }
    
   navigation.setOptions({
@@ -46,9 +47,9 @@ const DatosUsuario = ( {navigation,props,route}) => {
         />
         <View style={styles.contenido}>
         <Text style={styles.title}>Nombre de Usuario</Text>
-        <Text style={styles.subtitle}>{userName}</Text>
+        <Text style={styles.subtitle}>{n}</Text>
         <Text style={styles.title}>Correo Electronico</Text>
-        <Text style={styles.subtitle}>{emailUser}</Text>
+        <Text style={styles.subtitle}>{c}</Text>
         </View>
         <View style={styles.botones}>
           <TouchableOpacity

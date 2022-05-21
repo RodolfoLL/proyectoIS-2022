@@ -37,7 +37,7 @@ function CustomDrawerContent(props){
           // source={require('../assets/images/menu-bg.jpeg')}
           style={{padding: 20}}>
           <Image
-            source={require('../assets/icono.png')}
+            source={require('../assets/medicate.png')}
             style={{height: 150, width: 150, borderRadius: 40, marginBottom: 10,marginLeft:"17%"}}
           />
           <Text
