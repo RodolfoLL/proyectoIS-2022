@@ -6,8 +6,23 @@ import { getAuth} from 'firebase/auth';
 import {app,db} from '../../database/firebase'
 import { Feather } from '@expo/vector-icons';
 
-const DatosUsuario = ( {navigation , props, route}) => {
+const DatosUsuario = ( {navigation,props,route}) => {
 
+  let auth = getAuth(app);
+  const [userName,setUsername]= useState(auth.currentUser.displayName)
+  const [emailUser,setEmail] = useState(auth.currentUser.email)
+  let n=userName;
+  let c=emailUser;
+  console.log(n);
+  console.log(c);
+  if(route.params!=null){
+  console.log("::::::::::::::::::::::::::::")
+  n=route.params.nombre
+  c=route.params.correo
+  console.log(n);
+  console.log(c);
+  }
+   
   navigation.setOptions({
     headerLeft: () => (
         <TouchableOpacity
@@ -19,19 +34,7 @@ const DatosUsuario = ( {navigation , props, route}) => {
     ),
 
 })
-   
-    let auth = getAuth(app);
-    let uid = auth.currentUser.uid;
-    const [userName,setUsername]= useState(auth.currentUser.displayName)
-    const [emailUser,setEmail] = useState(auth.currentUser.email)
-    useEffect( () =>{
-      onSnapshot(collection(db,auth.currentUser.email), (snapshot) =>{
-        console.log(snapshot.docs)
-        auth = getAuth(app);
-        setUsername(auth.currentUser.displayName);
-        setEmail(auth.currentUser.email);
-      });
-    },[])
+
     
     
   return (
@@ -51,7 +54,6 @@ const DatosUsuario = ( {navigation , props, route}) => {
           <TouchableOpacity
             onPress={() => navigation.navigate("verificar Contraseña",{Tipo:"Actualizar"})}
           > 
-          
             <Text style={styles.title}>Actualizar Cuenta</Text>
           </TouchableOpacity>
         </View>

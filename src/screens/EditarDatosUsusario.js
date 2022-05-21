@@ -7,7 +7,9 @@ import { size } from "lodash";
 import {getAuth,updateProfile,updateEmail,updatePassword} from "firebase/auth"
 import {app} from '../../database/firebase'
 
+
 const EditarDatosUs= ({navigation}) =>{
+    
     const auth = getAuth(app);
     const user = auth.currentUser
     const headerHeight = useHeaderHeight();
@@ -21,6 +23,7 @@ const EditarDatosUs= ({navigation}) =>{
     const [errorEmail,seterrorEmail] = useState("")
  
     const [loading,setLoading] = useState(false)
+
         
     const onChange = (e, type) => {
         setDatos({ ...Datos, [type]: e.nativeEvent.text })
@@ -160,7 +163,8 @@ const EditarDatosUs= ({navigation}) =>{
                         Alert.alert("Error al actualizar", "por favor vuelva a iniciar sesion para intentarlo de nuevo",[
                         {text: "ok"}
                          ])
-                    navigation.navigate("Administrar Cuenta")}
+                    navigation.navigate("Administrar Cuenta")
+                }
                     
                   });
             }
@@ -188,7 +192,13 @@ const EditarDatosUs= ({navigation}) =>{
             Alert.alert("Datos Actualizados", "todo se actualizo correctamente",[
                 {text: "ok"}
                  ])
-            navigation.navigate("Administrar Cuenta")
+                 console.log("llllllllllllllllllllllllllllllll")
+                 console.log(Datos.nombre);
+            navigation.navigate("Administrar Cuenta",
+            {
+              nombre:Datos.nombre,
+              email:Datos.email
+            })
            } 
             
         }
