@@ -23,7 +23,7 @@ const DuracionTratamiento = (props) => {
     const guardarDuracion = async (nDias)=>{
         let fechaActual = new Date()
         let fechaTemporal = new Date(fechaActual.getFullYear(),fechaActual.getMonth(),fechaActual.getDate()+nDias)
-        let duracion = fechaTemporal.getDate() + '/'+(fechaTemporal.getMonth()+1) + '/'+ fechaTemporal.getFullYear() 
+        let duracion =  (fechaTemporal.getMonth()+1) + '/'+fechaTemporal.getDate()+ '/'+ fechaTemporal.getFullYear() 
         let datosRecordatorio = {}
         if (editar){
             console.log("Entra a editar la duración del tratamiento")
