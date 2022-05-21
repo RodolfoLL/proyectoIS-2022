@@ -73,6 +73,7 @@ const verificarContraseña = ({ navigation, route }) => {
     console.log(password)
     setLoading(true)
     if (!validarContra(password)) {
+      setLoading(false)
       seterrorContra("La contraseña no debe tener caracteres especiales o espacios")
     } else {
       const resultInicioSesion = await inicioSesion()
@@ -104,6 +105,7 @@ const verificarContraseña = ({ navigation, route }) => {
         }
 
       }else{
+        setLoading(false)
         Alert.alert("Error", "La contraseña ingresada es incorecta.", [
           { text: "OK", onPress: () => { console.log("ok contraseña erronea") } }
         ])
@@ -142,7 +144,7 @@ const verificarContraseña = ({ navigation, route }) => {
         <TouchableOpacity style={styles.botonEliminar} onPress={() => verificarContraseña()}>
           <Text style={styles.textEliminar}> {nombreBoton}</Text>
         </TouchableOpacity>
-        <Loading isVisible={loading} text="Eliminando cuenta..."/>
+        <Loading isVisible={loading} text = {Tipo == "Eliminar" ? "Eliminando cuenta...": "Verificando datos ..."}/>
       </View>
     </KeyboardAwareScrollView>
   )

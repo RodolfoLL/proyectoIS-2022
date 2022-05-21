@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import React, { useState , useEffect} from "react";
 import { Text, View, StyleSheet, TextInput, ScrollView, TouchableOpacity, Alert,Image } from 'react-native';
 import { Button, CheckBox } from 'react-native-elements';
-import {collection, addDoc,doc,setDoc} from 'firebase/firestore';
+import {collection, addDoc,doc,setDoc,onSnapshot} from 'firebase/firestore';
 import { getAuth} from 'firebase/auth';
-import {app} from '../../database/firebase'
+import {app,db} from '../../database/firebase'
 import { Feather } from '@expo/vector-icons';
 
 const DatosUsuario = ( {navigation , props, route}) => {
@@ -20,10 +20,20 @@ const DatosUsuario = ( {navigation , props, route}) => {
 
 })
    
-    const auth = getAuth(app);
-    const user = auth.currentUser;
-    const userName = auth.currentUser.displayName
-    const emailUser = auth.currentUser.email
+    let auth = getAuth(app);
+    let uid = auth.currentUser.uid;
+    const [userName,setUsername]= useState(auth.currentUser.displayName)
+    const [emailUser,setEmail] = useState(auth.currentUser.email)
+    useEffect( () =>{
+      onSnapshot(collection(db,auth.currentUser.email), (snapshot) =>{
+        console.log(snapshot.docs)
+        auth = getAuth(app);
+        setUsername(auth.currentUser.displayName);
+        setEmail(auth.currentUser.email);
+      });
+    },[])
+    
+    
   return (
     <ScrollView style={styles.container}>
       <View style={styles.container}>
