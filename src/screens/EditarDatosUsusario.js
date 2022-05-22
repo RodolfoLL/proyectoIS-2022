@@ -8,7 +8,9 @@ import {getAuth,updateProfile,updateEmail,updatePassword} from "firebase/auth"
 import {app} from '../../database/firebase'
 import { async } from "@firebase/util";
 
+
 const EditarDatosUs= ({navigation}) =>{
+    
     const auth = getAuth(app);
     const user = auth.currentUser
     const headerHeight = useHeaderHeight();
@@ -22,6 +24,7 @@ const EditarDatosUs= ({navigation}) =>{
     const [errorEmail,seterrorEmail] = useState("")
  
     const [loading,setLoading] = useState(false)
+
         
     const onChange = (e, type) => {
         setDatos({ ...Datos, [type]: e.nativeEvent.text })
@@ -168,8 +171,9 @@ const EditarDatosUs= ({navigation}) =>{
                         Alert.alert("Error al actualizar", "por favor vuelva a iniciar sesion para intentarlo de nuevo",[
                         {text: "ok"}
                          ])
-                    navigation.navigate("Administrar Cuenta")}
-                    return
+                    navigation.navigate("Administrar Cuenta")
+                }
+                    
                   });
                 }
                 
@@ -204,16 +208,28 @@ const EditarDatosUs= ({navigation}) =>{
               setLoading(false)
               
             }
-            else{
-                Alert.alert("Sin cambios", "No se hizo ninguna actualizacion",[
-                    {text: "ok"}
-                     ])
-                navigation.navigate("Administrar Cuenta") 
-            }
-           
-       
-       
-       
+            setLoading(false)
+         if(errores == 0){
+            Alert.alert("Datos Actualizados", "todo se actualizo correctamente",[
+                {text: "ok"}
+                 ])
+                 console.log("llllllllllllllllllllllllllllllll")
+                 console.log(Datos.nombre);
+                 console.log(Datos.email)
+            navigation.navigate("Administrar Cuenta",
+            {
+              nombre:Datos.nombre,
+              email:Datos.email
+            })
+           } 
+            
+    }
+        else{
+            Alert.alert("Sin cambios", "No se hizo ninguna actualizacion",[
+                {text: "ok"}
+                 ])
+            
+        }
     }
     return (
        
@@ -285,7 +301,8 @@ const EditarDatosUs= ({navigation}) =>{
          </View>
        </KeyboardAwareScrollView>
      )
-}
+};
+
 
 const styles = StyleSheet.create({
     container: {
