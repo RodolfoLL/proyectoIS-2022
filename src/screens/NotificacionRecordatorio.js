@@ -59,14 +59,21 @@ async function cancelScheduledNotificationAsync(notificacionId){
 }
 
 const eliminarRecordatorioNotif= async (uid,recordatorioId) => {
+  let bandera = false;
+  console.log("-----------------------------------Eliminando Recordatorio")
   let booleanVar = true
   await obetenerDatosRecordatorios(uid,recordatorioId)
   .then(async recordatorios =>{
-    if(recordatorios[recordatorioId]!=null){
-      let notificaciones =  recordatorios[recordatorioId]
-      notificaciones.forEach(async notificacionId => {
-          await cancelScheduledNotificationAsync(notificacionId);
-          console.log("******Se elimino la notificacion*****");
+    console.log("============")
+    // console.log(recordatorios["usersId"])
+    let recordatoriosIdList = recordatorios["usersId"][uid]["recordatoriosId"][recordatorioId];
+    console.log(recordatoriosIdList)
+    if(recordatoriosIdList!=null){
+      // let notificaciones =  recordatorios[recordatorioId]
+      recordatoriosIdList.forEach(async notificacionId => {
+        await cancelScheduledNotificationAsync(notificacionId);
+        bandera = true
+        console.log("******Se elimino la notificacion*****");
       });
      await eliminarRecordatorioStorage(uid,recordatorioId)
      booleanVar = true;

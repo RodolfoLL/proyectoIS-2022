@@ -68,10 +68,10 @@ const ConfiguraciónNotificación = (props) => {
             .then(async function(docRef) {
                 let idRecordatorio = docRef.id+""
                 let list_notificaiones = [""]
-                list_notificaiones = await creadorDeNotificaciones(new Date(duracion), datosRecordatorio,uid,id, parseInt(minAnticipación))
+                list_notificaiones = await creadorDeNotificaciones(new Date(duracion), datosRecordatorio,uid,idRecordatorio, parseInt(minAnticipación))
                 console.log("*******************************************")
                 console.log(list_notificaiones)
-                await guardarNotificaciones(uid,id,list_notificaiones)
+                await guardarNotificaciones(uid,idRecordatorio,list_notificaiones)
                 props.navigation.navigate("Recordatorios",{uid});
             })
             .catch(function(error) {

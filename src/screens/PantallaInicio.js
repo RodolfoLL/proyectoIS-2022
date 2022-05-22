@@ -229,8 +229,9 @@ const PantallaInicio = ({navigation}) => {
         console.log(id)
         const docRef = doc(db,uid,id)
         console.log(docRef)
-        eliminarRecordatorioNotif(uid,id)
-        deleteDoc(docRef)
+        let correcto = await eliminarRecordatorioNotif(uid,"1358")
+        if(correcto){deleteDoc(docRef)}
+        
         navigation.navigate("Recordatorios",{uid: uid})
        
     }
