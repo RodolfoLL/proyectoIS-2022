@@ -83,7 +83,11 @@ const PantallaInicio = ({navigation}) => {
     navigation.setOptions({ 
     headerRight: () => (
         <TouchableOpacity
-            onPress={() => navigation.navigate("Registro de Medicamento",{uid:uid, fuenteNuevo:fuenteBaseDatos})}
+            onPress={() => {
+                obetenerDatosRecordatorios(uid,"1eCudUfo1uGicHcTDI8Q")
+                navigation.navigate("Registro de Medicamento",{uid:uid, fuenteNuevo:fuenteBaseDatos})
+                
+            }}
             style={{
                 width: 100,
                 height: 40,

@@ -38,15 +38,17 @@ Notifications.setNotificationHandler(
 );
 
 async function schedulePushNotification(uid, recordatorioId,trigger, contentNoti) {
-  Notifications.scheduleNotificationAsync({
+  let idRes = ""
+  await Notifications.scheduleNotificationAsync({
     content: contentNoti,
     trigger,
   })
   .then(id => { 
-    guardarNotificaciones(uid,recordatorioId,id)
     console.log("===============Notificacion Creada============<")
     console.log("Id de notificacion" + id)
-    return id });
+    idRes = id
+     });
+  return idRes
 
   
 }
@@ -109,7 +111,8 @@ const creadorDeNotificaciones = async (fechaTemporal, datosRecordatorio, uid, re
   const fechasDeNotificacion =
     crearFechasNotificación(datosRecordatorio.hora, fechaTemporal, minutosAnticipacion);
   let notificacionesIds = [];
-  fechasDeNotificacion.forEach(async unaFecha => {
+  for (let index = 0; index < fechasDeNotificacion.length; index++) {
+    const unaFecha = fechasDeNotificacion[index];
     try {
       let fechaLimite = new Date(unaFecha.getTime()+(60*minutosAnticipacion*1000))
       console.log("Fecha Limite "+ fechaLimite) 
@@ -150,14 +153,17 @@ const creadorDeNotificaciones = async (fechaTemporal, datosRecordatorio, uid, re
           FrecuenciaHoras:(datosRecordatorio.hora).length+''
         }
       }
-      await schedulePushNotification(uid,recordatorioId,unaFecha, content)
+      let noti = await schedulePushNotification(uid,recordatorioId,unaFecha, content);
+      console.log("Mi noti es esta: "+noti)
+      notificacionesIds.push(noti);
       // .then(id => {notificacionesIds.push(id )})
       
     } catch (e) {
       alert("Hubo un error inesperado al crear el recordatorio de medicamentos.");
       console.log(e);
     }
-  });
+    
+  }
   return notificacionesIds;
 };
 

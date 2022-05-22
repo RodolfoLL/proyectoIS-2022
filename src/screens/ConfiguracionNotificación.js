@@ -3,7 +3,7 @@ import { StyleSheet , ScrollView, View,Text, TextInput, TouchableOpacity} from "
 import {db} from '../../database/firebase'
 import {collection, addDoc,doc,setDoc} from 'firebase/firestore';
 import {creadorDeNotificaciones, eliminarRecordatorioNotif} from './NotificacionRecordatorio';
-
+import {guardarNotificaciones} from '../functions/notificacionFunciones'
 let expRegSoloNumeros =  new RegExp("^[0-9]*$")
 
 const ConfiguraciónNotificación = (props) => {
@@ -53,7 +53,11 @@ const ConfiguraciónNotificación = (props) => {
             .then(async data=>{
                 await setDoc(docref,datosRecordatorio)
                 .then(async function(docRef) {
-                    await creadorDeNotificaciones(new Date(duracion), datosRecordatorio,uid,id, parseInt(minAnticipación))
+                    let list_notificaiones = [""]
+                    list_notificaiones = await creadorDeNotificaciones(new Date(duracion), datosRecordatorio,uid,id, parseInt(minAnticipación))
+                    console.log("*******************************************")
+                    console.log(list_notificaiones)
+                    await guardarNotificaciones(uid,id,list_notificaiones)
                     props.navigation.navigate("Recordatorios",{uid});
                 });
             });
@@ -63,8 +67,11 @@ const ConfiguraciónNotificación = (props) => {
             addDoc(collection(db, uid), datosRecordatorio)
             .then(async function(docRef) {
                 let idRecordatorio = docRef.id+""
-                console.log("Doc ID: ", docRef.id);
-                await creadorDeNotificaciones(new Date(duracion), datosRecordatorio,uid,idRecordatorio, parseInt(minAnticipación))
+                let list_notificaiones = [""]
+                list_notificaiones = await creadorDeNotificaciones(new Date(duracion), datosRecordatorio,uid,id, parseInt(minAnticipación))
+                console.log("*******************************************")
+                console.log(list_notificaiones)
+                await guardarNotificaciones(uid,id,list_notificaiones)
                 props.navigation.navigate("Recordatorios",{uid});
             })
             .catch(function(error) {
