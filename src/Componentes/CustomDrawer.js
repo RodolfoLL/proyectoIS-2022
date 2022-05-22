@@ -1,4 +1,4 @@
-import React,{useEffect} from 'react';
+import React,{useEffect,useState} from 'react';
 import {
   Image,
   ImageBackground,
@@ -11,10 +11,22 @@ import {
   DrawerItemList,
   DrawerItem
 } from '@react-navigation/drawer';
+import { useDrawerStatus } from '@react-navigation/drawer';
 import { AntDesign } from '@expo/vector-icons'; 
 
 
 function CustomDrawerContent(props){
+  const isDrawerVisible =  useDrawerStatus();
+
+  const [contentVisible, setContentVisible]= useState(false);
+
+  useEffect(() => {
+    if (isDrawerVisible=='open') {
+      setContentVisible(true);
+    } else{
+      setContentVisible(false);
+    }
+  }, [isDrawerVisible]);
   
   return (
     <View style={{flex:1}}>
