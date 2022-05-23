@@ -6,7 +6,6 @@ import{useHeaderHeight } from "@react-navigation/elements"
 import { size } from "lodash";
 import {getAuth,updateProfile,updateEmail,updatePassword} from "firebase/auth"
 import {app} from '../../database/firebase'
-import { async } from "@firebase/util";
 
 
 const EditarDatosUs= ({navigation}) =>{
@@ -103,71 +102,64 @@ const EditarDatosUs= ({navigation}) =>{
         }
         return valido
     }
-    
-    const guardarEdit = async ()=>{
+
+    const guardarEdit = ()=>{
         seterrorNombre("")
         seterrorContra("")
         seterrorEmail("")
+        const errores = 0
         if(user.displayName != Datos.nombre || user.email != Datos.email || Datos.contraseña != ""){
             
             if( user.displayName != Datos.nombre){
                 
-                if(validarNom()){
+                if(!validarNom()){
+                    
                     setLoading(false)
-                   setLoading(true)
-             await updateProfile(user, {
+                    return
+                } 
+
+                setLoading(true)
+                updateProfile(user, {
                     displayName: Datos.nombre, 
                   }).then(() => {
                     setStiloNombre({color: 'green'})
                     seterrorNombre("Nombre actualizado correctamente")
                     setLoading(false)
-                    if(user.email == Datos.email && Datos.contraseña == ""){
-                        Alert.alert("Datos Actulizados", "Se actualizo el nombre",[
-                            {text: "ok"}
-                             ])
-                        console.log("entro nom")
-                        navigation.navigate("Administrar Cuenta") 
-                        return
-                    }
                   }).catch((error) => {
                     setStiloNombre({color: 'red'})
-                    seterrorNombre("Error al actualizar el nombre")
+                    seterrorNombre("Error al actualizar nombre")
+                    errores = 1
                     setLoading(false)
-                   
                   });
-                } 
-                
             }
             if( user.email != Datos.email){
-                if(validarEmail()){
-                    setLoading(true)
-             await updateEmail(user,Datos.email).then(() => {
+                if(!validarEmail()){
+                    setLoading(false)
+                    return
+                }
+                setLoading(true)
+                updateEmail(user,Datos.email).then(() => {
                     setStiloEmail({color: 'green'})
                     seterrorEmail("Email actualizado correctamente")
-                    setLoading(false)
-                    if(user.displayName == Datos.nombre && Datos.contraseña == ""){
-                        Alert.alert("Datos Actulizados", "Se actualizo el email",[
-                            {text: "ok"}
-                             ])
-                             console.log("entro email")
-                        navigation.navigate("Administrar Cuenta") 
-                        return
-                    }
                   }).catch(error => {
                     const errorCode = error.code;
                     setLoading(false)
                     console.log(errorCode)
                     if(errorCode == "auth/email-already-in-use"){
+                       
                         setStiloEmail({color: 'red'})
                         seterrorEmail("Este correo ya ha sido registrado")
-                        setLoading(false)
-                        Alert.alert("Error al atualizar ","Este correo ya ha sido registrado"[
+                        Alert.alert("Error al actualizar", "email ya registrado",[
                             {text: "ok"}
                              ])
+                        Datos.email = auth.currentUser.email
+                        errores =1
+                        setLoading(false)
                         return
                     }
                     if(error.code =="auth/requires-recent-login"){
                         setLoading(false)
+                        errores = 1
                         Alert.alert("Error al actualizar", "por favor vuelva a iniciar sesion para intentarlo de nuevo",[
                         {text: "ok"}
                          ])
@@ -175,38 +167,25 @@ const EditarDatosUs= ({navigation}) =>{
                 }
                     
                   });
-                }
-                
             }
             if(Datos.contraseña != ""){
-                if(validarCont()){
-                    setLoading(true)
-               await updatePassword(user,Datos.contraseña).then(() => {
+                if(!validarCont()){
+                    setLoading(false)
+                    return
+                }
+                setLoading(true)
+                updatePassword(user,Datos.contraseña).then(() => {
                     setStiloContra({color: 'green'})
                     seterrorContra("contraseña actualizado correctamente")
                     setLoading(false)
-                    if(user.displayName == Datos.nombre && user.email == Datos.email){
-                        Alert.alert("Datos Actulizados", "Se actualizaron todos los datos",[
-                            {text: "ok"}
-                             ])
-                        navigation.navigate("Administrar Cuenta") 
-                        return
-                    }
                   }).catch((error) => {
+                    errores = 1
                     setLoading(false)
-                    if(error.code =="auth/requires-recent-login"){
-                        Alert.alert("Error al actualizar", "por favor vuelva a iniciar sesion para intentarlo de nuevo",[
+                    if(error.code =="auth/requires-recent-login"){Alert.alert("Error al actualizar", "por favor vuelva a iniciar sesion para intentarlo de nuevo",[
                         {text: "ok"}
                          ])
                     navigation.navigate("Administrar Cuenta")}
-                    return
                   });
-                }
-               
-                 
-              }
-              setLoading(false)
-              
             }
             setLoading(false)
          if(errores == 0){
@@ -223,13 +202,16 @@ const EditarDatosUs= ({navigation}) =>{
             })
            } 
             
-    }
+        }
         else{
             Alert.alert("Sin cambios", "No se hizo ninguna actualizacion",[
                 {text: "ok"}
                  ])
             
         }
+       
+       
+       
     }
     return (
        
@@ -301,8 +283,7 @@ const EditarDatosUs= ({navigation}) =>{
          </View>
        </KeyboardAwareScrollView>
      )
-};
-
+}
 
 const styles = StyleSheet.create({
     container: {
