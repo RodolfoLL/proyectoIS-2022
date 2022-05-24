@@ -1,13 +1,29 @@
-import React, { useState } from "react";
+import React, { useState , useEffect} from "react";
 import { Text, View, StyleSheet, TextInput, ScrollView, TouchableOpacity, Alert,Image } from 'react-native';
 import { Button, CheckBox } from 'react-native-elements';
-import {collection, addDoc,doc,setDoc} from 'firebase/firestore';
+import {collection, addDoc,doc,setDoc,onSnapshot} from 'firebase/firestore';
 import { getAuth} from 'firebase/auth';
-import {app} from '../../database/firebase'
+import {app,db} from '../../database/firebase'
 import { Feather } from '@expo/vector-icons';
 
-const DatosUsuario = ( {navigation , props, route}) => {
+const DatosUsuario = ( {navigation,props,route}) => {
 
+  let auth = getAuth(app);
+  const [userName,setUsername]= useState(auth.currentUser.displayName)
+  const [emailUser,setEmail] = useState(auth.currentUser.email)
+  let n=userName;
+  let c=emailUser;
+  console.log("-----------------------------")
+  console.log(n);
+  console.log(c);
+  if(route.params!=null){
+    console.log("::::::::::::::::::::::::::::")
+    n=route.params.nombre
+    c=route.params.email
+    console.log(n);
+    console.log(c);
+  }
+   
   navigation.setOptions({
     headerLeft: () => (
         <TouchableOpacity
@@ -19,11 +35,9 @@ const DatosUsuario = ( {navigation , props, route}) => {
     ),
 
 })
-   
-    const auth = getAuth(app);
-    const user = auth.currentUser;
-    const userName = auth.currentUser.displayName
-    const emailUser = auth.currentUser.email
+
+    
+    
   return (
     <ScrollView style={styles.container}>
       <View style={styles.container}>
@@ -33,15 +47,14 @@ const DatosUsuario = ( {navigation , props, route}) => {
         />
         <View style={styles.contenido}>
         <Text style={styles.title}>Nombre de Usuario</Text>
-        <Text style={styles.subtitle}>{userName}</Text>
+        <Text style={styles.subtitle}>{n}</Text>
         <Text style={styles.title}>Correo Electronico</Text>
-        <Text style={styles.subtitle}>{emailUser}</Text>
+        <Text style={styles.subtitle}>{c}</Text>
         </View>
         <View style={styles.botones}>
           <TouchableOpacity
             onPress={() => navigation.navigate("verificar Contraseña",{Tipo:"Actualizar"})}
           > 
-          
             <Text style={styles.title}>Actualizar Cuenta</Text>
           </TouchableOpacity>
         </View>

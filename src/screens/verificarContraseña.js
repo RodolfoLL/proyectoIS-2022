@@ -16,14 +16,35 @@ const verificarContraseña = ({ navigation, route }) => {
   const [mostarContra, setmostarContra] = useState(false)
   const [password, setPassword] = useState("")
   const [errorContra, seterrorContra] = useState("")
-
+  const [loading,setLoading] = useState(false)
   const auth = getAuth();
   const user = auth.currentUser;
-  const email = user.email;
+  let email ="";
+  if(user != null){email = user.email;}
+  
   const { Tipo } = route.params;
 
 
-
+  function Loading({ isVisible, text }) {
+    return (
+        <Overlay
+            isVisible={isVisible}
+            windowBackgoundColor="rgba(0,0,0,0.5)"
+            overlayBackgroundColor="transparent"
+            overlayStyle={styles.overlay}
+        >
+            <View style={styles.view}>
+                <ActivityIndicator
+                    size="large"
+                    color="#442484"
+                />
+                {
+                    text && <Text style={styles.text2}>{text}</Text>
+                }
+            </View>
+        </Overlay>
+    )
+}
   let nombreBoton = "";
   if (Tipo == "Actualizar") {
     navigation.setOptions({ title: 'Editar Datos del Usuario' })
@@ -50,7 +71,9 @@ const verificarContraseña = ({ navigation, route }) => {
   const verificarContraseña = async () => {
     seterrorContra("")
     console.log(password)
+    setLoading(true)
     if (!validarContra(password)) {
+      setLoading(false)
       seterrorContra("La contraseña no debe tener caracteres especiales o espacios")
     } else {
       const resultInicioSesion = await inicioSesion()
@@ -59,6 +82,7 @@ const verificarContraseña = ({ navigation, route }) => {
         if (Tipo == "Eliminar") {
           deleteUser(user)
             .then(() => {
+              setLoading(false)
               console.log(user)
 
               navigation.navigate("Login");
@@ -68,6 +92,7 @@ const verificarContraseña = ({ navigation, route }) => {
               ])
             })
             .catch(error => {
+              setLoading(false)
               console.log(error)
               const errorCode = error.code;
               const errorMessage = error.message;
@@ -75,10 +100,12 @@ const verificarContraseña = ({ navigation, route }) => {
             }
             )
         } else {
+          setLoading(false)
           navigation.navigate("Editar datos");
         }
 
       }else{
+        setLoading(false)
         Alert.alert("Error", "La contraseña ingresada es incorecta.", [
           { text: "OK", onPress: () => { console.log("ok contraseña erronea") } }
         ])
@@ -117,6 +144,7 @@ const verificarContraseña = ({ navigation, route }) => {
         <TouchableOpacity style={styles.botonEliminar} onPress={() => verificarContraseña()}>
           <Text style={styles.textEliminar}> {nombreBoton}</Text>
         </TouchableOpacity>
+        <Loading isVisible={loading} text = {Tipo == "Eliminar" ? "Eliminando cuenta...": "Verificando datos ..."}/>
       </View>
     </KeyboardAwareScrollView>
   )
@@ -188,6 +216,19 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     maxHeight: "20%",
     marginTop: 30
+  },
+  overlay : {
+    height: 100,
+    width: 200,
+    backgroundColor: "#fff",
+    borderColor: "#442484",
+    borderWidth: 2,
+    borderRadius: 10
+  },
+  view: {
+      flex: 1,
+      alignItems: "center",
+      justifyContent: "center" 
   }
 });
 

@@ -30,7 +30,7 @@ const FechaFinal = (props) => {
 
             let fechaTemporal = new Date(currentDate)
             let fechaActual = new Date()
-            let fecha =   fechaTemporal.getDate()+'/'+(fechaTemporal.getMonth()+1) +'/'+ fechaTemporal.getFullYear()
+            let fecha =  (fechaTemporal.getMonth()+1) + '/'+fechaTemporal.getDate()+ '/'+ fechaTemporal.getFullYear();
 
             if(fechaTemporal.toDateString() === fechaActual.toDateString()){
                 if(validarHora()){
