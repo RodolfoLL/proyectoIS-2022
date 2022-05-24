@@ -35,10 +35,11 @@ const EditarDatosUs= ({navigation}) =>{
     function validarContra(contra){
         const regex = /^[0-9a-zA-Z\_]+$/
         return regex.test(contra) 
-        
-
     }
-    
+    function validarEmojis (cadena) {
+        const regexExp = /(\u00a9|\u00ae|[\u2000-\u3300]|\ud83c[\ud000-\udfff]|\ud83d[\ud000-\udfff]|\ud83e[\ud000-\udfff])/gi;
+        return regexExp.test(cadena)
+    }
     const validarNom=() =>{
         seterrorNombre("")
         let valido = true
@@ -73,10 +74,11 @@ const EditarDatosUs= ({navigation}) =>{
         }
         return valido
     }
+    
     const validarEmail = () => {
         seterrorEmail("")
         let valido = true
-        if(!validarCorreo(Datos.email)){
+        if(!validarCorreo(Datos.email) || validarEmojis(Datos.email)){
             setStiloEmail({color: 'red'})
             seterrorEmail("debes ingresar un correo válido")
             valido = false
@@ -105,6 +107,8 @@ const EditarDatosUs= ({navigation}) =>{
         seterrorNombre("")
         seterrorContra("")
         seterrorEmail("")
+        const actualizados =[]
+        const errors = []
         if(user.displayName != Datos.nombre || user.email != Datos.email || Datos.contraseña != ""){
             
             if( user.displayName != Datos.nombre){
@@ -117,22 +121,19 @@ const EditarDatosUs= ({navigation}) =>{
                   }).then(() => {
                     setStiloNombre({color: 'green'})
                     seterrorNombre("Nombre actualizado correctamente")
-                    setLoading(false)
-                    if(user.email == Datos.email && Datos.contraseña == ""){
-                        Alert.alert("Datos Actulizados", "Se actualizo el nombre",[
-                            {text: "ok"}
-                             ])
-                        console.log("entro nom")
-                        navigation.navigate("Administrar Cuenta") 
-                        return
-                    }
+                    actualizados.push("nombre")
+                    setLoading(false)                    
                   }).catch((error) => {
                     setStiloNombre({color: 'red'})
                     seterrorNombre("Error al actualizar el nombre")
+                    errors.push(error)
                     setLoading(false)
                    
                   });
                 } 
+                else{
+                    errors.push("nombre")
+                }
                 
             }
             if( user.email != Datos.email){
@@ -141,23 +142,18 @@ const EditarDatosUs= ({navigation}) =>{
              await updateEmail(user,Datos.email).then(() => {
                     setStiloEmail({color: 'green'})
                     seterrorEmail("Email actualizado correctamente")
-                    setLoading(false)
-                    if(user.displayName == Datos.nombre && Datos.contraseña == ""){
-                        Alert.alert("Datos Actulizados", "Se actualizo el email",[
-                            {text: "ok"}
-                             ])
-                             console.log("entro email")
-                        navigation.navigate("Administrar Cuenta") 
-                        return
-                    }
+                    actualizados.push("email")
+                    setLoading(false)                   
                   }).catch(error => {
                     const errorCode = error.code;
                     setLoading(false)
+                    errors.push(error)
                     console.log(errorCode)
                     if(errorCode == "auth/email-already-in-use"){
                         setStiloEmail({color: 'red'})
                         seterrorEmail("Este correo ya ha sido registrado")
                         setLoading(false)
+                        errors.push(error)
                         Alert.alert("Error al atualizar ","Este correo ya ha sido registrado"[
                             {text: "ok"}
                              ])
@@ -165,6 +161,7 @@ const EditarDatosUs= ({navigation}) =>{
                     }
                     if(error.code =="auth/requires-recent-login"){
                         setLoading(false)
+                        errors.push(error)
                         Alert.alert("Error al actualizar", "por favor vuelva a iniciar sesion para intentarlo de nuevo",[
                         {text: "ok"}
                          ])
@@ -172,24 +169,23 @@ const EditarDatosUs= ({navigation}) =>{
                     return
                   });
                 }
+                else{
+                    errors.push("email")
+                }
                 
             }
+            
             if(Datos.contraseña != ""){
                 if(validarCont()){
                     setLoading(true)
                await updatePassword(user,Datos.contraseña).then(() => {
                     setStiloContra({color: 'green'})
                     seterrorContra("contraseña actualizado correctamente")
+                    actualizados.push("contraseña")
                     setLoading(false)
-                    if(user.displayName == Datos.nombre && user.email == Datos.email){
-                        Alert.alert("Datos Actulizados", "Se actualizaron todos los datos",[
-                            {text: "ok"}
-                             ])
-                        navigation.navigate("Administrar Cuenta") 
-                        return
-                    }
                   }).catch((error) => {
                     setLoading(false)
+                    errors.push(error)
                     if(error.code =="auth/requires-recent-login"){
                         Alert.alert("Error al actualizar", "por favor vuelva a iniciar sesion para intentarlo de nuevo",[
                         {text: "ok"}
@@ -198,14 +194,22 @@ const EditarDatosUs= ({navigation}) =>{
                     return
                   });
                 }
-               
+                else{
+                    errors.push("contraseña")
+                }
                  
               }
-              setLoading(false)
               
+              setLoading(false)
+              if(actualizados.length > 0 && errors.length == 0){
+                Alert.alert("Datos Actualizados", "Se actualizaron los datos correctamente",[
+                    {text: "ok"}
+                     ])
+                navigation.navigate("Administrar Cuenta", {nombre:user.displayName, email:user.email})
+             } 
             }
             else{
-                Alert.alert("Sin cambios", "No se hizo ninguna actualizacion",[
+                Alert.alert("Sin cambios", "No se hizo ninguna actualización",[
                     {text: "ok"}
                      ])
                 navigation.navigate("Administrar Cuenta") 
