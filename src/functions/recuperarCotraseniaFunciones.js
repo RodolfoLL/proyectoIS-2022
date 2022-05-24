@@ -4,7 +4,6 @@ import {sendPasswordResetEmail, getAuth} from 'firebase/auth';
 const auth = getAuth(app);
 
 const enviarCorreoRecuperacion= async(email) => {
-    
     const result = {statusResponse:true, error:null}
     try {
         await sendPasswordResetEmail(auth, email)

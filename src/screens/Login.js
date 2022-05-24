@@ -1,7 +1,7 @@
 import React, { useState,useEffect} from 'react'
-import { View, TextInput, StyleSheet, Button,TouchableOpacity,Text, Image, Alert,BackHandler} from 'react-native'
+import { View, TextInput,ActivityIndicator, StyleSheet, Button,TouchableOpacity,Text, Image, Alert,BackHandler} from 'react-native'
 import {KeyboardAwareScrollView} from "react-native-keyboard-aware-scroll-view"
-import { Input,Icon } from "react-native-elements";
+import { Input,Icon,Overlay } from "react-native-elements";
 import { getAuth, signInWithEmailAndPassword, } from 'firebase/auth';
 import {app} from '../../database/firebase'
 
@@ -12,13 +12,36 @@ const Login = ({navigation}) => {
     const [password, setPassword] = useState("")
     const [errorEmail,seterrorEmail] = useState("")
     const [errorContra,seterrorContra]= useState("")
+    const [loading,setLoading] = useState(false)
     const auth = getAuth(app);
+    function Loading({ isVisible, text }) {
+      return (
+          <Overlay
+              isVisible={isVisible}
+              windowBackgoundColor="rgba(0,0,0,0.5)"
+              overlayBackgroundColor="transparent"
+              overlayStyle={styles.overlay}
+          >
+              <View style={styles.view}>
+                  <ActivityIndicator
+                      size="large"
+                      color="#442484"
+                  />
+                  {
+                      text && <Text style={styles.text2}>{text}</Text>
+                  }
+              </View>
+          </Overlay>
+      )
+  }
+
     auth.onAuthStateChanged(user => {
       if(user){
         navigation.navigate('Drawer');
       }
     });
     const iniciarSesion = () => {
+      setLoading(true)
       seterrorContra("")
       seterrorEmail("")
       console.log(email+" "+ password)
@@ -33,10 +56,11 @@ const Login = ({navigation}) => {
           setEmail("")
           setPassword("")
           console.log("UID:  "+ user.uid)
-         
+          setLoading(false);
           navigation.navigate("Drawer");
         })
         .catch(error => {
+          setLoading(false);
           const errorCode = error.code;
           const errorMessage = error.message;
           //console.log(error)
@@ -55,12 +79,13 @@ const Login = ({navigation}) => {
         })
       }else if(email === ""){
         seterrorEmail("No se ingreso el correo electronico")
+        setLoading(false);
         return;
       }else{
         seterrorEmail("Formato de correo invalido")
+        setLoading(false);
         return;
       }
-      
     }
     function validarCorreo(email) {
       const re = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i
@@ -123,6 +148,7 @@ const Login = ({navigation}) => {
         </TouchableOpacity>
         
         <Text style={styles.botonRegister} onPress={() => registrarUsuario()}>Registrarse</Text>  
+        <Loading isVisible={loading} text="Iniciando sesión..."/>
       </View>
     </KeyboardAwareScrollView>
 )}

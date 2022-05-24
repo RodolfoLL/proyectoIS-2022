@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet , ScrollView, View,Text, TextInput, TouchableOpacity} from "react-native";
+import { StyleSheet , ScrollView, View,Text, TextInput, TouchableOpacity, ActivityIndicator} from "react-native";
 import {db} from '../../database/firebase'
 import {collection, addDoc,doc,setDoc} from 'firebase/firestore';
 import {creadorDeNotificaciones, eliminarRecordatorioNotif} from './NotificacionRecordatorio';
-
+import {guardarNotificaciones} from '../functions/notificacionFunciones'
+import {Overlay} from 'react-native-elements'
 let expRegSoloNumeros =  new RegExp("^[0-9]*$")
 
 const ConfiguraciónNotificación = (props) => {
@@ -13,6 +14,28 @@ const ConfiguraciónNotificación = (props) => {
     let minAnticipación = "5";
     const [anticipación, setMinAnticipacion] = useState(minAnticipación);
     const { uid,nombreMed,tipoAdm,dose,quantity,item,hora,duracion,editar,fuenteNuevo } = props.route.params;
+    const [loading,setLoading] = useState(false)
+
+    function Loading({ isVisible, text }) {
+        return (
+            <Overlay
+                isVisible={isVisible}
+                windowBackgoundColor="rgba(0,0,0,0.5)"
+                overlayBackgroundColor="transparent"
+                overlayStyle={STYLE_GROUP.overlay}
+            >
+                <View style={STYLE_GROUP.view}>
+                    <ActivityIndicator
+                        size="large"
+                        color="#442484"
+                    />
+                    {
+                        text && <Text style={STYLE_GROUP.text2}>{text}</Text>
+                    }
+                </View>
+            </Overlay>
+        )
+    }
 
     useEffect( () =>{
         let fuenteTemporalTitulo = {
@@ -24,7 +47,8 @@ const ConfiguraciónNotificación = (props) => {
     );
 
     const guardarRecordatorio = async() => {
-        let datosRecordatorio = {}
+        setLoading(true);
+        let datosRecordatorio = {};
         datosRecordatorio = {
             nombreMed: nombreMed, 
             tipoAdm: tipoAdm,
@@ -53,21 +77,30 @@ const ConfiguraciónNotificación = (props) => {
             .then(async data=>{
                 await setDoc(docref,datosRecordatorio)
                 .then(async function(docRef) {
-                    await creadorDeNotificaciones(new Date(duracion), datosRecordatorio,uid,id, parseInt(minAnticipación))
+                    let list_notificaiones = [""]
+                    list_notificaiones = await creadorDeNotificaciones(new Date(duracion), datosRecordatorio,uid,id, parseInt(minAnticipación))
+                    console.log("*******************************************")
+                    console.log(list_notificaiones)
+                    await guardarNotificaciones(uid,id,list_notificaiones)
+                    setLoading(false)
                     props.navigation.navigate("Recordatorios",{uid});
                 });
             });
-           
         }else{
             console.log("DB: "+db+" UID: "+uid)
             addDoc(collection(db, uid), datosRecordatorio)
             .then(async function(docRef) {
                 let idRecordatorio = docRef.id+""
-                console.log("Doc ID: ", docRef.id);
-                await creadorDeNotificaciones(new Date(duracion), datosRecordatorio,uid,idRecordatorio, parseInt(minAnticipación))
+                let list_notificaiones = [""]
+                list_notificaiones = await creadorDeNotificaciones(new Date(duracion), datosRecordatorio,uid,idRecordatorio, parseInt(minAnticipación))
+                console.log("*******************************************")
+                console.log(list_notificaiones)
+                await guardarNotificaciones(uid,idRecordatorio,list_notificaiones)
+                setLoading(false)
                 props.navigation.navigate("Recordatorios",{uid});
             })
             .catch(function(error) {
+                setLoading(false)
                 console.error("Error adding document: ", error);
             });
         }
@@ -104,7 +137,7 @@ const ConfiguraciónNotificación = (props) => {
                         </View>
                     </TouchableOpacity>
                 </View>
-                
+                <Loading isVisible={loading} text ="Creando recordatorio ..."/>
             </View>
             
         </ScrollView>
@@ -165,7 +198,23 @@ const STYLE_GROUP = StyleSheet.create(
             paddingVertical: 2,
             color: 'white',
             //fontSize: 24,
-        }
+        },
+        overlay : {
+            height: 100,
+            width: 200,
+            backgroundColor: "#fff",
+            borderColor: "#442484",
+            borderWidth: 2,
+            borderRadius: 10
+          },
+          view: {
+              flex: 1,
+              alignItems: "center",
+              justifyContent: "center" 
+          },
+          text2:{
+             color: "black",
+             fontSize:20,}
 
     }
 );
