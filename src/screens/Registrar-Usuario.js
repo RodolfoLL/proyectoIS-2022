@@ -40,10 +40,14 @@ const RegistroUsuario= ({route,navigation}) =>{
         }
         return result
     }
+    function validarEmojis (cadena) {
+        const regexExp = /(\u00a9|\u00ae|[\u2000-\u3300]|\ud83c[\ud000-\udfff]|\ud83d[\ud000-\udfff]|\ud83e[\ud000-\udfff])/gi;
+        return regexExp.test(cadena)
+    }
     function validarCorreo(email) {
         
         const re = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i
-        return re.test(email) 
+        return re.test(email) && !validarEmojis (email)
     }
     function validarContra(contra){
         const regex = /^[0-9a-zA-Z\_]+$/

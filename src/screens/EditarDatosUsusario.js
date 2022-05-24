@@ -6,10 +6,9 @@ import{useHeaderHeight } from "@react-navigation/elements"
 import { size } from "lodash";
 import {getAuth,updateProfile,updateEmail,updatePassword} from "firebase/auth"
 import {app} from '../../database/firebase'
-
+import { async } from "@firebase/util";
 
 const EditarDatosUs= ({navigation}) =>{
-    
     const auth = getAuth(app);
     const user = auth.currentUser
     const headerHeight = useHeaderHeight();
@@ -23,7 +22,6 @@ const EditarDatosUs= ({navigation}) =>{
     const [errorEmail,seterrorEmail] = useState("")
  
     const [loading,setLoading] = useState(false)
-
         
     const onChange = (e, type) => {
         setDatos({ ...Datos, [type]: e.nativeEvent.text })
@@ -37,10 +35,11 @@ const EditarDatosUs= ({navigation}) =>{
     function validarContra(contra){
         const regex = /^[0-9a-zA-Z\_]+$/
         return regex.test(contra) 
-        
-
     }
-    
+    function validarEmojis (cadena) {
+        const regexExp = /(\u00a9|\u00ae|[\u2000-\u3300]|\ud83c[\ud000-\udfff]|\ud83d[\ud000-\udfff]|\ud83e[\ud000-\udfff])/gi;
+        return regexExp.test(cadena)
+    }
     const validarNom=() =>{
         seterrorNombre("")
         let valido = true
@@ -75,10 +74,11 @@ const EditarDatosUs= ({navigation}) =>{
         }
         return valido
     }
+    
     const validarEmail = () => {
         seterrorEmail("")
         let valido = true
-        if(!validarCorreo(Datos.email)){
+        if(!validarCorreo(Datos.email) || validarEmojis(Datos.email)){
             setStiloEmail({color: 'red'})
             seterrorEmail("debes ingresar un correo válido")
             valido = false
@@ -102,113 +102,119 @@ const EditarDatosUs= ({navigation}) =>{
         }
         return valido
     }
-
-    const guardarEdit = ()=>{
+    
+    const guardarEdit = async ()=>{
         seterrorNombre("")
         seterrorContra("")
         seterrorEmail("")
-        const errores = 0
+        const actualizados =[]
+        const errors = []
         if(user.displayName != Datos.nombre || user.email != Datos.email || Datos.contraseña != ""){
             
             if( user.displayName != Datos.nombre){
                 
-                if(!validarNom()){
-                    
+                if(validarNom()){
                     setLoading(false)
-                    return
-                } 
-
-                setLoading(true)
-                updateProfile(user, {
+                   setLoading(true)
+             await updateProfile(user, {
                     displayName: Datos.nombre, 
                   }).then(() => {
                     setStiloNombre({color: 'green'})
                     seterrorNombre("Nombre actualizado correctamente")
-                    setLoading(false)
+                    actualizados.push("nombre")
+                    setLoading(false)                    
                   }).catch((error) => {
                     setStiloNombre({color: 'red'})
-                    seterrorNombre("Error al actualizar nombre")
-                    errores = 1
+                    seterrorNombre("Error al actualizar el nombre")
+                    errors.push(error)
                     setLoading(false)
+                   
                   });
+                } 
+                else{
+                    errors.push("nombre")
+                }
+                
             }
             if( user.email != Datos.email){
-                if(!validarEmail()){
-                    setLoading(false)
-                    return
-                }
-                setLoading(true)
-                updateEmail(user,Datos.email).then(() => {
+                if(validarEmail()){
+                    setLoading(true)
+             await updateEmail(user,Datos.email).then(() => {
                     setStiloEmail({color: 'green'})
                     seterrorEmail("Email actualizado correctamente")
+                    actualizados.push("email")
+                    setLoading(false)                   
                   }).catch(error => {
                     const errorCode = error.code;
                     setLoading(false)
+                    errors.push(error)
                     console.log(errorCode)
                     if(errorCode == "auth/email-already-in-use"){
-                       
                         setStiloEmail({color: 'red'})
                         seterrorEmail("Este correo ya ha sido registrado")
-                        Alert.alert("Error al actualizar", "email ya registrado",[
+                        setLoading(false)
+                        errors.push(error)
+                        Alert.alert("Error al atualizar ","Este correo ya ha sido registrado"[
                             {text: "ok"}
                              ])
-                        Datos.email = auth.currentUser.email
-                        errores =1
-                        setLoading(false)
                         return
                     }
                     if(error.code =="auth/requires-recent-login"){
                         setLoading(false)
-                        errores = 1
+                        errors.push(error)
                         Alert.alert("Error al actualizar", "por favor vuelva a iniciar sesion para intentarlo de nuevo",[
                         {text: "ok"}
                          ])
-                    navigation.navigate("Administrar Cuenta")
-                }
-                    
-                  });
-            }
-            if(Datos.contraseña != ""){
-                if(!validarCont()){
-                    setLoading(false)
+                    navigation.navigate("Administrar Cuenta")}
                     return
+                  });
                 }
-                setLoading(true)
-                updatePassword(user,Datos.contraseña).then(() => {
+                else{
+                    errors.push("email")
+                }
+                
+            }
+            
+            if(Datos.contraseña != ""){
+                if(validarCont()){
+                    setLoading(true)
+               await updatePassword(user,Datos.contraseña).then(() => {
                     setStiloContra({color: 'green'})
                     seterrorContra("contraseña actualizado correctamente")
+                    actualizados.push("contraseña")
                     setLoading(false)
                   }).catch((error) => {
-                    errores = 1
                     setLoading(false)
-                    if(error.code =="auth/requires-recent-login"){Alert.alert("Error al actualizar", "por favor vuelva a iniciar sesion para intentarlo de nuevo",[
+                    errors.push(error)
+                    if(error.code =="auth/requires-recent-login"){
+                        Alert.alert("Error al actualizar", "por favor vuelva a iniciar sesion para intentarlo de nuevo",[
                         {text: "ok"}
                          ])
                     navigation.navigate("Administrar Cuenta")}
+                    return
                   });
+                }
+                else{
+                    errors.push("contraseña")
+                }
+                 
+              }
+              
+              setLoading(false)
+              if(actualizados.length > 0 && errors.length == 0){
+                Alert.alert("Datos Actualizados", "Se actualizaron los datos correctamente",[
+                    {text: "ok"}
+                     ])
+                navigation.navigate("Administrar Cuenta", {nombre:user.displayName, email:user.email})
+             } 
             }
-            setLoading(false)
-         if(errores == 0){
-            Alert.alert("Datos Actualizados", "todo se actualizo correctamente",[
-                {text: "ok"}
-                 ])
-                 console.log("llllllllllllllllllllllllllllllll")
-                 console.log(Datos.nombre);
-                 console.log(Datos.email)
-            navigation.navigate("Administrar Cuenta",
-            {
-              nombre:Datos.nombre,
-              email:Datos.email
-            })
-           } 
-            
-        }
-        else{
-            Alert.alert("Sin cambios", "No se hizo ninguna actualizacion",[
-                {text: "ok"}
-                 ])
-            
-        }
+            else{
+                Alert.alert("Sin cambios", "No se hizo ninguna actualización",[
+                    {text: "ok"}
+                     ])
+                navigation.navigate("Administrar Cuenta") 
+            }
+           
        
        
        
