@@ -108,7 +108,7 @@ function Config(){
     return(
         <SettingsStack.Navigator>
             <SettingsStack.Screen name = "Configuraciones" component={TamañoDeFuente}
-            options={{headerTintColor: 'white',
+            options={{headerTintColor: '#0093B7',
             headerStyle:{ backgroundColor: "#0093B7"},headerShown:true}}/>
         </SettingsStack.Navigator>
     );
