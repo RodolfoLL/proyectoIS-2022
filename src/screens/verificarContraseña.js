@@ -48,7 +48,7 @@ const verificarContraseña = ({ navigation, route }) => {
   let nombreBoton = "";
   if (Tipo == "Actualizar") {
     navigation.setOptions({ title: 'Editar Datos del Usuario' })
-    nombreBoton = "Actualizar"
+    nombreBoton = "Verificar"
 
   } else {
     nombreBoton = "Eliminar"
@@ -57,7 +57,23 @@ const verificarContraseña = ({ navigation, route }) => {
 
   function validarContra(contra) {
     const regex = /^[0-9a-zA-Z\_]+$/
-    return regex.test(contra)
+    let bandera = true;
+    if(contra==""){
+      setLoading(false)
+      Alert.alert("Error", "El campo de la contraseña no puede ser vacio.", [
+        { text: "OK", onPress: () => { console.log("ok contraseña erronea") } }
+      ])
+      bandera = false;
+    }else{
+      if(!regex.test(contra)){
+        setLoading(false);
+        Alert.alert("Error", "La contraseña no debe tener caracteres especiales o espacios.", [
+          { text: "OK", onPress: () => { console.log("ok contraseña erronea") } }
+        ])
+        bandera = false;
+      }
+    }
+    return bandera
   }
   async function inicioSesion() {
     let respuesta = { estado: true }
@@ -72,10 +88,7 @@ const verificarContraseña = ({ navigation, route }) => {
     seterrorContra("")
     console.log(password)
     setLoading(true)
-    if (!validarContra(password)) {
-      setLoading(false)
-      seterrorContra("La contraseña no debe tener caracteres especiales o espacios")
-    } else {
+    if (validarContra(password)) {
       const resultInicioSesion = await inicioSesion()
       const estaReautenticado = resultInicioSesion.estado
       if (estaReautenticado) {
