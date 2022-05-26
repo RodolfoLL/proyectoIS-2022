@@ -67,7 +67,7 @@ const verificarContraseña = ({ navigation, route }) => {
     }else{
       if(!regex.test(contra)){
         setLoading(false);
-        Alert.alert("Error", "La contraseña no debe tener caracteres especiales o espacios.", [
+        Alert.alert("Error", "La contraseña ingresada es incorrecta", [
           { text: "OK", onPress: () => { console.log("ok contraseña erronea") } }
         ])
         bandera = false;
@@ -100,7 +100,7 @@ const verificarContraseña = ({ navigation, route }) => {
 
               navigation.navigate("Login");
 
-              Alert.alert("Cuenta Eliminada ", "La cuenta fue eliminada corrcetamnete", [
+              Alert.alert("Cuenta Eliminada ", "La cuenta fue eliminada correctamente", [
                 { text: "OK", onPress: () => { console.log("ok a Login") } }
               ])
             })
