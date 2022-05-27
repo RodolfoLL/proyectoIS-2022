@@ -39,7 +39,7 @@ const DatosUsuario = ( {navigation,props,route}) => {
     
     
   return (
-    <ScrollView style={styles.container}>
+    <View style={styles.container}>
       <View style={styles.container}>
       <Image
           style={styles.incono}
@@ -66,7 +66,7 @@ const DatosUsuario = ( {navigation,props,route}) => {
           </TouchableOpacity>
         </View>
       </View>
-    </ScrollView>
+    </View>
   );
 };
 

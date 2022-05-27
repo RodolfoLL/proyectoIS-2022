@@ -126,7 +126,7 @@ const verificarContraseña = ({ navigation, route }) => {
     }
   }
   return (
-    <KeyboardAwareScrollView style={styles.container}>
+    <View style={styles.container}>
       <View style={styles.container}>
 
 
@@ -159,7 +159,7 @@ const verificarContraseña = ({ navigation, route }) => {
         </TouchableOpacity>
         <Loading isVisible={loading} text = {Tipo == "Eliminar" ? "Eliminando cuenta...": "Verificando datos ..."}/>
       </View>
-    </KeyboardAwareScrollView>
+    </View>
   )
 }
 
