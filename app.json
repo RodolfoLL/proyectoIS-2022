@@ -2,7 +2,7 @@
   "expo": {
     "name": "Medicatedev",
     "slug": "MedicateRecordatorio",
-    "version": "1.4.0",
+    "version": "1.8.0",
     "orientation":"portrait",
     "icon": "./src/assets/medicate.png",
     "splash": {
@@ -21,7 +21,7 @@
     },
     "android": {
       "package": "com.ingenieriadelsoftware.medicate",
-      "versionCode": 13,
+      "versionCode": 14,
       "icon": "./src/assets/medicate.png",
       "adaptiveIcon": {
         "foregroundImage": "./src/assets/adaptive-icon.png",

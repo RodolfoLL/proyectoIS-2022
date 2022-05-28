@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { View, StyleSheet, TouchableOpacity, ActivityIndicator, Dimensions, Platform, Alert, Image } from "react-native";
 import { Input, Button, Icon, Text, Overlay } from "react-native-elements";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view"
@@ -11,12 +11,16 @@ import { db } from '../../database/firebase'
 import { Ionicons } from '@expo/vector-icons';
 //import { deleteUser } from "firebase/auth";
 
-const verificarContraseña = ({ navigation, route }) => {
+const VerificarContraseña = ({ navigation, route }) => {
 
   const [mostarContra, setmostarContra] = useState(false)
   const [password, setPassword] = useState("")
   const [errorContra, seterrorContra] = useState("")
   const [loading,setLoading] = useState(false)
+  const [contadorBoton,setContador] = useState(0)
+  useEffect(() => {
+    setContador(0);
+  }, [route])
   const auth = getAuth();
   const user = auth.currentUser;
   let email ="";
@@ -80,11 +84,12 @@ const verificarContraseña = ({ navigation, route }) => {
     await signInWithEmailAndPassword(auth, email, password)
       .then(credencial => { console.log("Se inició sesion") })
       .catch(errorr => {
+        console.log(errorr.code)
         respuesta.estado = false
       })
     return respuesta;
   }
-  const verificarContraseña = async () => {
+  const VerificarContraseña = async () => {
     seterrorContra("")
     console.log(password)
     setLoading(true)
@@ -154,7 +159,11 @@ const verificarContraseña = ({ navigation, route }) => {
           }
         />
 
-        <TouchableOpacity style={styles.botonEliminar} onPress={() => verificarContraseña()}>
+        <TouchableOpacity style={styles.botonEliminar} onPress={() =>{
+                                                                      console.log("--***----*****--***"+contadorBoton)
+                                                                      setContador(prev => prev + 1)
+                                                                      VerificarContraseña()
+                                                                      }}>
           <Text style={styles.textEliminar}> {nombreBoton}</Text>
         </TouchableOpacity>
         <Loading isVisible={loading} text = {Tipo == "Eliminar" ? "Eliminando cuenta...": "Verificando datos ..."}/>
@@ -245,4 +254,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default verificarContraseña;
+export default VerificarContraseña;

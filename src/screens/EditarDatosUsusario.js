@@ -1,14 +1,25 @@
 import { useState } from "react";
-import { View,StyleSheet,ActivityIndicator,Dimensions,Platform,Alert } from "react-native";
+import { View,StyleSheet,ActivityIndicator,Dimensions,Platform,Alert,TouchableOpacity } from "react-native";
 import { Input,Button,Icon,Text,Overlay } from "react-native-elements";
 import {KeyboardAwareScrollView} from "react-native-keyboard-aware-scroll-view"
 import{useHeaderHeight } from "@react-navigation/elements"
 import { size } from "lodash";
 import {getAuth,updateProfile,updateEmail,updatePassword} from "firebase/auth"
 import {app} from '../../database/firebase'
-import { async } from "@firebase/util";
+import { Ionicons } from '@expo/vector-icons'; 
 
 const EditarDatosUs= ({navigation}) =>{
+    navigation.setOptions({
+        headerLeft: () => (
+            <TouchableOpacity
+                onPress={() => navigation.navigate("verificar Contraseña",{Tipo:"Actualizar"})}
+                style={{ paddingRight: 10 }}
+            >
+                <Ionicons name="arrow-back" size={24} color="white" />
+            </TouchableOpacity>  
+        ),
+
+    })
     const auth = getAuth(app);
     const user = auth.currentUser
     const headerHeight = useHeaderHeight();
