@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { View, StyleSheet, TouchableOpacity, ActivityIndicator, Dimensions, Platform, Alert, Image } from "react-native";
 import { Input, Button, Icon, Text, Overlay } from "react-native-elements";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view"
@@ -11,12 +11,16 @@ import { db } from '../../database/firebase'
 import { Ionicons } from '@expo/vector-icons';
 //import { deleteUser } from "firebase/auth";
 
-const verificarContraseña = ({ navigation, route }) => {
+const VerificarContraseña = ({ navigation, route }) => {
 
   const [mostarContra, setmostarContra] = useState(false)
   const [password, setPassword] = useState("")
   const [errorContra, seterrorContra] = useState("")
   const [loading,setLoading] = useState(false)
+  const [contadorBoton,setContador] = useState(0)
+  useEffect(() => {
+    setContador(0);
+  }, [route])
   const auth = getAuth();
   const user = auth.currentUser;
   let email ="";
@@ -48,7 +52,7 @@ const verificarContraseña = ({ navigation, route }) => {
   let nombreBoton = "";
   if (Tipo == "Actualizar") {
     navigation.setOptions({ title: 'Editar Datos del Usuario' })
-    nombreBoton = "Actualizar"
+    nombreBoton = "Verificar"
 
   } else {
     nombreBoton = "Eliminar"
@@ -57,63 +61,85 @@ const verificarContraseña = ({ navigation, route }) => {
 
   function validarContra(contra) {
     const regex = /^[0-9a-zA-Z\_]+$/
-    return regex.test(contra)
+    let bandera = true;
+    if(contra==""){
+      setLoading(false)
+      Alert.alert("Error", "El campo de la contraseña no puede ser vacio.", [
+        { text: "OK", onPress: () => { console.log("ok contraseña erronea") } }
+      ])
+      bandera = false;
+    }else{
+      if(!regex.test(contra)){
+        setLoading(false);
+        Alert.alert("Error", "La contraseña ingresada es incorrecta", [
+          { text: "OK", onPress: () => { console.log("ok contraseña erronea") } }
+        ])
+        bandera = false;
+      }
+    }
+    return bandera
   }
   async function inicioSesion() {
     let respuesta = { estado: true }
     await signInWithEmailAndPassword(auth, email, password)
       .then(credencial => { console.log("Se inició sesion") })
       .catch(errorr => {
+        console.log(errorr.code)
         respuesta.estado = false
       })
     return respuesta;
   }
-  const verificarContraseña = async () => {
+  const VerificarContraseña = async () => {
     seterrorContra("")
     console.log(password)
     setLoading(true)
-    if (!validarContra(password)) {
+    if (contadorBoton == 5){
       setLoading(false)
-      seterrorContra("La contraseña no debe tener caracteres especiales o espacios")
-    } else {
-      const resultInicioSesion = await inicioSesion()
-      const estaReautenticado = resultInicioSesion.estado
-      if (estaReautenticado) {
-        if (Tipo == "Eliminar") {
-          deleteUser(user)
-            .then(() => {
-              setLoading(false)
-              console.log(user)
-
-              navigation.navigate("Login");
-
-              Alert.alert("Cuenta Eliminada ", "La cuenta fue eliminada corrcetamnete", [
-                { text: "OK", onPress: () => { console.log("ok a Login") } }
-              ])
-            })
-            .catch(error => {
-              setLoading(false)
-              console.log(error)
-              const errorCode = error.code;
-              const errorMessage = error.message;
-
-            }
-            )
-        } else {
+      Alert.alert("Error ", "Se equivocó muchas veces al ingresar su contraseña.", [
+        { text: "OK", onPress: () => {navigation.navigate("Recordatorios"); } }
+      ])
+    }else{
+      if (validarContra(password)) {
+        const resultInicioSesion = await inicioSesion()
+        const estaReautenticado = resultInicioSesion.estado
+        if (estaReautenticado) {
+          if (Tipo == "Eliminar") {
+            deleteUser(user)
+              .then(() => {
+                setLoading(false)
+                console.log(user)
+  
+                navigation.navigate("Login");
+  
+                Alert.alert("Cuenta Eliminada ", "La cuenta fue eliminada correctamente", [
+                  { text: "OK", onPress: () => { console.log("ok a Login") } }
+                ])
+              })
+              .catch(error => {
+                setLoading(false)
+                console.log(error)
+                const errorCode = error.code;
+                const errorMessage = error.message;
+  
+              }
+              )
+          } else {
+            setLoading(false)
+            navigation.navigate("Editar datos");
+          }
+  
+        }else{
           setLoading(false)
-          navigation.navigate("Editar datos");
+          Alert.alert("Error", "La contraseña ingresada es incorecta.", [
+            { text: "OK", onPress: () => { console.log("ok contraseña erronea") } }
+          ])
         }
-
-      }else{
-        setLoading(false)
-        Alert.alert("Error", "La contraseña ingresada es incorecta.", [
-          { text: "OK", onPress: () => { console.log("ok contraseña erronea") } }
-        ])
       }
     }
+    
   }
   return (
-    <KeyboardAwareScrollView style={styles.container}>
+    <View style={styles.container}>
       <View style={styles.container}>
 
 
@@ -141,12 +167,16 @@ const verificarContraseña = ({ navigation, route }) => {
           }
         />
 
-        <TouchableOpacity style={styles.botonEliminar} onPress={() => verificarContraseña()}>
+        <TouchableOpacity style={styles.botonEliminar} onPress={() =>{
+                                                                      console.log("--***----*****--***"+contadorBoton)
+                                                                      setContador(prev => prev + 1)
+                                                                      VerificarContraseña()
+                                                                      }}>
           <Text style={styles.textEliminar}> {nombreBoton}</Text>
         </TouchableOpacity>
         <Loading isVisible={loading} text = {Tipo == "Eliminar" ? "Eliminando cuenta...": "Verificando datos ..."}/>
       </View>
-    </KeyboardAwareScrollView>
+    </View>
   )
 }
 
@@ -232,4 +262,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default verificarContraseña;
+export default VerificarContraseña;

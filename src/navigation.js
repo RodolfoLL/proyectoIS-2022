@@ -22,7 +22,7 @@ import Configuracion from './screens/Configaracion';
 import ConfiguraciónNotificación from './screens/ConfiguracionNotificación'
 import CustomDrawerContent from './Componentes/CustomDrawer';
 import TamañoDeFuente from './screens/Settings';
-import verificarContraseña from './screens/verificarContraseña';
+import VerificarContraseña from './screens/verificarContraseña';
 
 import EditarDatosUs from "./screens/EditarDatosUsusario"
 import Login from './screens/Login';
@@ -95,7 +95,7 @@ function Profile(){
             <PerfilStack.Screen name = "Administrar Cuenta" component={DatosUsuario}
             options={{headerTintColor: 'white',
             headerStyle:{ backgroundColor: "#0093B7"}}}/>
-            <PerfilStack.Screen name = "verificar Contraseña" component={verificarContraseña}
+            <PerfilStack.Screen name = "verificar Contraseña" component={VerificarContraseña}
             options={{headerTintColor: 'white',
             headerStyle:{ backgroundColor: "#0093B7"}}}/>
              <PerfilStack.Screen name="Editar datos" component={EditarDatosUs}
