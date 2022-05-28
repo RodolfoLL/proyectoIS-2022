@@ -93,42 +93,50 @@ const VerificarContraseña = ({ navigation, route }) => {
     seterrorContra("")
     console.log(password)
     setLoading(true)
-    if (validarContra(password)) {
-      const resultInicioSesion = await inicioSesion()
-      const estaReautenticado = resultInicioSesion.estado
-      if (estaReautenticado) {
-        if (Tipo == "Eliminar") {
-          deleteUser(user)
-            .then(() => {
-              setLoading(false)
-              console.log(user)
-
-              navigation.navigate("Login");
-
-              Alert.alert("Cuenta Eliminada ", "La cuenta fue eliminada correctamente", [
-                { text: "OK", onPress: () => { console.log("ok a Login") } }
-              ])
-            })
-            .catch(error => {
-              setLoading(false)
-              console.log(error)
-              const errorCode = error.code;
-              const errorMessage = error.message;
-
-            }
-            )
-        } else {
+    if (contadorBoton == 5){
+      setLoading(false)
+      Alert.alert("Error ", "Se equivocó muchas veces al ingresar su contraseña.", [
+        { text: "OK", onPress: () => {navigation.navigate("Recordatorios"); } }
+      ])
+    }else{
+      if (validarContra(password)) {
+        const resultInicioSesion = await inicioSesion()
+        const estaReautenticado = resultInicioSesion.estado
+        if (estaReautenticado) {
+          if (Tipo == "Eliminar") {
+            deleteUser(user)
+              .then(() => {
+                setLoading(false)
+                console.log(user)
+  
+                navigation.navigate("Login");
+  
+                Alert.alert("Cuenta Eliminada ", "La cuenta fue eliminada correctamente", [
+                  { text: "OK", onPress: () => { console.log("ok a Login") } }
+                ])
+              })
+              .catch(error => {
+                setLoading(false)
+                console.log(error)
+                const errorCode = error.code;
+                const errorMessage = error.message;
+  
+              }
+              )
+          } else {
+            setLoading(false)
+            navigation.navigate("Editar datos");
+          }
+  
+        }else{
           setLoading(false)
-          navigation.navigate("Editar datos");
+          Alert.alert("Error", "La contraseña ingresada es incorecta.", [
+            { text: "OK", onPress: () => { console.log("ok contraseña erronea") } }
+          ])
         }
-
-      }else{
-        setLoading(false)
-        Alert.alert("Error", "La contraseña ingresada es incorecta.", [
-          { text: "OK", onPress: () => { console.log("ok contraseña erronea") } }
-        ])
       }
     }
+    
   }
   return (
     <View style={styles.container}>
