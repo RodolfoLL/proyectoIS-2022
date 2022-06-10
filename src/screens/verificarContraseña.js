@@ -130,7 +130,7 @@ const VerificarContraseña = ({ navigation, route }) => {
   
         }else{
           setLoading(false)
-          Alert.alert("Error", "La contraseña ingresada es incorecta.", [
+          Alert.alert("Error", "La contraseña ingresada es incorrecta.", [
             { text: "OK", onPress: () => { console.log("ok contraseña erronea") } }
           ])
         }

@@ -215,7 +215,7 @@ const FechaFinal = (props) => {
                         display='default'
                         onChange={onChange}
                         minimumDate={new Date()}
-                        maximumDate={new Date(limiteDate.getFullYear()+5,1,1)}
+                        maximumDate={new Date(limiteDate.getFullYear(),11,31)}
                     />
                 )}
             </View>
